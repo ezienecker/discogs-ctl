@@ -1,6 +1,7 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.9.21'
+    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
     id 'application'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.1.0'
 }
 
 application {
@@ -10,12 +11,25 @@ application {
 group = 'de.ezienecker'
 version = '1.0-SNAPSHOT'
 
+def clikt_version = '5.0.2'
+def ktor_version = '3.0.2'
+def kermit_logging_version = '2.0.4'
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("com.github.ajalt.clikt:clikt:4.2.1")
+    implementation("com.github.ajalt.clikt:clikt:$clikt_version")
+
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-auth:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+
+    implementation("co.touchlab:kermit:$kermit_logging_version")
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }

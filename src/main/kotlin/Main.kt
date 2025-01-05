@@ -1,19 +1,34 @@
 package de.ezienecker
 
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.NoOpCliktCommand
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.sources.PropertiesValueSource
 import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.config.command.Config
-import de.ezienecker.config.service.ConfigServiceImpl
+import de.ezienecker.de.ezienecker.wantlist.command.Wantlist
+import de.ezienecker.de.ezienecker.wantlist.service.WantlistService
+import de.ezienecker.shared.configuration.service.ConfigurationService
+import de.ezienecker.shared.discogs.client.DiscogsClient
+import de.ezienecker.shop.command.Shop
+import de.ezienecker.shop.service.ShopService
+import kotlinx.serialization.json.Json
 
 fun main(args: Array<String>) {
     val terminal = Terminal()
+    val json = Json {
+        prettyPrint = true
+    }
 
-    val configService = ConfigServiceImpl()
-    val setConfig = Config.Set(configService, terminal)
-    val viewConfig = Config.View(configService, terminal)
+    val configurationService = ConfigurationService()
+    val setConfig = Config.Set(configurationService, terminal)
+    val viewConfig = Config.View(configurationService, terminal)
+
+    val discogsClient = DiscogsClient(configurationService.getDiscogsClientConfiguration())
+    val shopService = ShopService(discogsClient)
+    val wantlistService = WantlistService(discogsClient)
 
     DiscogsCtl()
         .subcommands(
@@ -21,9 +36,10 @@ fun main(args: Array<String>) {
                 .subcommands(
                     setConfig,
                     viewConfig
-                )
-        )
-        .main(args)
+                ),
+            Shop(shopService, wantlistService, configurationService, terminal, json),
+            Wantlist(shopService, wantlistService, configurationService, terminal, json),
+        ).main(args)
 }
 
 class DiscogsCtl : NoOpCliktCommand() {
@@ -34,4 +50,8 @@ class DiscogsCtl : NoOpCliktCommand() {
             )
         }
     }
+
+    override fun help(context: Context): String = """
+        discogs-ctl makes it possible to display different inventories (store, wantlist) of a user and to compare them with each other.
+    """.trimIndent()
 }
