@@ -1,16 +1,17 @@
+# Discogs-CTL
+
 <div align="left">
     <img src="docs/discogs-ctl-icon.jpg" width="15%" align="left" style="margin-right: 5px"/>
     <div style="display: inline-block;">
-        <h2 style="display: inline-block; vertical-align: middle; margin-top: 0;">DISCOGS-CTL</h2>
-        <p>
-	<em>A command line tool for Discogs users to compare their own store with another user's wantlist.</em>
-</p>
-        <p>
-	<img src="https://img.shields.io/github/license/ezienecker/discogs-ctl?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/ezienecker/discogs-ctl?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/ezienecker/discogs-ctl?style=default&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/ezienecker/discogs-ctl?style=default&color=0080ff" alt="repo-language-count">
-</p>
+    <p>
+	    <em>A command line tool for Discogs users to compare their own store with another user's wantlist.</em>
+    </p>
+    <p>
+        <img src="https://img.shields.io/github/license/ezienecker/discogs-ctl?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
+        <img src="https://img.shields.io/github/last-commit/ezienecker/discogs-ctl?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+        <img src="https://img.shields.io/github/languages/top/ezienecker/discogs-ctl?style=default&color=0080ff" alt="repo-top-language">
+        <img src="https://img.shields.io/github/languages/count/ezienecker/discogs-ctl?style=default&color=0080ff" alt="repo-language-count">
+    </p>
         <p><!-- default option, no dependency badges. -->
 </p>
         <p>
