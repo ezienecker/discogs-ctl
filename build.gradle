@@ -14,6 +14,7 @@ version = '1.0-SNAPSHOT'
 def clikt_version = '5.0.2'
 def ktor_version = '3.0.2'
 def kermit_logging_version = '2.0.4'
+def slf4j_logging_version = '2.0.16'
 
 repositories {
     mavenCentral()
@@ -30,6 +31,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
     implementation("co.touchlab:kermit:$kermit_logging_version")
+    implementation("org.slf4j:slf4j-nop:$slf4j_logging_version")
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
