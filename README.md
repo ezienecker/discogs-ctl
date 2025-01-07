@@ -22,20 +22,15 @@
 
 ##  Motivation
 
----
-
 I want to know whether someone is looking for a record in their wantlist that I offer in my store or that I have twice in my collection.
 Wantlists can contain several hundred records and go over several pages, so it is very tedious to compare them manually and work through them page by page.
 The tool shows me which record I offer that are contained in another user's wantlist.
 
 ##  Demo
 
----
 ![discogs-ctl Demo](docs/demo.gif)
 
 ##  Installation
-
----
 
 Install `discogs-ctl` using one of the following methods:
 
@@ -62,8 +57,6 @@ gradle build
 ```
 
 ##  Usage
-
----
 
 To run the project using `runsample`, execute the following command:
 
@@ -106,7 +99,5 @@ For a full list of available commands, run the following command:
 ```
 
 ##  Support
-
----
 
 If you found a bug or have a feature request, please open an [issue](https://github.com/ezienecker/discogs-ctl/issues)
