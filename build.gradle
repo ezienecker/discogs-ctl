@@ -8,13 +8,13 @@ application {
     mainClass = 'de.ezienecker.MainKt'
 }
 
-group = 'de.ezienecker'
-version = '1.0-SNAPSHOT'
-
 def clikt_version = '5.0.2'
 def ktor_version = '3.0.2'
-def kermit_logging_version = '2.0.4'
+def kermit_logging_version = '2.0.6'
 def slf4j_logging_version = '2.0.16'
+
+def kotest_version = '6.0.0'
+def mockk_version = '1.14.5'
 
 repositories {
     mavenCentral()
@@ -33,7 +33,10 @@ dependencies {
     implementation("co.touchlab:kermit:$kermit_logging_version")
     implementation("org.slf4j:slf4j-nop:$slf4j_logging_version")
 
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation("io.kotest:kotest-runner-junit5:$kotest_version")
+    testImplementation("io.kotest:kotest-assertions-core:$kotest_version")
+    testImplementation("io.mockk:mockk:$mockk_version")
+    testImplementation("io.ktor:ktor-client-mock:$ktor_version")
 }
 
 test {
@@ -41,5 +44,5 @@ test {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(21)
 }
