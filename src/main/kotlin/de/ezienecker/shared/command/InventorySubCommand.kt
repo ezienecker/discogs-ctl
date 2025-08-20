@@ -1,4 +1,4 @@
-package de.ezienecker.de.ezienecker.shared.command
+package de.ezienecker.shared.command
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default

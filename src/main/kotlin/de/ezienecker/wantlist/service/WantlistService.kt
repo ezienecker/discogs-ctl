@@ -1,4 +1,4 @@
-package de.ezienecker.de.ezienecker.wantlist.service
+package de.ezienecker.wantlist.service
 
 import de.ezienecker.shared.discogs.client.DiscogsClient
 import de.ezienecker.shared.discogs.shared.Wants

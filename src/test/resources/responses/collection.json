@@ -1,0 +1,1930 @@
+{
+  "pagination": {
+    "page": 1,
+    "pages": 1,
+    "per_page": 50,
+    "items": 31,
+    "urls": {}
+  },
+  "releases": [
+    {
+      "id": 29294428,
+      "instance_id": 1880275113,
+      "date_added": "2024-12-30T00:16:19-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 29294428,
+        "master_id": 3279853,
+        "master_url": "https://api.discogs.com/masters/3279853",
+        "resource_url": "https://api.discogs.com/releases/29294428",
+        "thumb": "https://i.discogs.com/PmIz24TqzqYEk7Zn2Tqiw9pwCow6bU4ACSCvpE7bOPg/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5Mjk0/NDI4LTE3MDM4ODQx/MTAtNjIwNS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/LB630Mx-JnQPFv9qPbkUB_-XvqrC9l9jc1pRud4OUTU/rs:fit/g:sm/q:90/h:532/w:542/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI5Mjk0/NDI4LTE3MDM4ODQx/MTAtNjIwNS5qcGVn.jpeg",
+        "title": "Burning Desire",
+        "year": 2023,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "Green, OBI",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "10K",
+            "catno": "10011LPC",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1663292,
+            "resource_url": "https://api.discogs.com/labels/1663292"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Mike (408)",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 5852757,
+            "resource_url": "https://api.discogs.com/artists/5852757"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Jazzy Hip-Hop"
+        ]
+      }
+    },
+    {
+      "id": 24168599,
+      "instance_id": 2043252337,
+      "date_added": "2025-07-21T00:07:10-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 24168599,
+        "master_id": 2744054,
+        "master_url": "https://api.discogs.com/masters/2744054",
+        "resource_url": "https://api.discogs.com/releases/24168599",
+        "thumb": "https://i.discogs.com/_i589gKdtZ0WcM22SBvBdo6dM36GyJ_vWIl7aFAWH5I/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI0MTY4/NTk5LTE2NjM3OTQy/MDQtNjg5OS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/ZfwjW3EY8SRMLK7rrwNEy6AsMqyaKMGo-YZnFZBR09U/rs:fit/g:sm/q:90/h:600/w:561/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI0MTY4/NTk5LTE2NjM3OTQy/MDQtNjg5OS5qcGVn.jpeg",
+        "title": "Disco!",
+        "year": 2022,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "LP",
+              "Album"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "10K",
+            "catno": "none",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1663292,
+            "resource_url": "https://api.discogs.com/labels/1663292"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Mike (408)",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 5852757,
+            "resource_url": "https://api.discogs.com/artists/5852757"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 21888745,
+      "instance_id": 2043884408,
+      "date_added": "2025-07-23T04:46:24-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 21888745,
+        "master_id": 2391289,
+        "master_url": "https://api.discogs.com/masters/2391289",
+        "resource_url": "https://api.discogs.com/releases/21888745",
+        "thumb": "https://i.discogs.com/eMbN7M2JR0teuP1Tui6YZw22gGOybOTbB9DkCzmNWcs/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxODg4/NzQ1LTE2NDMxNDQx/MDgtMzEzOS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/JN4-i2eLOwkNgKfKi381cbby4jnis7cQ9UUR42IWn2Q/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxODg4/NzQ1LTE2NDMxNDQx/MDgtMzEzOS5qcGVn.jpeg",
+        "title": "Bo Jackson",
+        "year": 2021,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "Clear w/ Blue Splatter, Expanded Edition",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "ALC Records",
+            "catno": "ALC-5037",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 51679,
+            "resource_url": "https://api.discogs.com/labels/51679"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Boldy James",
+            "anv": "",
+            "join": "X",
+            "role": "",
+            "tracks": "",
+            "id": 2382425,
+            "resource_url": "https://api.discogs.com/artists/2382425"
+          },
+          {
+            "name": "Alchemist",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 169508,
+            "resource_url": "https://api.discogs.com/artists/169508"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 15590119,
+      "instance_id": 1913679459,
+      "date_added": "2025-01-27T06:03:12-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 15590119,
+        "master_id": 1768392,
+        "master_url": "https://api.discogs.com/masters/1768392",
+        "resource_url": "https://api.discogs.com/releases/15590119",
+        "thumb": "https://i.discogs.com/8eqj6VLDSVxBD1H3lRE2azRJCpehzzDLIRq8SvvhXQ4/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE1NTkw/MTE5LTE3MDEwOTM4/NzYtMzIxNy5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/IbYoDCWGeqmL3L0_QBT-G3gWv3nig1ldEvUqbJ4YEmE/rs:fit/g:sm/q:90/h:598/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE1NTkw/MTE5LTE3MDEwOTM4/NzYtMzIxNy5qcGVn.jpeg",
+        "title": "The Price Of Tea In China",
+        "year": 2020,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "ALC Records",
+            "catno": "ALC5023",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 51679,
+            "resource_url": "https://api.discogs.com/labels/51679"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Boldy James",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 2382425,
+            "resource_url": "https://api.discogs.com/artists/2382425"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 23081975,
+      "instance_id": 1875413400,
+      "date_added": "2024-12-26T06:38:07-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 23081975,
+        "master_id": 1488771,
+        "master_url": "https://api.discogs.com/masters/1488771",
+        "resource_url": "https://api.discogs.com/releases/23081975",
+        "thumb": "https://i.discogs.com/0kbqJOspszt7gsPEo_cmaBj_CNBDgihYWSOcaPhKCcc/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIzMDgx/OTc1LTE2NTE0NTI1/NTctNDI5OS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/US6apQXzT0Ix3K0ppR6uoAm_904oiYryZCQiBbOjstg/rs:fit/g:sm/q:90/h:367/w:361/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIzMDgx/OTc1LTE2NTE0NTI1/NTctNDI5OS5qcGVn.jpeg",
+        "title": "Covert Coup",
+        "year": 2022,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Reissue",
+              "Repress"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "ALC Records",
+            "catno": "ALC5009",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 51679,
+            "resource_url": "https://api.discogs.com/labels/51679"
+          },
+          {
+            "name": "Jet Life Recordings",
+            "catno": "none",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 460885,
+            "resource_url": "https://api.discogs.com/labels/460885"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Curren$y",
+            "anv": "",
+            "join": "&",
+            "role": "",
+            "tracks": "",
+            "id": 1493214,
+            "resource_url": "https://api.discogs.com/artists/1493214"
+          },
+          {
+            "name": "Alchemist",
+            "anv": "The Alchemist",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 169508,
+            "resource_url": "https://api.discogs.com/artists/169508"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 28358704,
+      "instance_id": 1913155236,
+      "date_added": "2025-01-26T14:56:46-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 28358704,
+        "master_id": 2817890,
+        "master_url": "https://api.discogs.com/masters/2817890",
+        "resource_url": "https://api.discogs.com/releases/28358704",
+        "thumb": "https://i.discogs.com/EZtbtM7csp0SSA_dF8R8y2blPSi8mcPXHPZeihv9-Tg/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4MzU4/NzA0LTE2OTUzNzI1/NzMtNTQ5NS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/JfGVmCy5Bc2nrSyOPEmbRNwK8Xs4mbP4SFCeVCSwa78/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4MzU4/NzA0LTE2OTUzNzI1/NzMtNTQ5NS5qcGVn.jpeg",
+        "title": "The Elephant Man's Bones",
+        "year": 2023,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "ALC Records",
+            "catno": "ALC-5036",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 51679,
+            "resource_url": "https://api.discogs.com/labels/51679"
+          },
+          {
+            "name": "Pimpire",
+            "catno": "ALC-5036",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2571013,
+            "resource_url": "https://api.discogs.com/labels/2571013"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Roc Marciano",
+            "anv": "",
+            "join": "&",
+            "role": "",
+            "tracks": "",
+            "id": 1230639,
+            "resource_url": "https://api.discogs.com/artists/1230639"
+          },
+          {
+            "name": "Alchemist",
+            "anv": "The Alchemist",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 169508,
+            "resource_url": "https://api.discogs.com/artists/169508"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Jazzy Hip-Hop"
+        ]
+      }
+    },
+    {
+      "id": 34569547,
+      "instance_id": 2045743949,
+      "date_added": "2025-07-29T01:24:55-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 34569547,
+        "master_id": 3835119,
+        "master_url": "https://api.discogs.com/masters/3835119",
+        "resource_url": "https://api.discogs.com/releases/34569547",
+        "thumb": "https://i.discogs.com/YhY8yAqBGVa3YhNc1_u2-sc19Dotcq5CtANaq5nyWqY/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM0NTY5/NTQ3LTE3NTI3OTAz/NzktNDIwNy5wbmc.jpeg",
+        "cover_image": "https://i.discogs.com/7kLjkKpUB4kaZky2syeNt72j6ClKXYIKB62jMIRRrAQ/rs:fit/g:sm/q:90/h:598/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM0NTY5/NTQ3LTE3NTI3OTAz/NzktNDIwNy5wbmc.jpeg",
+        "title": "The Skeleton Key",
+        "year": 2025,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Clear OBI",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "ALC Records",
+            "catno": "ALC-5058",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 51679,
+            "resource_url": "https://api.discogs.com/labels/51679"
+          },
+          {
+            "name": "Pimpire",
+            "catno": "ALC-5058",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2571013,
+            "resource_url": "https://api.discogs.com/labels/2571013"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Roc Marciano",
+            "anv": "",
+            "join": "And",
+            "role": "",
+            "tracks": "",
+            "id": 1230639,
+            "resource_url": "https://api.discogs.com/artists/1230639"
+          },
+          {
+            "name": "Alchemist",
+            "anv": "The Alchemist",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 169508,
+            "resource_url": "https://api.discogs.com/artists/169508"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 32969553,
+      "instance_id": 2026982390,
+      "date_added": "2025-05-27T11:42:13-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 32969553,
+        "master_id": 3916750,
+        "master_url": "https://api.discogs.com/masters/3916750",
+        "resource_url": "https://api.discogs.com/releases/32969553",
+        "thumb": "https://i.discogs.com/VRXu42HLx2Z92SXTdl13-22hOeduYWNrx7pBUdiFnh0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMyOTY5/NTUzLTE3Mzc5OTk3/NDAtODc3Mi5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/vjag2mh-8yV6ArlAukjmGvP798MOi2lnnXzrruWoAUo/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMyOTY5/NTUzLTE3Mzc5OTk3/NDAtODc3Mi5qcGVn.jpeg",
+        "title": "Vintage Limo",
+        "year": 2025,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Hand Painted Sleeve, Clear Vinyl",
+            "descriptions": [
+              "12\"",
+              "Single",
+              "Limited Edition",
+              "Promo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Art That Kills",
+            "catno": "none",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2145622,
+            "resource_url": "https://api.discogs.com/labels/2145622"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Roc Marciano",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 1230639,
+            "resource_url": "https://api.discogs.com/artists/1230639"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 21035152,
+      "instance_id": 1889908851,
+      "date_added": "2025-01-06T13:24:22-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 21035152,
+        "master_id": 38871,
+        "master_url": "https://api.discogs.com/masters/38871",
+        "resource_url": "https://api.discogs.com/releases/21035152",
+        "thumb": "https://i.discogs.com/Ld_G13ocMj9NXuZkZQ2bubtrfCgxXgQ1UIhSFx82_sg/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxMDM1/MTUyLTE2MzcyODM1/NjUtNzk1Ny5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/wm9-m_PGAxqIGtfRnGrn_-heIDeIvzzjiXf-gdzrb7k/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxMDM1/MTUyLTE2MzcyODM1/NjUtNzk1Ny5qcGVn.jpeg",
+        "title": "Places And Spaces",
+        "year": 2021,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "180 gram",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Reissue",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Blue Note",
+            "catno": "3596800",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 281,
+            "resource_url": "https://api.discogs.com/labels/281"
+          },
+          {
+            "name": "UMe",
+            "catno": "3596800",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 68029,
+            "resource_url": "https://api.discogs.com/labels/68029"
+          },
+          {
+            "name": "Blue Note",
+            "catno": "00602435968001",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 281,
+            "resource_url": "https://api.discogs.com/labels/281"
+          },
+          {
+            "name": "UMe",
+            "catno": "00602435968001",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 68029,
+            "resource_url": "https://api.discogs.com/labels/68029"
+          },
+          {
+            "name": "Blue Note",
+            "catno": "BN-LA549-G",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 281,
+            "resource_url": "https://api.discogs.com/labels/281"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Donald Byrd",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 20956,
+            "resource_url": "https://api.discogs.com/artists/20956"
+          }
+        ],
+        "genres": [
+          "Jazz"
+        ],
+        "styles": [
+          "Jazz-Funk"
+        ]
+      }
+    },
+    {
+      "id": 13308241,
+      "instance_id": 1875415257,
+      "date_added": "2024-12-26T06:40:09-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 13308241,
+        "master_id": 1623094,
+        "master_url": "https://api.discogs.com/masters/1623094",
+        "resource_url": "https://api.discogs.com/releases/13308241",
+        "thumb": "https://i.discogs.com/V0Awredb0OOoZjDOg5OxQQRjNKWQ-TDkcI0Y7Pji5iM/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzMzA4/MjQxLTE1NTI1MDU1/NTMtNjY2NC5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/fZiQdB54LCP5xZvKK6LR_omvHnCjtNpda4ZA-jHTWPk/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzMzA4/MjQxLTE1NTI1MDU1/NTMtNjY2NC5qcGVn.jpeg",
+        "title": "Kokoroko",
+        "year": 2019,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "12\"",
+              "33 ⅓ RPM",
+              "EP",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Brownswood Recordings",
+            "catno": "BWOOD0199EP",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 62136,
+            "resource_url": "https://api.discogs.com/labels/62136"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Kokoroko",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 6248991,
+            "resource_url": "https://api.discogs.com/artists/6248991"
+          }
+        ],
+        "genres": [
+          "Jazz",
+          "Funk / Soul"
+        ],
+        "styles": [
+          "Afrobeat",
+          "Contemporary Jazz"
+        ]
+      }
+    },
+    {
+      "id": 11862473,
+      "instance_id": 2046382824,
+      "date_added": "2025-07-31T03:34:29-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 11862473,
+        "master_id": 1322483,
+        "master_url": "https://api.discogs.com/masters/1322483",
+        "resource_url": "https://api.discogs.com/releases/11862473",
+        "thumb": "https://i.discogs.com/g4iGU7_ZOeOsyySMKIutObyIYmAWejvmumy9nPQZKh0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExODYy/NDczLTE2OTg0NTQ0/MjgtMTI0Ni5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/7Nyi7ont2Zi37tRaJB-FWfn0sOqTLnqWJvU24ZN8ALk/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExODYy/NDczLTE2OTg0NTQ0/MjgtMTI0Ni5qcGVn.jpeg",
+        "title": "Butcher On Steroids",
+        "year": 2018,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Obi",
+            "descriptions": [
+              "LP",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Daupe!",
+            "catno": "DM-SP-032",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 489399,
+            "resource_url": "https://api.discogs.com/labels/489399"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Benny (45)",
+            "anv": "",
+            "join": "x",
+            "role": "",
+            "tracks": "",
+            "id": 4748995,
+            "resource_url": "https://api.discogs.com/artists/4748995"
+          },
+          {
+            "name": "DJ Green Lantern",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 210875,
+            "resource_url": "https://api.discogs.com/artists/210875"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Thug Rap"
+        ]
+      }
+    },
+    {
+      "id": 11973678,
+      "instance_id": 1906700673,
+      "date_added": "2025-01-21T03:32:03-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 11973678,
+        "master_id": 1360458,
+        "master_url": "https://api.discogs.com/masters/1360458",
+        "resource_url": "https://api.discogs.com/releases/11973678",
+        "thumb": "https://i.discogs.com/q20eRYL-0c-z2S4tc7clRGkQnat1gXkaeSRaBUKmzH8/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExOTcz/Njc4LTE1MjYzODEz/MTctMTg4OS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/0mCtxr6ldeXGZonPU3BStzksgiMJfpbf79axkUNBGpc/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExOTcz/Njc4LTE1MjYzODEz/MTctMTg4OS5qcGVn.jpeg",
+        "title": "G.O.A.T.",
+        "year": 2018,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Orange",
+            "descriptions": [
+              "LP",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Daupe!",
+            "catno": "DM-SP-033",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 489399,
+            "resource_url": "https://api.discogs.com/labels/489399"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Conway (6)",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 4703954,
+            "resource_url": "https://api.discogs.com/artists/4703954"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Hardcore Hip-Hop"
+        ]
+      }
+    },
+    {
+      "id": 12442326,
+      "instance_id": 1908666003,
+      "date_added": "2025-01-23T00:42:00-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 12442326,
+        "master_id": 1391921,
+        "master_url": "https://api.discogs.com/masters/1391921",
+        "resource_url": "https://api.discogs.com/releases/12442326",
+        "thumb": "https://i.discogs.com/FzsKmjr-iTRc1SuHvgMwwMVrv1bE8kNVNDsVFhJPe5M/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyNDQy/MzI2LTE3MjYyOTg2/NTktNTE3OC5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/KOQrr5Q1HgA3yiVVLlzKoo8xyOYOPAiV-TgUH4twtPo/rs:fit/g:sm/q:90/h:600/w:595/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyNDQy/MzI2LTE3MjYyOTg2/NTktNTE3OC5qcGVn.jpeg",
+        "title": "Supreme Blientele",
+        "year": 2018,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "Red Splatter",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Daupe!",
+            "catno": "DM-SP-036",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 489399,
+            "resource_url": "https://api.discogs.com/labels/489399"
+          }
+        ],
+        "artists": [
+          {
+            "name": "WestsideGunn",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 4129661,
+            "resource_url": "https://api.discogs.com/artists/4129661"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Hardcore Hip-Hop"
+        ]
+      }
+    },
+    {
+      "id": 13298604,
+      "instance_id": 1982265444,
+      "date_added": "2025-04-01T07:34:26-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 13298604,
+        "master_id": 1470722,
+        "master_url": "https://api.discogs.com/masters/1470722",
+        "resource_url": "https://api.discogs.com/releases/13298604",
+        "thumb": "https://i.discogs.com/z5Na6uRu1j_bIc6A2UtZp_HMhvjnzyroJr9Lv2kdRN0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzMjk4/NjA0LTE1NTI1MTM4/MTAtNTA0Ni5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/n_-2ZZOxwUV17my1tIfPq_EjdweUEZcjcVwA8Gkuge8/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzMjk4/NjA0LTE1NTI1MTM4/MTAtNTA0Ni5qcGVn.jpeg",
+        "title": "Tana Talk 3",
+        "year": 2019,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "OBI",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Daupe!",
+            "catno": "DM-SP-041",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 489399,
+            "resource_url": "https://api.discogs.com/labels/489399"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Benny (45)",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 4748995,
+            "resource_url": "https://api.discogs.com/artists/4748995"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 34351345,
+      "instance_id": 2036208065,
+      "date_added": "2025-06-27T04:37:46-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 34351345,
+        "master_id": 3751086,
+        "master_url": "https://api.discogs.com/masters/3751086",
+        "resource_url": "https://api.discogs.com/releases/34351345",
+        "thumb": "https://i.discogs.com/rxDPQm5HTH-ZxlSBaoB7rp0bzhj_wg-Lw2XuSw4llq4/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM0MzUx/MzQ1LTE3NTEzMzk2/NzItNTgxOC5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/E1QjXhI2jhzenOCNKvqSIOLI0h4XW4hAJkxbrhQq29s/rs:fit/g:sm/q:90/h:595/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM0MzUx/MzQ1LTE3NTEzMzk2/NzItNTgxOC5qcGVn.jpeg",
+        "title": "12 ",
+        "year": 2025,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Cover 1, Splatter",
+            "descriptions": [
+              "LP",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Daupe!",
+            "catno": "DM-SP-108 [1]",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 489399,
+            "resource_url": "https://api.discogs.com/labels/489399"
+          }
+        ],
+        "artists": [
+          {
+            "name": "WestsideGunn",
+            "anv": "Westside Gunn",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 4129661,
+            "resource_url": "https://api.discogs.com/artists/4129661"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Gangsta",
+          "Boom Bap"
+        ]
+      }
+    },
+    {
+      "id": 34621399,
+      "instance_id": 2045836446,
+      "date_added": "2025-07-29T08:29:18-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 34621399,
+        "master_id": 3751086,
+        "master_url": "https://api.discogs.com/masters/3751086",
+        "resource_url": "https://api.discogs.com/releases/34621399",
+        "thumb": "https://i.discogs.com/74_aR4ypWRgQRqr__s0URGKwNu6yTk0M3_JhoZUQ7JY/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM0NjIx/Mzk5LTE3NTMyOTEw/NjYtNzY0NC5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/MdJvJfGF7EzEGyGRrD0SY2Q2j1z_ly8OkMSypbTKojg/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM0NjIx/Mzk5LTE3NTMyOTEw/NjYtNzY0NC5qcGVn.jpeg",
+        "title": "12 ",
+        "year": 2025,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Cover 2, “Gold” ",
+            "descriptions": [
+              "LP",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Daupe!",
+            "catno": "DM-SP-108 [2]",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 489399,
+            "resource_url": "https://api.discogs.com/labels/489399"
+          }
+        ],
+        "artists": [
+          {
+            "name": "WestsideGunn",
+            "anv": "Westside Gunn",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 4129661,
+            "resource_url": "https://api.discogs.com/artists/4129661"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Gangsta",
+          "Boom Bap"
+        ]
+      }
+    },
+    {
+      "id": 26277251,
+      "instance_id": 1906737123,
+      "date_added": "2025-01-21T04:35:04-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 26277251,
+        "master_id": 2859037,
+        "master_url": "https://api.discogs.com/masters/2859037",
+        "resource_url": "https://api.discogs.com/releases/26277251",
+        "thumb": "https://i.discogs.com/_Dg8zvoNQDGLu8dDu3dANctkX15glKBHacWOe-bNdVY/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2Mjc3/MjUxLTE2Nzc3NTcx/ODAtOTkwMy5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/9XGqEeTXHLPe92N-9a-Cjd-n7nU-N5W9CJOS7y8daFU/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2Mjc3/MjUxLTE2Nzc3NTcx/ODAtOTkwMy5qcGVn.jpeg",
+        "title": "Kiss The Ring",
+        "year": 2023,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "Gold",
+            "descriptions": [
+              "LP",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Daupe!",
+            "catno": "DM-SP-083",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 489399,
+            "resource_url": "https://api.discogs.com/labels/489399"
+          },
+          {
+            "name": "Griselda Records",
+            "catno": "DM-SP-083",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 921525,
+            "resource_url": "https://api.discogs.com/labels/921525"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Rome Streetz",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 6503421,
+            "resource_url": "https://api.discogs.com/artists/6503421"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Boom Bap"
+        ]
+      }
+    },
+    {
+      "id": 22128385,
+      "instance_id": 1908666294,
+      "date_added": "2025-01-23T00:42:41-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 22128385,
+        "master_id": 2509642,
+        "master_url": "https://api.discogs.com/masters/2509642",
+        "resource_url": "https://api.discogs.com/releases/22128385",
+        "thumb": "https://i.discogs.com/9OiGRZHFO5wdyaCgd6zj1nrS6PrIGn1qQz58TC0VtCU/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIyMTI4/Mzg1LTE2OTk3MjM4/MzMtNzYxNS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/82youSNcvvnqcYIcPypaxDewvDSbw-tJYpOoPa7vHzM/rs:fit/g:sm/q:90/h:596/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIyMTI4/Mzg1LTE2OTk3MjM4/MzMtNzYxNS5qcGVn.jpeg",
+        "title": "Coup De Grâce",
+        "year": 2022,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Marble Grey + OBI",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Numbered"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "de Rap Winkel Records",
+            "catno": "DRW 118",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1407668,
+            "resource_url": "https://api.discogs.com/labels/1407668"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Rome Streetz",
+            "anv": "",
+            "join": "x",
+            "role": "",
+            "tracks": "",
+            "id": 6503421,
+            "resource_url": "https://api.discogs.com/artists/6503421"
+          },
+          {
+            "name": "Ransom (5)",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 738881,
+            "resource_url": "https://api.discogs.com/artists/738881"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 14200473,
+      "instance_id": 1978698162,
+      "date_added": "2025-03-29T03:54:19-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 14200473,
+        "master_id": 1581477,
+        "master_url": "https://api.discogs.com/masters/1581477",
+        "resource_url": "https://api.discogs.com/releases/14200473",
+        "thumb": "https://i.discogs.com/nT71gMlnuy5-YZZTo0sXfPL8y_SCFoQcxktyu8ORBgY/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE0MjAw/NDczLTE1Njk3NTk1/NTctNzU3MC5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/WLQeDGW__2dqe-mDNxqOkldXKqF4EYmBoTWQcrO2Qhw/rs:fit/g:sm/q:90/h:598/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE0MjAw/NDczLTE1Njk3NTk1/NTctNzU3MC5qcGVn.jpeg",
+        "title": "The Plugs I Met",
+        "year": 2019,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Cocaine White + OBI",
+            "descriptions": [
+              "12\"",
+              "EP",
+              "Limited Edition"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "de Rap Winkel Records",
+            "catno": "DRW041",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1407668,
+            "resource_url": "https://api.discogs.com/labels/1407668"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Benny (45)",
+            "anv": "Benny The Butcher",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 4748995,
+            "resource_url": "https://api.discogs.com/artists/4748995"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Hardcore Hip-Hop",
+          "Boom Bap"
+        ]
+      }
+    },
+    {
+      "id": 26529476,
+      "instance_id": 2046382596,
+      "date_added": "2025-07-31T03:33:23-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 26529476,
+        "master_id": 2612951,
+        "master_url": "https://api.discogs.com/masters/2612951",
+        "resource_url": "https://api.discogs.com/releases/26529476",
+        "thumb": "https://i.discogs.com/wSVGkZZr7BAlyZKwHEek1zyQ7NKdg4hqp_iA_gGmNqM/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2NTI5/NDc2LTE2Nzk2NzI5/MzMtOTQ1OC5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/GgEOPLeDTnn4CHg-IET0ZlMogIky4k4I9MB03lwfXok/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2NTI5/NDc2LTE2Nzk2NzI5/MzMtOTQ1OC5qcGVn.jpeg",
+        "title": "Tana Talk 4",
+        "year": 2023,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "descriptions": [
+              "LP",
+              "45 RPM",
+              "Album",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Empire",
+            "catno": "ERE811",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 27889,
+            "resource_url": "https://api.discogs.com/labels/27889"
+          },
+          {
+            "name": "Empire",
+            "catno": "ERE823-ERE826",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 27889,
+            "resource_url": "https://api.discogs.com/labels/27889"
+          },
+          {
+            "name": "Empire",
+            "catno": "ERE834-ERE836",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 27889,
+            "resource_url": "https://api.discogs.com/labels/27889"
+          },
+          {
+            "name": "Griselda Records",
+            "catno": "ERE811",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 921525,
+            "resource_url": "https://api.discogs.com/labels/921525"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Benny (45)",
+            "anv": "Benny The Butcher",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 4748995,
+            "resource_url": "https://api.discogs.com/artists/4748995"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Hardcore Hip-Hop"
+        ]
+      }
+    },
+    {
+      "id": 14524574,
+      "instance_id": 1906701006,
+      "date_added": "2025-01-21T03:32:38-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 14524574,
+        "master_id": 1651482,
+        "master_url": "https://api.discogs.com/masters/1651482",
+        "resource_url": "https://api.discogs.com/releases/14524574",
+        "thumb": "https://i.discogs.com/YMzhoDLhzM1T-_7nWoTH6PxwtN5wvC1SEAv3wFqJllo/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE0NTI0/NTc0LTE1NzYzMzEz/OTQtODc3MS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/G8nFHbGn-wM74rUyASSK_2Bm-2ZQ_bSP7jVXzDCUat4/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE0NTI0/NTc0LTE1NzYzMzEz/OTQtODc3MS5qcGVn.jpeg",
+        "title": "Noise Kandy 3: The Overdose",
+        "year": 2019,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Clear/Azure Blue Marbled Edition",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "FXCK RXP RXCXRDS",
+            "catno": "FRR051",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1177633,
+            "resource_url": "https://api.discogs.com/labels/1177633"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Rome Streetz",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 6503421,
+            "resource_url": "https://api.discogs.com/artists/6503421"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 15166675,
+      "instance_id": 2040002820,
+      "date_added": "2025-07-10T05:40:31-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 15166675,
+        "master_id": 1846641,
+        "master_url": "https://api.discogs.com/masters/1846641",
+        "resource_url": "https://api.discogs.com/releases/15166675",
+        "thumb": "https://i.discogs.com/oFzMQi__AKyqHjbf_Cu3kM17eF3aXOr5XIu_e2z4b9Q/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE1MTY2/Njc1LTE3MzM0OTAx/ODItODk1Ny5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/ymoI5yGyq9pKLOkh6T0e317Sr83f_z62iDjXLYSLYnk/rs:fit/g:sm/q:90/h:598/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE1MTY2/Njc1LTE3MzM0OTAx/ODItODk1Ny5qcGVn.jpeg",
+        "title": "LULU",
+        "year": 2020,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "12\"",
+              "33 ⅓ RPM",
+              "EP",
+              "Limited Edition"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Griselda Records",
+            "catno": "none",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 921525,
+            "resource_url": "https://api.discogs.com/labels/921525"
+          },
+          {
+            "name": "ALC Records",
+            "catno": "none",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 51679,
+            "resource_url": "https://api.discogs.com/labels/51679"
+          },
+          {
+            "name": "Patta Soundsystem",
+            "catno": "none",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1902771,
+            "resource_url": "https://api.discogs.com/labels/1902771"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Conway (6)",
+            "anv": "",
+            "join": ",",
+            "role": "",
+            "tracks": "",
+            "id": 4703954,
+            "resource_url": "https://api.discogs.com/artists/4703954"
+          },
+          {
+            "name": "Alchemist",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 169508,
+            "resource_url": "https://api.discogs.com/artists/169508"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Gangsta",
+          "Boom Bap"
+        ]
+      }
+    },
+    {
+      "id": 25100593,
+      "instance_id": 2044452735,
+      "date_added": "2025-07-25T03:44:08-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 25100593,
+        "master_id": 1811436,
+        "master_url": "https://api.discogs.com/masters/1811436",
+        "resource_url": "https://api.discogs.com/releases/25100593",
+        "thumb": "https://i.discogs.com/rdu7WaWi21Md_fxEu65bqUt1Y7ptbulxfiWtHTC-lA4/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI1MTAw/NTkzLTE2NjgwMjcy/OTctMjgyOC5wbmc.jpeg",
+        "cover_image": "https://i.discogs.com/EIIJuRjAm16NfoEkiH3eMBZzK-b2My0kcPplm8wAjEA/rs:fit/g:sm/q:90/h:600/w:598/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI1MTAw/NTkzLTE2NjgwMjcy/OTctMjgyOC5wbmc.jpeg",
+        "title": "Reasonable Drought",
+        "year": 2022,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Freeze White Splatter",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Special Edition",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Marci Enterprises LLC.",
+            "catno": "none",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1172775,
+            "resource_url": "https://api.discogs.com/labels/1172775"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Stove God Cooks",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 7684599,
+            "resource_url": "https://api.discogs.com/artists/7684599"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 18394240,
+      "instance_id": 1908666084,
+      "date_added": "2025-01-23T00:42:12-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 18394240,
+        "master_id": 2054827,
+        "master_url": "https://api.discogs.com/masters/2054827",
+        "resource_url": "https://api.discogs.com/releases/18394240",
+        "thumb": "https://i.discogs.com/A4I6FhXi8acp2r9vLmSQtoEJJM9CtmTJRnWEH1xssv8/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4Mzk0/MjQwLTE2MTkwMTYx/NjctNzU4Ni5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/VwKWfYPkCbluNdA2NdRTwwSyOONYGNiy93f_Z1FZ-tc/rs:fit/g:sm/q:90/h:590/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4Mzk0/MjQwLTE2MTkwMTYx/NjctNzU4Ni5qcGVn.jpeg",
+        "title": "Mt. Marci",
+        "year": 2021,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "Marble",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Deluxe Edition",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Marci Enterprises",
+            "catno": "FB5205",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2661817,
+            "resource_url": "https://api.discogs.com/labels/2661817"
+          },
+          {
+            "name": "Art That Kills",
+            "catno": "FB5205",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2145622,
+            "resource_url": "https://api.discogs.com/labels/2145622"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Roc Marciano",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 1230639,
+            "resource_url": "https://api.discogs.com/artists/1230639"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Gangsta",
+          "Jazzy Hip-Hop"
+        ]
+      }
+    },
+    {
+      "id": 24649202,
+      "instance_id": 1875414516,
+      "date_added": "2024-12-26T06:39:21-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 24649202,
+        "master_id": 2801639,
+        "master_url": "https://api.discogs.com/masters/2801639",
+        "resource_url": "https://api.discogs.com/releases/24649202",
+        "thumb": "https://i.discogs.com/C8c2I7jnS037Zd0EtvyW1cBF4m1LLkjQ1Z9E5FxlvFE/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI0NjQ5/MjAyLTE2NjU1NTg4/ODEtMzE2OS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/ek2HRmtp9cFWNbdb9_KiEWFHbELdD2zXzixitOJBbdo/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI0NjQ5/MjAyLTE2NjU1NTg4/ODEtMzE2OS5qcGVn.jpeg",
+        "title": "Subaru Boys: Final Heaven",
+        "year": 2022,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "Blue Opaque",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Monster Boy",
+            "catno": "4539489",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2440627,
+            "resource_url": "https://api.discogs.com/labels/2440627"
+          },
+          {
+            "name": "Interscope Records",
+            "catno": "00602445394890",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2311,
+            "resource_url": "https://api.discogs.com/labels/2311"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Cruel Santino",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 10139431,
+            "resource_url": "https://api.discogs.com/artists/10139431"
+          }
+        ],
+        "genres": [
+          "Electronic",
+          "Hip Hop",
+          "Funk / Soul"
+        ],
+        "styles": [
+          "Afrobeat",
+          "Cloud Rap",
+          "Pop Rap",
+          "Trap",
+          "Experimental"
+        ]
+      }
+    },
+    {
+      "id": 30755649,
+      "instance_id": 2044506104,
+      "date_added": "2025-07-25T07:42:46-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 30755649,
+        "master_id": 3488524,
+        "master_url": "https://api.discogs.com/masters/3488524",
+        "resource_url": "https://api.discogs.com/releases/30755649",
+        "thumb": "https://i.discogs.com/n1CdLrKovEHdYIhz8H3n-U4jX60jgUbEGP5OpgC_AEw/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwNzU1/NjQ5LTE3MTY0MzAy/NDUtMjEwNC5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/e3BXFj_nRWA146LTzXH_f8dKprEGITK2RXoYFJ0d_e8/rs:fit/g:sm/q:90/h:600/w:588/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwNzU1/NjQ5LTE3MTY0MzAy/NDUtMjEwNC5qcGVn.jpeg",
+        "title": "Penalty Of Leadership",
+        "year": 2024,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Limited Edition",
+              "Test Pressing"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Near Mint",
+            "catno": "NMR125",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 749165,
+            "resource_url": "https://api.discogs.com/labels/749165"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Nicholas Craven",
+            "anv": "",
+            "join": "&",
+            "role": "",
+            "tracks": "",
+            "id": 5095721,
+            "resource_url": "https://api.discogs.com/artists/5095721"
+          },
+          {
+            "name": "Boldy James",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 2382425,
+            "resource_url": "https://api.discogs.com/artists/2382425"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 2870732,
+      "instance_id": 1889907732,
+      "date_added": "2025-01-06T13:23:29-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 2870732,
+        "master_id": 2532331,
+        "master_url": "https://api.discogs.com/masters/2532331",
+        "resource_url": "https://api.discogs.com/releases/2870732",
+        "thumb": "https://i.discogs.com/RznRtchb8L0P8hExhDhDph9wyIKn4yQOlgIS5Tib8BU/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4NzA3/MzItMTUyODQ4NDg5/NS03ODgzLmpwZWc.jpeg",
+        "cover_image": "https://i.discogs.com/I067tJFrL18JcrIG2GUjv2nl9xwSn4CPU7cq6hbnxJA/rs:fit/g:sm/q:90/h:565/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4NzA3/MzItMTUyODQ4NDg5/NS03ODgzLmpwZWc.jpeg",
+        "title": "街角",
+        "year": 1975,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "LP",
+              "Album"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Philips",
+            "catno": "FX-6001",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 7704,
+            "resource_url": "https://api.discogs.com/labels/7704"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Kiyoshi Hasegawa",
+            "anv": "長谷川きよし",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 992036,
+            "resource_url": "https://api.discogs.com/artists/992036"
+          }
+        ],
+        "genres": [
+          "Rock",
+          "Funk / Soul"
+        ],
+        "styles": [
+          "Folk Rock",
+          "Funk"
+        ]
+      }
+    },
+    {
+      "id": 25541230,
+      "instance_id": 1875414336,
+      "date_added": "2024-12-26T06:39:09-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 25541230,
+        "master_id": 2306989,
+        "master_url": "https://api.discogs.com/masters/2306989",
+        "resource_url": "https://api.discogs.com/releases/25541230",
+        "thumb": "https://i.discogs.com/DLQHSmQsEBf-3MdhcepUBCicgt_6B410Dx2K9mq5Uhk/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI1NTQx/MjMwLTE2NzI2ODAw/NTUtMjgzNC5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/0hlnJNM4yxkmdbsrVeD8zzMx3GquGONTCec3E66S_aA/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI1NTQx/MjMwLTE2NzI2ODAw/NTUtMjgzNC5qcGVn.jpeg",
+        "title": "The House Is Burning",
+        "year": 2022,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "text": "Signed",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Top Dawg Entertainment",
+            "catno": "093624877288",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 255292,
+            "resource_url": "https://api.discogs.com/labels/255292"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Isaiah Rashad",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 3662798,
+            "resource_url": "https://api.discogs.com/artists/3662798"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Conscious",
+          "Jazzy Hip-Hop"
+        ]
+      }
+    },
+    {
+      "id": 9391914,
+      "instance_id": 1889904957,
+      "date_added": "2025-01-06T13:21:10-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 9391914,
+        "master_id": 1026209,
+        "master_url": "https://api.discogs.com/masters/1026209",
+        "resource_url": "https://api.discogs.com/releases/9391914",
+        "thumb": "https://i.discogs.com/hvbZwy_nM95kfxD5feLBgk7G1IyNHnZotPXjmUFvrbU/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkzOTE5/MTQtMTQ3OTc0MzA3/OS05ODA5LmpwZWc.jpeg",
+        "cover_image": "https://i.discogs.com/OOiyAZ1xnhCFdk-1J2FOP9ZkKmk_Q6JIv4Nu0eVVcxM/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkzOTE5/MTQtMTQ3OTc0MzA3/OS05ODA5LmpwZWc.jpeg",
+        "title": "Blank Face LP",
+        "year": 2016,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "Orange",
+            "descriptions": [
+              "LP",
+              "Album"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Top Dawg Entertainment",
+            "catno": "00602557029970",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 255292,
+            "resource_url": "https://api.discogs.com/labels/255292"
+          },
+          {
+            "name": "Interscope Records",
+            "catno": "00602557029970",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2311,
+            "resource_url": "https://api.discogs.com/labels/2311"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Schoolboy Q",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 2353545,
+            "resource_url": "https://api.discogs.com/artists/2353545"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Gangsta",
+          "Cloud Rap"
+        ]
+      }
+    },
+    {
+      "id": 30013108,
+      "instance_id": 1875414864,
+      "date_added": "2024-12-26T06:39:44-08:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 30013108,
+        "master_id": 3416932,
+        "master_url": "https://api.discogs.com/masters/3416932",
+        "resource_url": "https://api.discogs.com/releases/30013108",
+        "thumb": "https://i.discogs.com/2nU8rj_GIA-faqE0zR_7P2pAbgMj9uMb4XWPnNBNR6k/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwMDEz/MTA4LTE3MjU2NDAx/NzEtMjgyNS5qcGVn.jpeg",
+        "cover_image": "https://i.discogs.com/cxe3m94xoV95wkTzY2OyGzn2NMsKW7cgqdlncogcQBQ/rs:fit/g:sm/q:90/h:600/w:594/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwMDEz/MTA4LTE3MjU2NDAx/NzEtMjgyNS5qcGVn.jpeg",
+        "title": "Blue Lips",
+        "year": 2024,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "text": "Blue Translucent",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Stereo"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Top Dawg Entertainment",
+            "catno": "602465194630",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 255292,
+            "resource_url": "https://api.discogs.com/labels/255292"
+          },
+          {
+            "name": "Interscope Records",
+            "catno": "602465194630",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2311,
+            "resource_url": "https://api.discogs.com/labels/2311"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Schoolboy Q",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 2353545,
+            "resource_url": "https://api.discogs.com/artists/2353545"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": []
+      }
+    },
+    {
+      "id": 5520534,
+      "instance_id": 2039269746,
+      "date_added": "2025-07-07T11:44:00-07:00",
+      "rating": 0,
+      "basic_information": {
+        "id": 5520534,
+        "master_id": 661575,
+        "master_url": "https://api.discogs.com/masters/661575",
+        "resource_url": "https://api.discogs.com/releases/5520534",
+        "thumb": "https://i.discogs.com/NaMFOEqmuw3QM6m4WHpFVcBtFcumCrsTXNw06lqcxZI/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTU1MjA1/MzQtMTczNTM5Njkw/Ni04NTQ3LmpwZWc.jpeg",
+        "cover_image": "https://i.discogs.com/gwwHus8q7w5w7UbIC58c21kT8ViWCuuTQCn9Wg2Lfdc/rs:fit/g:sm/q:90/h:594/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTU1MjA1/MzQtMTczNTM5Njkw/Ni04NTQ3LmpwZWc.jpeg",
+        "title": "Oxymoron",
+        "year": 2014,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "2",
+            "descriptions": [
+              "LP",
+              "Album",
+              "Deluxe Edition"
+            ]
+          }
+        ],
+        "labels": [
+          {
+            "name": "Top Dawg Entertainment",
+            "catno": "B0020029-01",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 255292,
+            "resource_url": "https://api.discogs.com/labels/255292"
+          },
+          {
+            "name": "Interscope Records",
+            "catno": "B0020029-01",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 2311,
+            "resource_url": "https://api.discogs.com/labels/2311"
+          }
+        ],
+        "artists": [
+          {
+            "name": "Schoolboy Q",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 2353545,
+            "resource_url": "https://api.discogs.com/artists/2353545"
+          }
+        ],
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Gangsta",
+          "Hardcore Hip-Hop"
+        ]
+      }
+    }
+  ]
+}

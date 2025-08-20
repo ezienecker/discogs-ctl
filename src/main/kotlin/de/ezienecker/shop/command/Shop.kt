@@ -5,12 +5,12 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
-import de.ezienecker.de.ezienecker.shared.command.InventorySubCommand
-import de.ezienecker.de.ezienecker.wantlist.service.WantlistService
+import de.ezienecker.shared.command.InventorySubCommand
 import de.ezienecker.shared.configuration.service.ConfigurationService
 import de.ezienecker.shared.discogs.marketplace.Listing
 import de.ezienecker.shared.discogs.marketplace.Status
 import de.ezienecker.shop.service.ShopService
+import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -34,11 +34,11 @@ class Shop(
             discogs-ctl shop --username John-Doe --output wide
             
             # List shop inventory for user John-Doe filtered by wantlist entries from user Jane-Roe:
-            discogs-ctl shop --username John-Doe --from-wantlist Jane-Roe
+            discogs-ctl shop --username John-Doe --filtered-by-wantlist-from Jane-Roe
         """.trimIndent()
 
     private val fromWantListUsername by option(
-        "--from-wantlist", "-w",
+        "--filtered-by-wantlist-from", "-w",
         help = "The username for whose wantlist inventory you are fetching. " +
                 "If this option is set, only the entries that appear in the user's wantlist are displayed."
     )

@@ -1,15 +1,15 @@
-package de.ezienecker.de.ezienecker.wantlist.command
+package de.ezienecker.wantlist.command
 
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
-import de.ezienecker.de.ezienecker.shared.command.InventorySubCommand
-import de.ezienecker.de.ezienecker.wantlist.service.WantlistService
+import de.ezienecker.shared.command.InventorySubCommand
 import de.ezienecker.shared.configuration.service.ConfigurationService
 import de.ezienecker.shared.discogs.wantlist.Want
 import de.ezienecker.shop.service.ShopService
+import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -35,12 +35,12 @@ class Wantlist(
         # List wantlist inventory for user John-Doe with more information:
         discogs-ctl wantlist --username John-Doe --output wide
         
-        # List wantlist inventory for user John-Doe filtered by wantlist entries from user Jane-Roe:
-        discogs-ctl wantlist --username John-Doe --from-shop Jane-Roe
+        # List wantlist inventory for user John-Doe filtered by shop entries from user Jane-Roe:
+        discogs-ctl wantlist --username John-Doe --filtered-by-shop-from Jane-Roe
         """.trimIndent()
 
     private val fromShopUsername by option(
-        "--from-shop", "-s",
+        "--filtered-by-shop-from", "-s",
         help = "The username for whose shop inventory you are fetching " +
                 "If this option is set, only the entries that appear in the user's inventory are displayed."
     )

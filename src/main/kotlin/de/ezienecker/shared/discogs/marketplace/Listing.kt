@@ -64,6 +64,12 @@ enum class Condition(val full: String, val shortcut: String) {
 
     @SerialName("Generic")
     GENERIC("Generic", "NA"),
+
+    @SerialName("Not Graded")
+    NOT_GRADED("Not Graded", "NG"),
+
+    @SerialName("No Cover")
+    NO_COVER("No Cover", "NC"),
 }
 
 @Serializable

@@ -7,6 +7,7 @@ import de.ezienecker.shared.discogs.client.auth.providers.DiscogsClientConfigura
 import de.ezienecker.shared.discogs.client.auth.providers.DiscogsTokenAuthCredentials
 import de.ezienecker.shared.discogs.client.auth.providers.discogs
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -19,9 +20,12 @@ import kotlinx.serialization.json.Json
 @Suppress("unused")
 private typealias KtorLogger = io.ktor.client.plugins.logging.Logger
 
-class DiscogsClient(private val configuration: DiscogsClientConfiguration) {
+class DiscogsClient(
+    engine: HttpClientEngine = CIO.create(),
+    private val configuration: DiscogsClientConfiguration,
+) {
 
-    internal val client = HttpClient(CIO) {
+    internal val client = HttpClient(engine) {
         install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true

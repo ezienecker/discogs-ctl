@@ -8,7 +8,6 @@ import de.ezienecker.shared.discogs.shared.Listings
 class ShopService(private val discogsClient: DiscogsClient) {
 
     suspend fun listInventoryByUser(username: String): List<Listing> {
-
         var listings: Listings?
         var page = 1
         val listingItems = mutableListOf<Listing>()
