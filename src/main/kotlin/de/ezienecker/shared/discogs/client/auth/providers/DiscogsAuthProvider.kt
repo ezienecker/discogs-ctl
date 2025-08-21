@@ -1,14 +1,15 @@
 package de.ezienecker.shared.discogs.client.auth.providers
 
-import co.touchlab.kermit.Logger
 import de.ezienecker.shared.discogs.client.auth.providers.DiscogsAuthProvider.Companion.AUTH_SCHEME_DISCOGS
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.plugins.auth.AuthConfig
 import io.ktor.client.plugins.auth.AuthProvider
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.utils.io.KtorDsl
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Installs the client's [DiscogsAuthConfig].
@@ -81,7 +82,7 @@ class DiscogsAuthProvider(
 
     override fun isApplicable(auth: HttpAuthHeader): Boolean {
         return if (!AUTH_SCHEME_DISCOGS.equals(auth.authScheme, ignoreCase = true)) {
-            Logger.e { "Discogs Auth Provider is not applicable for $auth" }
+            logger.error { "Discogs Auth Provider is not applicable for $auth" }
             false
         } else {
             true

@@ -1,11 +1,11 @@
 package de.ezienecker.shared.discogs.client
 
-import co.touchlab.kermit.Logger
 import de.ezienecker.shared.discogs.client.auth.providers.DiscogsAuthCredentials
 import de.ezienecker.shared.discogs.client.auth.providers.DiscogsAuthentication
 import de.ezienecker.shared.discogs.client.auth.providers.DiscogsClientConfiguration
 import de.ezienecker.shared.discogs.client.auth.providers.DiscogsTokenAuthCredentials
 import de.ezienecker.shared.discogs.client.auth.providers.discogs
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
@@ -19,6 +19,8 @@ import kotlinx.serialization.json.Json
 
 @Suppress("unused")
 private typealias KtorLogger = io.ktor.client.plugins.logging.Logger
+
+private val logger = KotlinLogging.logger {}
 
 class DiscogsClient(
     engine: HttpClientEngine = CIO.create(),
@@ -52,7 +54,7 @@ class DiscogsClient(
                 }
             }
         } else {
-            Logger.i { "No authentication set. All requests are unauthenticated." }
+            logger.info { "No authentication set. All requests are unauthenticated." }
         }
     }
 }

@@ -12,7 +12,6 @@ import de.ezienecker.shared.discogs.marketplace.Status
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class Shop(
@@ -59,7 +58,7 @@ class Shop(
             wantListService.listInventoryByUser(wantListUsername).map { it.basicInformation.id }.toSet()
         } ?: emptySet()
 
-    override fun printListingsAsTable(inventory: List<Listing>, idsFromExternalInventoryToFiltering: Set<Long>) {
+    override fun printListingsAsTable(inventory: List<Listing>, filteredIds: Set<Long>) {
         terminal.println(table {
             header {
                 cellBorders = Borders.NONE
@@ -71,7 +70,7 @@ class Shop(
 
                 inventory
                     .filter {
-                        filterRelease(idsFromExternalInventoryToFiltering, it.release.id)
+                        filterRelease(filteredIds, it.release.id)
                     }
                     .forEach {
                         row(
@@ -87,11 +86,11 @@ class Shop(
         })
     }
 
-    override fun printListingsAsJson(inventory: List<Listing>, idsFromExternalInventoryToFiltering: Set<Long>) {
+    override fun printListingsAsJson(inventory: List<Listing>, filteredIds: Set<Long>) {
         terminal.println(
             json.encodeToString(
                 inventory.filter {
-                    filterRelease(idsFromExternalInventoryToFiltering, it.release.id)
+                    filterRelease(filteredIds, it.release.id)
                 }
             ))
     }

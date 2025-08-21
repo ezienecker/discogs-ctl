@@ -100,7 +100,7 @@ class Collection(
         })
     }
 
-    override fun printListingsAsJson(inventory: List<Release>, idsFromExternalInventoryToFiltering: Set<Long>) {
+    override fun printListingsAsJson(inventory: List<Release>, filteredIds: Set<Long>) {
         TODO("Not yet implemented")
     }
 

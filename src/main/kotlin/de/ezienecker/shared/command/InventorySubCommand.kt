@@ -85,9 +85,9 @@ abstract class InventorySubCommand<T>(
         }
     }
 
-    abstract fun printListingsAsTable(inventory: List<T>, idsFromExternalInventoryToFiltering: Set<Long>)
+    abstract fun printListingsAsTable(inventory: List<T>, filteredIds: Set<Long>)
 
-    abstract fun printListingsAsJson(inventory: List<T>, idsFromExternalInventoryToFiltering: Set<Long>)
+    abstract fun printListingsAsJson(inventory: List<T>, filteredIds: Set<Long>)
 
     fun filterRelease(idsFromInventory: Set<Long>, id: Long) =
         if (idsFromInventory.isEmpty()) {

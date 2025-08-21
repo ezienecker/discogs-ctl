@@ -11,7 +11,6 @@ import de.ezienecker.shared.discogs.wantlist.Want
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class Wantlist(
@@ -60,7 +59,7 @@ class Wantlist(
         shopService.listInventoryByUser(user).map { it.release.id }.toSet()
     } ?: emptySet()
 
-    override fun printListingsAsTable(inventory: List<Want>, idsFromExternalInventoryToFiltering: Set<Long>) {
+    override fun printListingsAsTable(inventory: List<Want>, filteredIds: Set<Long>) {
         terminal.println(table {
             header {
                 cellBorders = Borders.NONE
@@ -69,7 +68,7 @@ class Wantlist(
             body {
                 cellBorders = Borders.NONE
                 inventory.map { it.basicInformation }
-                    .filter { filterRelease(idsFromExternalInventoryToFiltering, it.id) }
+                    .filter { filterRelease(filteredIds, it.id) }
                     .forEach { want ->
                         row(
                             addLineBreak(want.artists.joinToString { it.name }),
@@ -81,11 +80,11 @@ class Wantlist(
         })
     }
 
-    override fun printListingsAsJson(inventory: List<Want>, idsFromExternalInventoryToFiltering: Set<Long>) {
+    override fun printListingsAsJson(inventory: List<Want>, filteredIds: Set<Long>) {
         terminal.println(
             json.encodeToString(
                 inventory.map { it.basicInformation }.filter {
-                    filterRelease(idsFromExternalInventoryToFiltering, it.id)
+                    filterRelease(filteredIds, it.id)
                 }
             ))
     }
