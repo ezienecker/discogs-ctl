@@ -22,7 +22,7 @@ private typealias KtorLogger = io.ktor.client.plugins.logging.Logger
 
 private val logger = KotlinLogging.logger {}
 
-class DiscogsClient(
+open class DiscogsClient(
     engine: HttpClientEngine = CIO.create(),
     private val configuration: DiscogsClientConfiguration,
 ) {

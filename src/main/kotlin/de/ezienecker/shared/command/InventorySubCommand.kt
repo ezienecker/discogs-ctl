@@ -5,13 +5,15 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
+import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.shared.configuration.service.ConfigurationService
 import de.ezienecker.shared.discogs.marketplace.Condition
 import de.ezienecker.shared.discogs.marketplace.Price
 
 abstract class InventorySubCommand<T>(
     name: String? = null,
-    private val configurationService: ConfigurationService
+    private val configurationService: ConfigurationService,
+    private val terminal: Terminal,
 ) : CliktCommand(name = name) {
     val username by option(
         names = arrayOf("--username", "-u"),
@@ -77,11 +79,15 @@ abstract class InventorySubCommand<T>(
             "${this.value} $currencyShort"
         }
 
-    fun printListings(inventory: List<T>, idsFromInventoryToFiltering: Set<Long>) {
+    fun printError(message: String) {
+        terminal.println(message)
+    }
+
+    fun printListings(entries: List<T>, filteredIds: Set<Long>) {
         if (isJsonFormatActive(format)) {
-            printListingsAsJson(inventory, idsFromInventoryToFiltering)
+            printListingsAsJson(entries, filteredIds)
         } else {
-            printListingsAsTable(inventory, idsFromInventoryToFiltering)
+            printListingsAsTable(entries, filteredIds)
         }
     }
 

@@ -1,25 +1,55 @@
 package de.ezienecker.wantlist.service
 
-import de.ezienecker.shared.discogs.client.DiscogsClient
+import de.ezienecker.shared.discogs.client.ApiError
+import de.ezienecker.shared.discogs.client.ApiException
 import de.ezienecker.shared.discogs.shared.Wants
 import de.ezienecker.shared.discogs.wantlist.Want
-import de.ezienecker.shared.discogs.wantlist.listUsersWantList
+import de.ezienecker.shared.discogs.wantlist.WantlistApiClient
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ktor.client.call.body
+import io.ktor.http.HttpStatusCode
 
-class WantlistService(private val discogsClient: DiscogsClient) {
+private val logger = KotlinLogging.logger {}
 
-    suspend fun listInventoryByUser(username: String): List<Want> {
+class WantlistService(private val client: WantlistApiClient) {
 
-        var wants: Wants?
+    suspend fun getIdsFromWantlistReleasesByUser(username: String?) = username?.let { user ->
+        listWantsByUser(user).fold(
+            onSuccess = { wants -> wants.map { it.basicInformation.id }.toSet() },
+            onFailure = { emptySet() }
+        )
+    } ?: emptySet()
+
+    suspend fun listWantsByUser(username: String): Result<List<Want>> {
+        logger.info { "Fetching wantlist from user: [$username]." }
+        var hasNext: Boolean
         var page = 1
-        val wantlistItems = mutableListOf<Want>()
+        val wants = mutableListOf<Want>()
 
         do {
-            wants = discogsClient.listUsersWantList(username, page, 100)
-            wantlistItems.addAll(wants.result)
-            page++
+            val response = client.listUsersWantList(username, page, 100)
 
-        } while (wants?.pagination?.hasNext() == true)
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    logger.debug { "Successfully fetched wantlist from user: [$username]." }
+                    val responseBody = response.body<Wants>()
+                    wants.addAll(responseBody.result)
+                    page++
+                    hasNext = responseBody.pagination.hasNext()
+                }
 
-        return wantlistItems
+                HttpStatusCode.Forbidden -> {
+                    logger.warn { "Unauthorized access to collection for user: [$username]." }
+                    return Result.failure(ApiException(ApiError.NoAccessToCollection))
+                }
+
+                else -> {
+                    logger.warn { "Failed to fetch inventory from user: [$username]. Status: [${response.status}]." }
+                    return Result.failure(ApiException(ApiError.Unknown(Exception("Unexpected status: ${response.status}"))))
+                }
+            }
+        } while (hasNext)
+
+        return Result.success(wants)
     }
 }

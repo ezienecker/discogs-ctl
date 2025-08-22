@@ -11,9 +11,11 @@ import de.ezienecker.collection.command.Collection
 import de.ezienecker.collection.service.CollectionService
 import de.ezienecker.config.command.Config
 import de.ezienecker.shared.configuration.service.ConfigurationService
-import de.ezienecker.shared.discogs.client.DiscogsClient
+import de.ezienecker.shared.discogs.collection.CollectionApiClient
+import de.ezienecker.shared.discogs.marketplace.InventoryApiClient
+import de.ezienecker.shared.discogs.wantlist.WantlistApiClient
 import de.ezienecker.shop.command.Shop
-import de.ezienecker.shop.service.ShopService
+import de.ezienecker.shop.service.InventoryService
 import de.ezienecker.wantlist.command.Wantlist
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.serialization.json.Json
@@ -28,10 +30,15 @@ fun main(args: Array<String>) {
     val setConfig = Config.Set(configurationService, terminal)
     val viewConfig = Config.View(configurationService, terminal)
 
-    val discogsClient = DiscogsClient(configuration = configurationService.getDiscogsClientConfiguration())
-    val collectionService = CollectionService(discogsClient)
-    val shopService = ShopService(discogsClient)
-    val wantlistService = WantlistService(discogsClient)
+    val collectionService = CollectionService(
+        client = CollectionApiClient(configuration = configurationService.getDiscogsClientConfiguration())
+    )
+    val inventoryService = InventoryService(
+        client = InventoryApiClient(configuration = configurationService.getDiscogsClientConfiguration())
+    )
+    val wantlistService = WantlistService(
+        client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration())
+    )
 
     DiscogsCtl()
         .subcommands(
@@ -40,9 +47,9 @@ fun main(args: Array<String>) {
                     setConfig,
                     viewConfig
                 ),
-            Collection(collectionService, shopService, wantlistService, configurationService, terminal, json),
-            Shop(shopService, wantlistService, configurationService, terminal, json),
-            Wantlist(shopService, wantlistService, configurationService, terminal, json),
+            Collection(collectionService, inventoryService, wantlistService, configurationService, terminal, json),
+            Shop(inventoryService, wantlistService, configurationService, terminal, json),
+            Wantlist(inventoryService, wantlistService, configurationService, terminal, json),
         ).main(args)
 }
 

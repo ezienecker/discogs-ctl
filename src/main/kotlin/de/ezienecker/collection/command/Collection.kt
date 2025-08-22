@@ -8,20 +8,21 @@ import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.collection.service.CollectionService
 import de.ezienecker.shared.command.InventorySubCommand
 import de.ezienecker.shared.configuration.service.ConfigurationService
+import de.ezienecker.shared.discogs.client.ApiException
 import de.ezienecker.shared.discogs.collection.Release
-import de.ezienecker.shop.service.ShopService
+import de.ezienecker.shop.service.InventoryService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 class Collection(
     private val collectionService: CollectionService,
-    private val shopService: ShopService,
+    private val inventoryService: InventoryService,
     private val wantListService: WantlistService,
     configurationService: ConfigurationService,
     private val terminal: Terminal,
     private val json: Json,
-) : InventorySubCommand<Release>(configurationService = configurationService) {
+) : InventorySubCommand<Release>(configurationService = configurationService, terminal = terminal) {
 
     override fun help(context: Context) = """
             Displays the collection from a user. 
@@ -55,23 +56,22 @@ class Collection(
     override fun run() {
         runBlocking {
             getUsernameForInventory(username)?.let { user ->
-                printListings(
-                    inventory = collectionService.listCollectionByUser(user),
-                    idsFromInventoryToFiltering = getIdsFromShopInventory(fromShopUsername) + getIdsFromWantListInventory(fromWantListUsername)
-                )
+                collectionService.listCollectionByUser(user)
+                    .onFailure { printError((it as ApiException).error.message) }
+                    .onSuccess {
+                        printListings(
+                            entries = it,
+                            filteredIds =
+                                inventoryService.getIdsFromInventoryReleasesByUser(fromShopUsername) +
+                                        wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername)
+                        )
+                    }
+
+
             } ?: echo("Please provide a valid username.")
         }
     }
 
-    private suspend fun getIdsFromShopInventory(fromShopUsername: String?) = fromShopUsername?.let { user ->
-        shopService.listInventoryByUser(user).map { it.release.id }.toSet()
-    } ?: emptySet()
-
-    private suspend fun getIdsFromWantListInventory(fromWantListUsername: String?) =
-        fromWantListUsername?.let { wantListUsername ->
-            wantListService.listInventoryByUser(wantListUsername).map { it.basicInformation.id }.toSet()
-        } ?: emptySet()
-    
     override fun printListingsAsTable(inventory: List<Release>, filteredIds: Set<Long>) {
         terminal.println(table {
             header {
