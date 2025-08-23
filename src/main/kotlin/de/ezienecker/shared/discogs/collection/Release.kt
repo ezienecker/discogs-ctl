@@ -25,9 +25,6 @@ data class BasicInformation(
     @SerialName("resource_url")
     val resourceUrl: String,
     val thumb: String,
-    // TODO Opt out
-    @SerialName("cover_image")
-    val coverImage: String,
     val title: String,
     val year: Int,
     val formats: List<Format>,

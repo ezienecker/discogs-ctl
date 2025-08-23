@@ -20,7 +20,7 @@ class CollectionApiClient(
      * @param username The username of the user whose collection is to be fetched.
      * @param page The page number to fetch.
      * @param perPage The number of items per page.
-     * @return An [ApiResult] containing the user's collection or an error message.
+     * @return An [HttpResponse] containing the user's collection.
      */
     suspend fun listUsersCollection(
         username: String,

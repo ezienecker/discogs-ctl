@@ -9,22 +9,19 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 
 class ConfigurationService {
-    private var propertiesFile: File
+    private var propertiesFile: File =
+        File("$USER_HOME/$APPLICATION_CONFIGURATION_FOLDER_NAME/config.properties").also {
+            it.createNewFile()
+        }
     private var properties: Properties = Properties()
     private var configuration: Configuration
 
     init {
-        val userHome: String = System.getProperty("user.home")?.also {
-            Files.createDirectories(Paths.get("$it/$APPLICATION_CONFIGURATION_FOLDER_NAME"))
-        } ?: throw IllegalStateException("Could not access the user's home folder.")
-
-        propertiesFile = File("$userHome/$APPLICATION_CONFIGURATION_FOLDER_NAME/config.properties").also {
-            it.createNewFile()
-        }
 
         FileInputStream(propertiesFile).use {
             properties.load(it)
@@ -65,5 +62,11 @@ class ConfigurationService {
         internal const val USERNAME: String = "username"
 
         internal const val TOKEN: String = "token"
+
+        val USER_HOME: String =
+            System.getProperty("user.home") ?: throw IllegalStateException("Could not access the user's home folder.")
+
+        val APPLICATION_FOLDER: Path =
+            Files.createDirectories(Paths.get("$USER_HOME/$APPLICATION_CONFIGURATION_FOLDER_NAME"))
     }
 }

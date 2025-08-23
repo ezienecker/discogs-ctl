@@ -1,17 +1,21 @@
 package de.ezienecker.wantlist.service
 
+import de.ezienecker.shared.database.cache.WantlistCacheService
 import de.ezienecker.shared.discogs.client.ApiError
 import de.ezienecker.shared.discogs.client.ApiException
-import de.ezienecker.shared.discogs.shared.Wants
 import de.ezienecker.shared.discogs.wantlist.Want
 import de.ezienecker.shared.discogs.wantlist.WantlistApiClient
+import de.ezienecker.shared.discogs.wantlist.WantsResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.call.body
 import io.ktor.http.HttpStatusCode
 
 private val logger = KotlinLogging.logger {}
 
-class WantlistService(private val client: WantlistApiClient) {
+class WantlistService(
+    private val client: WantlistApiClient,
+    private val cache: WantlistCacheService,
+) {
 
     suspend fun getIdsFromWantlistReleasesByUser(username: String?) = username?.let { user ->
         listWantsByUser(user).fold(
@@ -21,7 +25,25 @@ class WantlistService(private val client: WantlistApiClient) {
     } ?: emptySet()
 
     suspend fun listWantsByUser(username: String): Result<List<Want>> {
-        logger.info { "Fetching wantlist from user: [$username]." }
+        logger.info { "Fetching wantlist for user: [$username] with cache support." }
+        
+        return if (cache.hasValidCache(username)) {
+            logger.info { "Using cached wantlist data for user: [$username]." }
+            try {
+                val cachedWants = cache.getCached(username)
+                Result.success(cachedWants)
+            } catch (e: Exception) {
+                logger.warn(e) { "Failed to retrieve cached wantlist for user: [$username]. Falling back to API." }
+                fetchAndCacheWantlist(username)
+            }
+        } else {
+            logger.info { "No valid cache found for user: [$username]. Fetching from API." }
+            fetchAndCacheWantlist(username)
+        }
+    }
+
+    private suspend fun fetchAndCacheWantlist(username: String): Result<List<Want>> {
+        logger.info { "Fetching wantlist from API for user: [$username]." }
         var hasNext: Boolean
         var page = 1
         val wants = mutableListOf<Want>()
@@ -32,7 +54,7 @@ class WantlistService(private val client: WantlistApiClient) {
             when (response.status) {
                 HttpStatusCode.OK -> {
                     logger.debug { "Successfully fetched wantlist from user: [$username]." }
-                    val responseBody = response.body<Wants>()
+                    val responseBody = response.body<WantsResponse>()
                     wants.addAll(responseBody.result)
                     page++
                     hasNext = responseBody.pagination.hasNext()
@@ -50,6 +72,23 @@ class WantlistService(private val client: WantlistApiClient) {
             }
         } while (hasNext)
 
+        cacheFetchedData(username, wants)
+
         return Result.success(wants)
+    }
+
+    private fun cacheFetchedData(username: String, wants: List<Want>) {
+        try {
+            cache.cache(username, wants)
+            logger.info { "Successfully cached wantlist data for user: [$username]." }
+        } catch (e: Exception) {
+            logger.warn(e) { "Failed to cache wantlist data for user: [$username]." }
+        }
+    }
+
+    suspend fun refreshWantlistByUser(username: String): Result<List<Want>> {
+        logger.info { "Force refreshing wantlist for user: [$username]." }
+        cache.clearCache(username)
+        return fetchAndCacheWantlist(username)
     }
 }

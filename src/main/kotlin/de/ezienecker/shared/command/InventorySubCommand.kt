@@ -28,8 +28,8 @@ abstract class InventorySubCommand<T>(
         .default("compact")
 
     private val force by option(
-        names = arrayOf("--force", "-f"),
-        help = ""
+        names = arrayOf("--force-update", "-f"),
+        help = "Force update the cache",
     )
         .flag(default = false)
 

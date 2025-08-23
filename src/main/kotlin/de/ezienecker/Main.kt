@@ -11,6 +11,11 @@ import de.ezienecker.collection.command.Collection
 import de.ezienecker.collection.service.CollectionService
 import de.ezienecker.config.command.Config
 import de.ezienecker.shared.configuration.service.ConfigurationService
+import de.ezienecker.shared.database.cache.CollectionCacheService
+import de.ezienecker.shared.database.cache.InventoryCacheService
+import de.ezienecker.shared.database.cache.WantlistCacheService
+import de.ezienecker.shared.database.configureDatabaseConnection
+import de.ezienecker.shared.database.setupSchema
 import de.ezienecker.shared.discogs.collection.CollectionApiClient
 import de.ezienecker.shared.discogs.marketplace.InventoryApiClient
 import de.ezienecker.shared.discogs.wantlist.WantlistApiClient
@@ -18,26 +23,44 @@ import de.ezienecker.shop.command.Shop
 import de.ezienecker.shop.service.InventoryService
 import de.ezienecker.wantlist.command.Wantlist
 import de.ezienecker.wantlist.service.WantlistService
+import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
+
+private val logger = KotlinLogging.logger {}
 
 fun main(args: Array<String>) {
     val terminal = Terminal()
     val json = Json {
         prettyPrint = true
+        ignoreUnknownKeys = true
+        encodeDefaults = true
     }
 
     val configurationService = ConfigurationService()
+    configureDatabaseConnection().also {
+        logger.debug { "Database connection configured successfully." }
+    }
+
+    setupSchema().also {
+        logger.debug { "Database schema configured successfully." }
+    }
+
     val setConfig = Config.Set(configurationService, terminal)
     val viewConfig = Config.View(configurationService, terminal)
+    val clock = Clock.System
 
     val collectionService = CollectionService(
-        client = CollectionApiClient(configuration = configurationService.getDiscogsClientConfiguration())
+        client = CollectionApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        cache = CollectionCacheService(clock, json),
     )
     val inventoryService = InventoryService(
-        client = InventoryApiClient(configuration = configurationService.getDiscogsClientConfiguration())
+        client = InventoryApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        cache = InventoryCacheService(clock, json),
     )
     val wantlistService = WantlistService(
-        client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration())
+        client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        cache = WantlistCacheService(clock, json),
     )
 
     DiscogsCtl()
@@ -63,6 +86,6 @@ class DiscogsCtl : NoOpCliktCommand() {
     }
 
     override fun help(context: Context): String = """
-        discogs-ctl makes it possible to display different inventories (store, wantlist) of a user and to compare them with each other.
+        discogs-ctl makes it possible to display different inventories (shop, wantlist) of a user and to compare them with each other.
     """.trimIndent()
 }

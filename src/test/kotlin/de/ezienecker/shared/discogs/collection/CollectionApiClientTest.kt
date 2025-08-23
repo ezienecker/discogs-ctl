@@ -1,7 +1,6 @@
 package de.ezienecker.shared.discogs.collection
 
 import de.ezienecker.shared.discogs.client.auth.providers.DiscogsClientConfiguration
-import de.ezienecker.shared.discogs.shared.CollectionReleases
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -29,7 +28,7 @@ class CollectionApiClientTest : StringSpec({
 
         val response = client.listUsersCollection("test-user", 1, 10)
         response.status shouldBe HttpStatusCode.OK
-        val releases = response.body<CollectionReleases>().result
+        val releases = response.body<CollectionResponse>().result
         releases.shouldNotBeNull()
         releases.first().id shouldBe 29294428
         releases.first().basicInformation.title shouldBe "Burning Desire"
