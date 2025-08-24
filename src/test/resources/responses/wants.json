@@ -1,0 +1,122 @@
+{
+  "pagination": {
+    "page": 1,
+    "pages": 51,
+    "per_page": 2,
+    "items": 101,
+    "urls": {
+      "last": "https://api.discogs.com/users/frenchmvp/wants?page=51&per_page=2&sort=label&sort_order=asc",
+      "next": "https://api.discogs.com/users/frenchmvp/wants?page=2&per_page=2&sort=label&sort_order=asc"
+    }
+  },
+  "wants": [
+    {
+      "id": 14622960,
+      "resource_url": "https://api.discogs.com/users/frenchmvp/wants/14622960",
+      "date_added": "2025-01-30T13:46:00-08:00",
+      "basic_information": {
+        "id": 14622960,
+        "master_id": 1217180,
+        "master_url": "https://api.discogs.com/masters/1217180",
+        "resource_url": "https://api.discogs.com/releases/14622960",
+        "title": "May God Bless Your Hustle",
+        "year": 2019,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "LP",
+              "Album"
+            ]
+          }
+        ],
+        "artists": [
+          {
+            "name": "Mike (408)",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 5852757,
+            "resource_url": "https://api.discogs.com/artists/5852757"
+          }
+        ],
+        "labels": [
+          {
+            "name": "10k",
+            "catno": "10002",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1663292,
+            "resource_url": "https://api.discogs.com/labels/1663292"
+          }
+        ],
+        "thumb": "",
+        "cover_image": "",
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Boom Bap",
+          "Jazzy Hip-Hop",
+          "Conscious"
+        ]
+      },
+      "rating": 0
+    },
+    {
+      "id": 28265806,
+      "resource_url": "https://api.discogs.com/users/frenchmvp/wants/28265806",
+      "date_added": "2025-01-30T13:49:58-08:00",
+      "basic_information": {
+        "id": 28265806,
+        "master_id": 3013682,
+        "master_url": "https://api.discogs.com/masters/3013682",
+        "resource_url": "https://api.discogs.com/releases/28265806",
+        "title": "Beware Of The Monkey",
+        "year": 2023,
+        "formats": [
+          {
+            "name": "Vinyl",
+            "qty": "1",
+            "descriptions": [
+              "LP",
+              "Album"
+            ]
+          }
+        ],
+        "artists": [
+          {
+            "name": "Mike (408)",
+            "anv": "",
+            "join": "",
+            "role": "",
+            "tracks": "",
+            "id": 5852757,
+            "resource_url": "https://api.discogs.com/artists/5852757"
+          }
+        ],
+        "labels": [
+          {
+            "name": "10K",
+            "catno": "10005LPC",
+            "entity_type": "1",
+            "entity_type_name": "Label",
+            "id": 1663292,
+            "resource_url": "https://api.discogs.com/labels/1663292"
+          }
+        ],
+        "thumb": "",
+        "cover_image": "",
+        "genres": [
+          "Hip Hop"
+        ],
+        "styles": [
+          "Jazzy Hip-Hop"
+        ]
+      },
+      "rating": 0
+    }
+  ]
+}
