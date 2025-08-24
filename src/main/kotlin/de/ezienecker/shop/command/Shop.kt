@@ -10,13 +10,13 @@ import de.ezienecker.shared.configuration.service.ConfigurationService
 import de.ezienecker.shared.discogs.client.ApiException
 import de.ezienecker.shared.discogs.marketplace.Listing
 import de.ezienecker.shared.discogs.marketplace.Status
-import de.ezienecker.shop.service.InventoryService
+import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 class Shop(
-    private val inventoryService: InventoryService,
+    private val shopService: ShopService,
     private val wantListService: WantlistService,
     configurationService: ConfigurationService,
     private val terminal: Terminal,
@@ -46,7 +46,7 @@ class Shop(
     override fun run() {
         runBlocking {
             getUsernameForInventory(username)?.let { user ->
-                inventoryService.listInventoryByUser(user)
+                shopService.listInventoryByUser(user)
                     .onFailure { printError((it as ApiException).error.message) }
                     .onSuccess { inventory ->
                         printListings(

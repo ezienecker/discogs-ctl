@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class InventoryResponse(
+class ShopResponse(
     override val pagination: Pagination,
     @SerialName("listings")
     val result: List<Listing>,

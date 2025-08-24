@@ -12,15 +12,15 @@ import de.ezienecker.collection.service.CollectionService
 import de.ezienecker.config.command.Config
 import de.ezienecker.shared.configuration.service.ConfigurationService
 import de.ezienecker.shared.database.cache.CollectionCacheService
-import de.ezienecker.shared.database.cache.InventoryCacheService
+import de.ezienecker.shared.database.cache.ShopCacheService
 import de.ezienecker.shared.database.cache.WantlistCacheService
 import de.ezienecker.shared.database.configureDatabaseConnection
 import de.ezienecker.shared.database.setupSchema
 import de.ezienecker.shared.discogs.collection.CollectionApiClient
-import de.ezienecker.shared.discogs.marketplace.InventoryApiClient
+import de.ezienecker.shared.discogs.marketplace.ShopApiClient
 import de.ezienecker.shared.discogs.wantlist.WantlistApiClient
 import de.ezienecker.shop.command.Shop
-import de.ezienecker.shop.service.InventoryService
+import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.command.Wantlist
 import de.ezienecker.wantlist.service.WantlistService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -54,9 +54,9 @@ fun main(args: Array<String>) {
         client = CollectionApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
         cache = CollectionCacheService(clock, json),
     )
-    val inventoryService = InventoryService(
-        client = InventoryApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
-        cache = InventoryCacheService(clock, json),
+    val shopService = ShopService(
+        client = ShopApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        cache = ShopCacheService(clock, json),
     )
     val wantlistService = WantlistService(
         client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
@@ -70,9 +70,9 @@ fun main(args: Array<String>) {
                     setConfig,
                     viewConfig
                 ),
-            Collection(collectionService, inventoryService, wantlistService, configurationService, terminal, json),
-            Shop(inventoryService, wantlistService, configurationService, terminal, json),
-            Wantlist(inventoryService, wantlistService, configurationService, terminal, json),
+            Collection(collectionService, shopService, wantlistService, configurationService, terminal, json),
+            Shop(shopService, wantlistService, configurationService, terminal, json),
+            Wantlist(shopService, wantlistService, configurationService, terminal, json),
         ).main(args)
 }
 

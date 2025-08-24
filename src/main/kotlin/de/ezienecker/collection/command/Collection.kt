@@ -10,14 +10,14 @@ import de.ezienecker.shared.command.InventorySubCommand
 import de.ezienecker.shared.configuration.service.ConfigurationService
 import de.ezienecker.shared.discogs.client.ApiException
 import de.ezienecker.shared.discogs.collection.Release
-import de.ezienecker.shop.service.InventoryService
+import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 class Collection(
     private val collectionService: CollectionService,
-    private val inventoryService: InventoryService,
+    private val shopService: ShopService,
     private val wantListService: WantlistService,
     configurationService: ConfigurationService,
     private val terminal: Terminal,
@@ -62,7 +62,7 @@ class Collection(
                         printListings(
                             entries = it,
                             filteredIds =
-                                inventoryService.getIdsFromInventoryReleasesByUser(fromShopUsername) +
+                                shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) +
                                         wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername)
                         )
                     }

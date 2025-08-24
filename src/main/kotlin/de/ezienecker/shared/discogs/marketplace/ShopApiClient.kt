@@ -7,12 +7,12 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 
-class InventoryApiClient(
+class ShopApiClient(
     engine: HttpClientEngine = CIO.create(),
     configuration: DiscogsClientConfiguration
 ) : DiscogsClient(engine, configuration) {
 
-    suspend fun listUsersInventory(username: String, page: Int, perPage: Int): HttpResponse {
+    suspend fun listUsersShop(username: String, page: Int, perPage: Int): HttpResponse {
         return client.get("https://api.discogs.com/users/$username/inventory?page=$page&per_page=$perPage")
     }
 }

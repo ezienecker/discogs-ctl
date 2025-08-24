@@ -9,13 +9,13 @@ import de.ezienecker.shared.command.InventorySubCommand
 import de.ezienecker.shared.configuration.service.ConfigurationService
 import de.ezienecker.shared.discogs.client.ApiException
 import de.ezienecker.shared.discogs.wantlist.Want
-import de.ezienecker.shop.service.InventoryService
+import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 class Wantlist(
-    private val inventoryService: InventoryService,
+    private val shopService: ShopService,
     private val wantListService: WantlistService,
     configurationService: ConfigurationService,
     private val terminal: Terminal,
@@ -54,7 +54,7 @@ class Wantlist(
                     .onSuccess { wants ->
                         printListings(
                             entries = wants,
-                            filteredIds = inventoryService.getIdsFromInventoryReleasesByUser(
+                            filteredIds = shopService.getIdsFromInventoryReleasesByUser(
                                 fromShopUsername
                             )
                         )

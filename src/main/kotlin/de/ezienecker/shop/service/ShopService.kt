@@ -1,20 +1,20 @@
 package de.ezienecker.shop.service
 
-import de.ezienecker.shared.database.cache.InventoryCacheService
+import de.ezienecker.shared.database.cache.ShopCacheService
 import de.ezienecker.shared.discogs.client.ApiError
 import de.ezienecker.shared.discogs.client.ApiException
-import de.ezienecker.shared.discogs.marketplace.InventoryApiClient
-import de.ezienecker.shared.discogs.marketplace.InventoryResponse
 import de.ezienecker.shared.discogs.marketplace.Listing
+import de.ezienecker.shared.discogs.marketplace.ShopApiClient
+import de.ezienecker.shared.discogs.marketplace.ShopResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.call.body
 import io.ktor.http.HttpStatusCode
 
 private val logger = KotlinLogging.logger {}
 
-class InventoryService(
-    private val client: InventoryApiClient,
-    private val cache: InventoryCacheService,
+class ShopService(
+    private val client: ShopApiClient,
+    private val cache: ShopCacheService,
 ) {
 
     suspend fun getIdsFromInventoryReleasesByUser(username: String?) = username?.let { user ->
@@ -49,12 +49,12 @@ class InventoryService(
         val listings = mutableListOf<Listing>()
 
         do {
-            val response = client.listUsersInventory(username, page, 100)
+            val response = client.listUsersShop(username, page, 100)
 
             when (response.status) {
                 HttpStatusCode.OK -> {
                     logger.debug { "Successfully fetched inventory from user: [$username]." }
-                    val responseBody = response.body<InventoryResponse>()
+                    val responseBody = response.body<ShopResponse>()
                     listings.addAll(responseBody.result)
                     page++
                     hasNext = responseBody.pagination.hasNext()

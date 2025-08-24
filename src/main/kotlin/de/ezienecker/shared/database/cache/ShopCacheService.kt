@@ -16,7 +16,7 @@ import kotlin.time.Duration.Companion.hours
 
 private val logger = KotlinLogging.logger {}
 
-class InventoryCacheService(val clock: Clock, val json: Json) {
+class ShopCacheService(val clock: Clock, val json: Json) {
 
     /**
      * Check if inventory data exists in cache and is not expired
