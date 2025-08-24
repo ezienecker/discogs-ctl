@@ -1,0 +1,138 @@
+{
+  "pagination": {
+    "page": 1,
+    "pages": 32,
+    "per_page": 2,
+    "items": 64,
+    "urls": {
+      "last": "https://api.discogs.com/users/Madlip89/inventory?per_page=2&page=32",
+      "next": "https://api.discogs.com/users/Madlip89/inventory?per_page=2&page=2"
+    }
+  },
+  "listings": [
+    {
+      "id": 2237957062,
+      "resource_url": "https://api.discogs.com/marketplace/listings/2237957062",
+      "uri": "https://www.discogs.com/sell/item/2237957062",
+      "status": "For Sale",
+      "condition": "Near Mint (NM or M-)",
+      "sleeve_condition": "Near Mint (NM or M-)",
+      "comments": "Ask for photos if you want",
+      "ships_from": "Germany",
+      "posted": "2023-05-07T01:45:30-07:00",
+      "allow_offers": false,
+      "offer_submitted": false,
+      "audio": false,
+      "price": {
+        "value": 20.0,
+        "currency": "EUR"
+      },
+      "original_price": {
+        "curr_abbr": "EUR",
+        "curr_id": 3,
+        "formatted": "€20.00",
+        "value": 20.0
+      },
+      "shipping_price": {},
+      "original_shipping_price": {},
+      "seller": {
+        "id": 1655054,
+        "username": "Madlip89",
+        "avatar_url": "https://i.discogs.com/P1jGI_HIwHvUct5lIj2XY1KuJe1D04ZyQ8XEuDI93gs/rs:fill/g:sm/q:40/h:500/w:500/czM6Ly9kaXNjb2dz/LXVzZXItYXZhdGFy/cy9VLTE2NTUwNTQt/MTUyNjA3NTQyNS5q/cGVn.jpeg",
+        "stats": {
+          "rating": "100.0",
+          "stars": 5.0,
+          "total": 48
+        },
+        "min_order_total": 0.0,
+        "html_url": "https://www.discogs.com/user/Madlip89",
+        "uid": 1655054,
+        "url": "https://api.discogs.com/users/Madlip89",
+        "payment": "PayPal Commerce",
+        "shipping": "Buyer pays shipping/Verkäufer zahlt Versand.",
+        "resource_url": "https://api.discogs.com/users/Madlip89"
+      },
+      "release": {
+        "thumbnail": "",
+        "description": "Teknical Development - The 8: Vol. 3 (12\", MiniAlbum, Ltd)",
+        "images": [],
+        "artist": "Teknical Development",
+        "format": "12\", MiniAlbum, Ltd",
+        "resource_url": "https://api.discogs.com/releases/10924204",
+        "title": "The 8: Vol. 3",
+        "year": 2017,
+        "id": 10924204,
+        "label": "Dezi Belle Records",
+        "catalog_number": "DB027",
+        "stats": {
+          "community": {
+            "in_wantlist": 42,
+            "in_collection": 79
+          }
+        }
+      }
+    },
+    {
+      "id": 2925441427,
+      "resource_url": "https://api.discogs.com/marketplace/listings/2925441427",
+      "uri": "https://www.discogs.com/sell/item/2925441427",
+      "status": "For Sale",
+      "condition": "Mint (M)",
+      "sleeve_condition": "Mint (M)",
+      "comments": "⚠️ FACTORY SEALED - Open for Trading. Ask for photos if you want.",
+      "ships_from": "Germany",
+      "posted": "2024-04-14T06:47:34-07:00",
+      "allow_offers": false,
+      "offer_submitted": false,
+      "audio": false,
+      "price": {
+        "value": 85.0,
+        "currency": "EUR"
+      },
+      "original_price": {
+        "curr_abbr": "EUR",
+        "curr_id": 3,
+        "formatted": "€85.00",
+        "value": 85.0
+      },
+      "shipping_price": {},
+      "original_shipping_price": {},
+      "seller": {
+        "id": 1655054,
+        "username": "Madlip89",
+        "avatar_url": "https://i.discogs.com/P1jGI_HIwHvUct5lIj2XY1KuJe1D04ZyQ8XEuDI93gs/rs:fill/g:sm/q:40/h:500/w:500/czM6Ly9kaXNjb2dz/LXVzZXItYXZhdGFy/cy9VLTE2NTUwNTQt/MTUyNjA3NTQyNS5q/cGVn.jpeg",
+        "stats": {
+          "rating": "100.0",
+          "stars": 5.0,
+          "total": 48
+        },
+        "min_order_total": 0.0,
+        "html_url": "https://www.discogs.com/user/Madlip89",
+        "uid": 1655054,
+        "url": "https://api.discogs.com/users/Madlip89",
+        "payment": "PayPal Commerce",
+        "shipping": "Buyer pays shipping/Verkäufer zahlt Versand.",
+        "resource_url": "https://api.discogs.com/users/Madlip89"
+      },
+      "release": {
+        "thumbnail": "",
+        "description": "38 Spesh, Conway (6) - The Ghronic: Speshal Machinery (LP, Album, Num, Obi)",
+        "images": [],
+        "artist": "38 Spesh, Conway (6)",
+        "format": "LP, Album, Num, Obi",
+        "resource_url": "https://api.discogs.com/releases/29197054",
+        "title": "The Ghronic: Speshal Machinery",
+        "year": 2023,
+        "id": 29197054,
+        "label": "de Rap Winkel Records",
+        "catalog_number": "DRW 153",
+        "stats": {
+          "community": {
+            "in_wantlist": 36,
+            "in_collection": 35
+          }
+        }
+      }
+    }
+  ]
+}
