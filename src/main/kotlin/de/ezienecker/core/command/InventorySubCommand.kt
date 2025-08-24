@@ -22,9 +22,9 @@ abstract class InventorySubCommand<T>(
 
     val format by option(
         names = arrayOf("--output", "-o"),
-        help = "Output format. One of: 'compact', 'json', 'wide'. 'compact' is default",
+        help = "Output format. One of: 'compact', 'wide'. 'compact' is default",
     )
-        .choice("compact", "json", "wide")
+        .choice("compact", "wide")
         .default("compact")
 
     private val force by option(
@@ -42,8 +42,6 @@ abstract class InventorySubCommand<T>(
     }
 
     fun isWideFormatActive(format: String): Boolean = "wide" == format.lowercase()
-
-    private fun isJsonFormatActive(format: String): Boolean = "json" == format.lowercase()
 
     fun addLineBreak(text: String): String {
         val sb = StringBuilder()
@@ -84,16 +82,10 @@ abstract class InventorySubCommand<T>(
     }
 
     fun printListings(entries: List<T>, filteredIds: Set<Long>) {
-        if (isJsonFormatActive(format)) {
-            printListingsAsJson(entries, filteredIds)
-        } else {
             printListingsAsTable(entries, filteredIds)
-        }
     }
 
     abstract fun printListingsAsTable(inventory: List<T>, filteredIds: Set<Long>)
-
-    abstract fun printListingsAsJson(inventory: List<T>, filteredIds: Set<Long>)
 
     fun filterRelease(idsFromInventory: Set<Long>, id: Long) =
         if (idsFromInventory.isEmpty()) {

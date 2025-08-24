@@ -6,12 +6,12 @@ import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.collection.service.CollectionService
+import de.ezienecker.core.command.InventorySubCommand
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
 import de.ezienecker.core.infrastructure.discogs.collection.Release
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
 
 class Collection(
     private val collectionService: CollectionService,
@@ -19,8 +19,7 @@ class Collection(
     private val wantListService: WantlistService,
     configurationService: de.ezienecker.core.configuration.service.ConfigurationService,
     private val terminal: Terminal,
-    private val json: Json,
-) : de.ezienecker.core.command.InventorySubCommand<de.ezienecker.core.infrastructure.discogs.collection.Release>(configurationService = configurationService, terminal = terminal) {
+) : InventorySubCommand<Release>(configurationService = configurationService, terminal = terminal) {
 
     override fun help(context: Context) = """
             Displays the collection from a user. 
@@ -96,10 +95,6 @@ class Collection(
                     }
             }
         })
-    }
-
-    override fun printListingsAsJson(inventory: List<Release>, filteredIds: Set<Long>) {
-        TODO("Not yet implemented")
     }
 
     private fun addReleaseLink(id: Long): String =

@@ -66,9 +66,9 @@ fun main(args: Array<String>) {
                     setConfig,
                     viewConfig
                 ),
-            Collection(collectionService, shopService, wantlistService, configurationService, terminal, json),
-            Shop(shopService, wantlistService, configurationService, terminal, json),
-            Wantlist(shopService, wantlistService, configurationService, terminal, json),
+            Collection(collectionService, shopService, wantlistService, configurationService, terminal),
+            Shop(shopService, wantlistService, configurationService, terminal),
+            Wantlist(shopService, wantlistService, configurationService, terminal),
         ).main(args)
 }
 

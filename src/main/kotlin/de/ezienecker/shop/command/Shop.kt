@@ -13,14 +13,12 @@ import de.ezienecker.core.infrastructure.discogs.marketplace.Status
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
 
 class Shop(
     private val shopService: ShopService,
     private val wantListService: WantlistService,
     configurationService: ConfigurationService,
     private val terminal: Terminal,
-    private val json: Json,
 ) : InventorySubCommand<Listing>(configurationService = configurationService, terminal = terminal) {
 
     override fun help(context: Context) = """
@@ -84,14 +82,5 @@ class Shop(
                     }
             }
         })
-    }
-
-    override fun printListingsAsJson(inventory: List<Listing>, filteredIds: Set<Long>) {
-        terminal.println(
-            json.encodeToString(
-                inventory.filter {
-                    filterRelease(filteredIds, it.release.id)
-                }
-            ))
     }
 }

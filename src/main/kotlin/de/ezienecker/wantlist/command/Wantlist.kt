@@ -12,14 +12,12 @@ import de.ezienecker.core.infrastructure.discogs.wantlist.Want
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
 
 class Wantlist(
     private val shopService: ShopService,
     private val wantListService: WantlistService,
     configurationService: ConfigurationService,
     private val terminal: Terminal,
-    private val json: Json,
 ) : InventorySubCommand<Want>(
     name = "wantlist",
     configurationService = configurationService,
@@ -82,14 +80,5 @@ class Wantlist(
                     }
             }
         })
-    }
-
-    override fun printListingsAsJson(inventory: List<Want>, filteredIds: Set<Long>) {
-        terminal.println(
-            json.encodeToString(
-                inventory.map { it.basicInformation }.filter {
-                    filterRelease(filteredIds, it.id)
-                }
-            ))
     }
 }
