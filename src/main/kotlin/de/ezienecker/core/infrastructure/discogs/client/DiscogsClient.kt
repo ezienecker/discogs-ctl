@@ -1,0 +1,65 @@
+package de.ezienecker.core.infrastructure.discogs.client
+
+import de.ezienecker.core.infrastructure.discogs.client.auth.providers.DiscogsAuthCredentials
+import de.ezienecker.core.infrastructure.discogs.client.auth.providers.DiscogsAuthentication
+import de.ezienecker.core.infrastructure.discogs.client.auth.providers.DiscogsClientConfiguration
+import de.ezienecker.core.infrastructure.discogs.client.auth.providers.DiscogsTokenAuthCredentials
+import de.ezienecker.core.infrastructure.discogs.client.auth.providers.discogs
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
+
+@Suppress("unused")
+private typealias KtorLogger = io.ktor.client.plugins.logging.Logger
+
+private val logger = KotlinLogging.logger {}
+
+open class DiscogsClient(
+    engine: HttpClientEngine = CIO.create(),
+    private val configuration: DiscogsClientConfiguration,
+) {
+
+    internal val client = HttpClient(engine) {
+        install(ContentNegotiation) {
+            json(Json {
+                prettyPrint = true
+                isLenient = true
+                ignoreUnknownKeys = true
+            })
+        }
+
+        install(Logging) {
+            logger = KtorLogger.DEFAULT
+            level = LogLevel.ALL
+        }
+
+        if (configuration.authentication.isAuthenticationPresent()) {
+            install(Auth) {
+                discogs {
+                    credentials {
+                        configuration.authentication.discogsAuthCredentials()
+                    }
+
+                    sendWithoutRequest {
+                        true
+                    }
+                }
+            }
+        } else {
+            logger.info { "No authentication set. All requests are unauthenticated." }
+        }
+    }
+}
+
+fun DiscogsAuthentication.discogsAuthCredentials(): DiscogsAuthCredentials =
+    token?.let {
+        DiscogsTokenAuthCredentials(token)
+    } ?: throw IllegalStateException("No credentials set.")

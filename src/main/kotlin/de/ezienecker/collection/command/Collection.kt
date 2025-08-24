@@ -6,10 +6,8 @@ import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.collection.service.CollectionService
-import de.ezienecker.shared.command.InventorySubCommand
-import de.ezienecker.shared.configuration.service.ConfigurationService
-import de.ezienecker.shared.discogs.client.ApiException
-import de.ezienecker.shared.discogs.collection.Release
+import de.ezienecker.core.infrastructure.discogs.client.ApiException
+import de.ezienecker.core.infrastructure.discogs.collection.Release
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking
@@ -19,10 +17,10 @@ class Collection(
     private val collectionService: CollectionService,
     private val shopService: ShopService,
     private val wantListService: WantlistService,
-    configurationService: ConfigurationService,
+    configurationService: de.ezienecker.core.configuration.service.ConfigurationService,
     private val terminal: Terminal,
     private val json: Json,
-) : InventorySubCommand<Release>(configurationService = configurationService, terminal = terminal) {
+) : de.ezienecker.core.command.InventorySubCommand<de.ezienecker.core.infrastructure.discogs.collection.Release>(configurationService = configurationService, terminal = terminal) {
 
     override fun help(context: Context) = """
             Displays the collection from a user. 

@@ -5,11 +5,11 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
-import de.ezienecker.shared.command.InventorySubCommand
-import de.ezienecker.shared.configuration.service.ConfigurationService
-import de.ezienecker.shared.discogs.client.ApiException
-import de.ezienecker.shared.discogs.marketplace.Listing
-import de.ezienecker.shared.discogs.marketplace.Status
+import de.ezienecker.core.command.InventorySubCommand
+import de.ezienecker.core.configuration.service.ConfigurationService
+import de.ezienecker.core.infrastructure.discogs.client.ApiException
+import de.ezienecker.core.infrastructure.discogs.marketplace.Listing
+import de.ezienecker.core.infrastructure.discogs.marketplace.Status
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.runBlocking

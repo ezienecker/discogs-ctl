@@ -1,11 +1,11 @@
 package de.ezienecker.shop.service
 
-import de.ezienecker.shared.database.cache.ShopCacheService
-import de.ezienecker.shared.discogs.client.ApiError
-import de.ezienecker.shared.discogs.client.ApiException
-import de.ezienecker.shared.discogs.marketplace.Listing
-import de.ezienecker.shared.discogs.marketplace.ShopApiClient
-import de.ezienecker.shared.discogs.marketplace.ShopResponse
+import de.ezienecker.core.infrastructure.discogs.client.ApiError
+import de.ezienecker.core.infrastructure.discogs.client.ApiException
+import de.ezienecker.core.infrastructure.discogs.marketplace.Listing
+import de.ezienecker.core.infrastructure.discogs.marketplace.ShopApiClient
+import de.ezienecker.core.infrastructure.discogs.marketplace.ShopResponse
+import de.ezienecker.shop.infrastructure.repository.ShopCacheService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.call.body
 import io.ktor.http.HttpStatusCode

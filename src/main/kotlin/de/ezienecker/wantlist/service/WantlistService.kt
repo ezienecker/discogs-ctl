@@ -1,11 +1,11 @@
 package de.ezienecker.wantlist.service
 
-import de.ezienecker.shared.database.cache.WantlistCacheService
-import de.ezienecker.shared.discogs.client.ApiError
-import de.ezienecker.shared.discogs.client.ApiException
-import de.ezienecker.shared.discogs.wantlist.Want
-import de.ezienecker.shared.discogs.wantlist.WantlistApiClient
-import de.ezienecker.shared.discogs.wantlist.WantsResponse
+import de.ezienecker.core.infrastructure.discogs.client.ApiError
+import de.ezienecker.core.infrastructure.discogs.client.ApiException
+import de.ezienecker.core.infrastructure.discogs.wantlist.Want
+import de.ezienecker.core.infrastructure.discogs.wantlist.WantlistApiClient
+import de.ezienecker.core.infrastructure.discogs.wantlist.WantsResponse
+import de.ezienecker.wantlist.infrastructure.repository.WantlistCacheService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.call.body
 import io.ktor.http.HttpStatusCode

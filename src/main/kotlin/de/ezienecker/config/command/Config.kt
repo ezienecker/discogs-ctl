@@ -9,11 +9,11 @@ import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
-import de.ezienecker.shared.configuration.model.Token
-import de.ezienecker.shared.configuration.model.Username
-import de.ezienecker.shared.configuration.service.ConfigurationService
-import de.ezienecker.shared.configuration.service.ConfigurationService.Companion.TOKEN
-import de.ezienecker.shared.configuration.service.ConfigurationService.Companion.USERNAME
+import de.ezienecker.core.configuration.model.Token
+import de.ezienecker.core.configuration.model.Username
+import de.ezienecker.core.configuration.service.ConfigurationService
+import de.ezienecker.core.configuration.service.ConfigurationService.Companion.TOKEN
+import de.ezienecker.core.configuration.service.ConfigurationService.Companion.USERNAME
 
 class Config : NoOpCliktCommand() {
 

@@ -1,11 +1,11 @@
 package de.ezienecker.collection.service
 
-import de.ezienecker.shared.database.cache.CollectionCacheService
-import de.ezienecker.shared.discogs.client.ApiError
-import de.ezienecker.shared.discogs.client.ApiException
-import de.ezienecker.shared.discogs.collection.CollectionApiClient
-import de.ezienecker.shared.discogs.collection.CollectionResponse
-import de.ezienecker.shared.discogs.collection.Release
+import de.ezienecker.collection.infrastructure.repository.CollectionCacheService
+import de.ezienecker.core.infrastructure.discogs.client.ApiError
+import de.ezienecker.core.infrastructure.discogs.client.ApiException
+import de.ezienecker.core.infrastructure.discogs.collection.CollectionApiClient
+import de.ezienecker.core.infrastructure.discogs.collection.CollectionResponse
+import de.ezienecker.core.infrastructure.discogs.collection.Release
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.call.body
 import io.ktor.http.HttpStatusCode
