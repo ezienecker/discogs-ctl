@@ -51,6 +51,8 @@ class Collection(
     )
 
     override fun run() {
+        handleVerboseOption()
+
         runBlocking {
             getUsernameForInventory(username)?.let { user ->
                 collectionService.listCollectionByUser(user)

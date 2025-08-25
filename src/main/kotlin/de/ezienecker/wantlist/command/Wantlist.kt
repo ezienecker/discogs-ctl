@@ -45,6 +45,8 @@ class Wantlist(
     )
 
     override fun run() {
+        handleVerboseOption()
+
         runBlocking {
             getUsernameForInventory(username)?.let { user ->
                 wantListService.listWantsByUser(user)

@@ -1,5 +1,7 @@
 package de.ezienecker.core.command
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.LoggerContext
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
@@ -9,6 +11,10 @@ import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.marketplace.Condition
 import de.ezienecker.core.infrastructure.discogs.marketplace.Price
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.slf4j.LoggerFactory
+
+private val logger = KotlinLogging.logger {}
 
 abstract class InventorySubCommand<T>(
     name: String? = null,
@@ -33,12 +39,29 @@ abstract class InventorySubCommand<T>(
     )
         .flag(default = false)
 
+    private val verbose by option(
+        names = arrayOf("--verbose", "-v"),
+        help = "Make the operation more talkative",
+    )
+        .flag(default = false)
+
+    fun handleVerboseOption() {
+        if (verbose) {
+            (LoggerFactory.getILoggerFactory() as LoggerContext).getLogger("de.ezienecker").apply {
+                level = Level.INFO
+            }
+        }
+    }
+
     fun getUsernameForInventory(username: String?): String? {
         if (username != null) {
+            logger.info { "Username specified: [$username]" }
             return username
         }
 
-        return configurationService.getUsername()?.value
+        return configurationService.getUsername()?.value.also {
+            logger.info { "Username not specified, using default from configuration: [$it]" }
+        }
     }
 
     fun isWideFormatActive(format: String): Boolean = "wide" == format.lowercase()

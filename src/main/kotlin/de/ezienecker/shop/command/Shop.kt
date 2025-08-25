@@ -42,6 +42,8 @@ class Shop(
     )
 
     override fun run() {
+        handleVerboseOption()
+
         runBlocking {
             getUsernameForInventory(username)?.let { user ->
                 shopService.listInventoryByUser(user)
