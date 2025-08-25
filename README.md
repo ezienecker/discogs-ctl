@@ -40,7 +40,7 @@ Install `discogs-ctl` using one of the following methods:
 Before getting started with discogs-ctl, ensure your runtime environment meets the following requirements:
 
 - **Programming Language:** Kotlin
-- **Package Manager:** Gradle
+- **Package Manager:** Maven
 
 1. Clone the discogs-ctl repository:
 ```sh
@@ -54,7 +54,7 @@ cd discogs-ctl
 
 3. Install the project dependencies:
 ```sh
-gradle build
+maven clean install
 ```
 
 ##  Usage
