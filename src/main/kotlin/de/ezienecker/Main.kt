@@ -11,6 +11,12 @@ import de.ezienecker.collection.command.Collection
 import de.ezienecker.collection.infrastructure.repository.CollectionCacheService
 import de.ezienecker.collection.service.CollectionService
 import de.ezienecker.config.command.Config
+import de.ezienecker.core.configuration.service.ConfigurationService
+import de.ezienecker.core.infrastructure.config.configureDatabaseConnection
+import de.ezienecker.core.infrastructure.config.setupSchema
+import de.ezienecker.core.infrastructure.discogs.collection.CollectionApiClient
+import de.ezienecker.core.infrastructure.discogs.marketplace.ShopApiClient
+import de.ezienecker.core.infrastructure.discogs.wantlist.WantlistApiClient
 import de.ezienecker.shop.command.Shop
 import de.ezienecker.shop.infrastructure.repository.ShopCacheService
 import de.ezienecker.shop.service.ShopService
@@ -31,12 +37,12 @@ fun main(args: Array<String>) {
         encodeDefaults = true
     }
 
-    val configurationService = _root_ide_package_.de.ezienecker.core.configuration.service.ConfigurationService()
-    _root_ide_package_.de.ezienecker.core.infrastructure.config.configureDatabaseConnection().also {
+    val configurationService = ConfigurationService()
+    configureDatabaseConnection().also {
         logger.debug { "Database connection configured successfully." }
     }
 
-    _root_ide_package_.de.ezienecker.core.infrastructure.config.setupSchema().also {
+    setupSchema().also {
         logger.debug { "Database schema configured successfully." }
     }
 
@@ -45,17 +51,17 @@ fun main(args: Array<String>) {
     val clock = Clock.System
 
     val collectionService = CollectionService(
-        client = _root_ide_package_.de.ezienecker.core.infrastructure.discogs.collection.CollectionApiClient(
+        client = CollectionApiClient(
             configuration = configurationService.getDiscogsClientConfiguration()
         ),
         cache = CollectionCacheService(clock, json),
     )
     val shopService = ShopService(
-        client = _root_ide_package_.de.ezienecker.core.infrastructure.discogs.marketplace.ShopApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        client = ShopApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
         cache = ShopCacheService(clock, json),
     )
     val wantlistService = WantlistService(
-        client = _root_ide_package_.de.ezienecker.core.infrastructure.discogs.wantlist.WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
         cache = WantlistCacheService(clock, json),
     )
 

@@ -41,20 +41,18 @@ class Shop(
                 "If this option is set, only the entries that appear in the user's wantlist are displayed."
     )
 
-    override fun run() {
+    override fun run(): Unit = runBlocking {
         handleVerboseOption()
 
-        runBlocking {
-            getUsernameForInventory(username)?.let { user ->
-                shopService.listInventoryByUser(user)
-                    .onFailure { printError((it as ApiException).error.message) }
-                    .onSuccess { inventory ->
-                        printListings(
-                            entries = inventory.filter { it.status == Status.FOR_SALE },
-                            filteredIds = wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername)
-                        )
-                    }
-            } ?: echo("Please provide a valid username.")
+        runIfUsernameSpecified { username ->
+            shopService.listInventoryByUser(username)
+                .onFailure { printError((it as ApiException).error.message) }
+                .onSuccess { inventory ->
+                    printListings(
+                        entries = inventory.filter { it.status == Status.FOR_SALE },
+                        filteredIds = wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername)
+                    )
+                }
         }
     }
 

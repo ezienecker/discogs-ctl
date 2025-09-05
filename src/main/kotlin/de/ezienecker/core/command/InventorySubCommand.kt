@@ -21,7 +21,7 @@ abstract class InventorySubCommand<T>(
     private val configurationService: ConfigurationService,
     private val terminal: Terminal,
 ) : CliktCommand(name = name) {
-    val username by option(
+    private val username by option(
         names = arrayOf("--username", "-u"),
         help = "The username for whose resources you are fetching",
     )
@@ -53,7 +53,12 @@ abstract class InventorySubCommand<T>(
         }
     }
 
-    fun getUsernameForInventory(username: String?): String? {
+    suspend fun runIfUsernameSpecified(block: suspend (username: String) -> Unit) =
+        getUsernameForInventory()?.let { user ->
+            block(user)
+        } ?: echo("Please provide a valid username.")
+
+    private fun getUsernameForInventory(): String? {
         if (username != null) {
             logger.info { "Username specified: [$username]" }
             return username
@@ -105,7 +110,7 @@ abstract class InventorySubCommand<T>(
     }
 
     fun printListings(entries: List<T>, filteredIds: Set<Long>) {
-            printListingsAsTable(entries, filteredIds)
+        printListingsAsTable(entries, filteredIds)
     }
 
     abstract fun printListingsAsTable(inventory: List<T>, filteredIds: Set<Long>)

@@ -50,24 +50,20 @@ class Collection(
                 "If this option is set, only the entries that appear in the user's inventory are displayed."
     )
 
-    override fun run() {
+    override fun run(): Unit = runBlocking {
         handleVerboseOption()
 
-        runBlocking {
-            getUsernameForInventory(username)?.let { user ->
-                collectionService.listCollectionByUser(user)
-                    .onFailure { printError((it as ApiException).error.message) }
-                    .onSuccess {
-                        printListings(
-                            entries = it,
-                            filteredIds =
-                                shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) +
-                                        wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername)
-                        )
-                    }
-
-
-            } ?: echo("Please provide a valid username.")
+        runIfUsernameSpecified { username ->
+            collectionService.listCollectionByUser(username)
+                .onFailure { printError((it as ApiException).error.message) }
+                .onSuccess {
+                    printListings(
+                        entries = it,
+                        filteredIds =
+                            shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) +
+                                    wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername)
+                    )
+                }
         }
     }
 

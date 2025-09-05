@@ -19,10 +19,14 @@ class Wantlist(
     configurationService: ConfigurationService,
     private val terminal: Terminal,
 ) : InventorySubCommand<Want>(
-    name = "wantlist",
+    name = COMMAND,
     configurationService = configurationService,
     terminal = terminal,
 ) {
+
+    companion object {
+        internal const val COMMAND = "wantlist"
+    }
 
     override fun help(context: Context) = """
         Displays the wantlist inventory from a user.
@@ -44,22 +48,20 @@ class Wantlist(
                 "If this option is set, only the entries that appear in the user's inventory are displayed."
     )
 
-    override fun run() {
+    override fun run(): Unit = runBlocking {
         handleVerboseOption()
 
-        runBlocking {
-            getUsernameForInventory(username)?.let { user ->
-                wantListService.listWantsByUser(user)
-                    .onFailure { printError((it as ApiException).error.message) }
-                    .onSuccess { wants ->
-                        printListings(
-                            entries = wants,
-                            filteredIds = shopService.getIdsFromInventoryReleasesByUser(
-                                fromShopUsername
-                            )
+        runIfUsernameSpecified { username ->
+            wantListService.listWantsByUser(username)
+                .onFailure { printError((it as ApiException).error.message) }
+                .onSuccess { wants ->
+                    printListings(
+                        entries = wants,
+                        filteredIds = shopService.getIdsFromInventoryReleasesByUser(
+                            fromShopUsername
                         )
-                    }
-            } ?: echo("Please provide a valid username.")
+                    )
+                }
         }
     }
 
