@@ -11,7 +11,9 @@ import de.ezienecker.core.infrastructure.discogs.client.ApiException
 import de.ezienecker.core.infrastructure.discogs.wantlist.Want
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
 
 class Wantlist(
     private val shopService: ShopService,
@@ -52,17 +54,20 @@ class Wantlist(
         handleVerboseOption()
 
         runIfUsernameSpecified { username ->
-            wantListService.listWantsByUser(username)
-                .onFailure { printError((it as ApiException).error.message) }
-                .onSuccess { wants ->
-                    printListings(
-                        entries = wants,
-                        filteredIds = shopService.getIdsFromInventoryReleasesByUser(
-                            fromShopUsername
-                        )
-                    )
-                }
+
+            supervisorScope {
+                val wants = async { wantListService.listWantsByUser(username) }
+                val filterIds = async { shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) }
+
+                process(wants.await(), filterIds.await())
+            }
         }
+    }
+
+    fun process(wants: Result<List<Want>>, filterIds: Set<Long>) {
+        wants
+            .onFailure { printError((it as ApiException).error.message) }
+            .onSuccess { printListings(it, filterIds) }
     }
 
     override fun printListingsAsTable(inventory: List<Want>, filteredIds: Set<Long>) {

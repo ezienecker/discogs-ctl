@@ -91,6 +91,6 @@ class DiscogsCtl : NoOpCliktCommand() {
     }
 
     override fun help(context: Context): String = """
-        discogs-ctl makes it possible to display different inventories (shop, wantlist) of a user and to compare them with each other.
+        discogs-ctl makes it possible to display different inventories (shop, wantlist) and collection of a user and to compare them with each other.
     """.trimIndent()
 }

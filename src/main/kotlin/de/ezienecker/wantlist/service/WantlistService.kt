@@ -61,12 +61,12 @@ class WantlistService(
                 }
 
                 HttpStatusCode.Forbidden -> {
-                    logger.warn { "Unauthorized access to collection for user: [$username]." }
+                    logger.warn { "Unauthorized access to wantlist for user: [$username]." }
                     return Result.failure(ApiException(ApiError.NoAccessToCollection))
                 }
 
                 else -> {
-                    logger.warn { "Failed to fetch inventory from user: [$username]. Status: [${response.status}]." }
+                    logger.warn { "Failed to fetch wantlist from user: [$username]. Status: [${response.status}]." }
                     return Result.failure(ApiException(ApiError.Unknown(Exception("Unexpected status: ${response.status}"))))
                 }
             }

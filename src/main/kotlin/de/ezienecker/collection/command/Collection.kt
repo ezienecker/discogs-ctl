@@ -11,7 +11,9 @@ import de.ezienecker.core.infrastructure.discogs.client.ApiException
 import de.ezienecker.core.infrastructure.discogs.collection.Release
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
 
 class Collection(
     private val collectionService: CollectionService,
@@ -54,17 +56,22 @@ class Collection(
         handleVerboseOption()
 
         runIfUsernameSpecified { username ->
-            collectionService.listCollectionByUser(username)
-                .onFailure { printError((it as ApiException).error.message) }
-                .onSuccess {
-                    printListings(
-                        entries = it,
-                        filteredIds =
-                            shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) +
-                                    wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername)
-                    )
-                }
+
+            supervisorScope {
+                val collection = async { collectionService.listCollectionByUser(username) }
+                val filteredIdsFromShop = async { shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) }
+                val filteredIdsFromWantList =
+                    async { wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername) }
+
+                process(collection.await(), filteredIdsFromShop.await(), filteredIdsFromWantList.await())
+            }
         }
+    }
+
+    fun process(releases: Result<List<Release>>, filterIdsFromShop: Set<Long>, filterIdsFromWantList: Set<Long>) {
+        releases
+            .onFailure { printError((it as ApiException).error.message) }
+            .onSuccess { printListings(it, filterIdsFromShop + filterIdsFromWantList) }
     }
 
     override fun printListingsAsTable(inventory: List<Release>, filteredIds: Set<Long>) {

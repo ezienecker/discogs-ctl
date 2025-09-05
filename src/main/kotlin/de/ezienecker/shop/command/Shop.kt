@@ -12,7 +12,9 @@ import de.ezienecker.core.infrastructure.discogs.marketplace.Listing
 import de.ezienecker.core.infrastructure.discogs.marketplace.Status
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
 
 class Shop(
     private val shopService: ShopService,
@@ -45,15 +47,20 @@ class Shop(
         handleVerboseOption()
 
         runIfUsernameSpecified { username ->
-            shopService.listInventoryByUser(username)
-                .onFailure { printError((it as ApiException).error.message) }
-                .onSuccess { inventory ->
-                    printListings(
-                        entries = inventory.filter { it.status == Status.FOR_SALE },
-                        filteredIds = wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername)
-                    )
-                }
+
+            supervisorScope {
+                val listings = async { shopService.listInventoryByUser(username) }
+                val filterIds = async { wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername) }
+
+                process(listings.await(), filterIds.await())
+            }
         }
+    }
+
+    fun process(listings: Result<List<Listing>>, filterIds: Set<Long>) {
+        listings
+            .onFailure { printError((it as ApiException).error.message) }
+            .onSuccess { printListings(it.filter { listing -> listing.status == Status.FOR_SALE }, filterIds) }
     }
 
     override fun printListingsAsTable(inventory: List<Listing>, filteredIds: Set<Long>) {
