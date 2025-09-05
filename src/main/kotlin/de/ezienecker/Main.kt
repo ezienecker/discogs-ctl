@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.core.NoOpCliktCommand
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.clikt.parameters.options.versionOption
 import com.github.ajalt.clikt.sources.PropertiesValueSource
 import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.collection.command.Collection
@@ -17,6 +18,7 @@ import de.ezienecker.core.infrastructure.config.setupSchema
 import de.ezienecker.core.infrastructure.discogs.collection.CollectionApiClient
 import de.ezienecker.core.infrastructure.discogs.marketplace.ShopApiClient
 import de.ezienecker.core.infrastructure.discogs.wantlist.WantlistApiClient
+import de.ezienecker.core.version.VersionProvider
 import de.ezienecker.shop.command.Shop
 import de.ezienecker.shop.infrastructure.repository.ShopCacheService
 import de.ezienecker.shop.service.ShopService
@@ -66,6 +68,7 @@ fun main(args: Array<String>) {
     )
 
     DiscogsCtl()
+        .versionOption(VersionProvider.version)
         .subcommands(
             Config()
                 .subcommands(
