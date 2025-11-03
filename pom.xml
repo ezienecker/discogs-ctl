@@ -57,6 +57,11 @@
             <artifactId>mordant-jvm</artifactId>
             <version>${mordant.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.ajalt.mordant</groupId>
+            <artifactId>mordant-coroutines-jvm</artifactId>
+            <version>${mordant.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.ktor</groupId>

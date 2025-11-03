@@ -24,9 +24,13 @@ class WantlistService(
         )
     } ?: emptySet()
 
-    suspend fun listWantsByUser(username: String): Result<List<Want>> {
+    suspend fun listWantsByUser(
+        username: String,
+        sortBy: String = "",
+        sortOrder: String = "",
+    ): Result<List<Want>> {
         logger.info { "Fetching wantlist for user: [$username] with cache support." }
-        
+
         return if (cache.hasValidCache(username)) {
             logger.info { "Using cached wantlist data for user: [$username]." }
             try {
@@ -34,22 +38,26 @@ class WantlistService(
                 Result.success(cachedWants)
             } catch (e: Exception) {
                 logger.warn(e) { "Failed to retrieve cached wantlist for user: [$username]. Falling back to API." }
-                fetchAndCacheWantlist(username)
+                fetchAndCacheWantlist(username, sortBy, sortOrder)
             }
         } else {
             logger.info { "No valid cache found for user: [$username]. Fetching from API." }
-            fetchAndCacheWantlist(username)
+            fetchAndCacheWantlist(username, sortBy, sortOrder)
         }
     }
 
-    private suspend fun fetchAndCacheWantlist(username: String): Result<List<Want>> {
+    private suspend fun fetchAndCacheWantlist(
+        username: String,
+        sortBy: String = "",
+        sortOrder: String = "",
+    ): Result<List<Want>> {
         logger.info { "Fetching wantlist from API for user: [$username]." }
         var hasNext: Boolean
         var page = 1
         val wants = mutableListOf<Want>()
 
         do {
-            val response = client.listUsersWantList(username, page, 100)
+            val response = client.listUsersWantList(username, page, 100, sortBy, sortOrder)
 
             when (response.status) {
                 HttpStatusCode.OK -> {

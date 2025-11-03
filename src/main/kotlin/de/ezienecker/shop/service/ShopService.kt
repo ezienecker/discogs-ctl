@@ -24,9 +24,13 @@ class ShopService(
         )
     } ?: emptySet()
 
-    suspend fun listInventoryByUser(username: String): Result<List<Listing>> {
+    suspend fun listInventoryByUser(
+        username: String,
+        sortBy: String = "",
+        sortOrder: String = "",
+    ): Result<List<Listing>> {
         logger.info { "Fetching inventory for user: [$username] with cache support." }
-        
+
         return if (cache.hasValidCache(username)) {
             logger.info { "Using cached inventory data for user: [$username]." }
             try {
@@ -34,22 +38,32 @@ class ShopService(
                 Result.success(cachedListings)
             } catch (e: Exception) {
                 logger.warn(e) { "Failed to retrieve cached inventory for user: [$username]. Falling back to API." }
-                fetchAndCacheInventory(username)
+                fetchAndCacheInventory(username, sortBy, sortOrder)
             }
         } else {
             logger.info { "No valid cache found for user: [$username]. Fetching from API." }
-            fetchAndCacheInventory(username)
+            fetchAndCacheInventory(username, sortBy, sortOrder)
         }
     }
 
-    private suspend fun fetchAndCacheInventory(username: String): Result<List<Listing>> {
+    suspend fun refreshInventoryByUser(username: String): Result<List<Listing>> {
+        logger.info { "Force refreshing inventory for user: [$username]." }
+        cache.clearCache(username)
+        return fetchAndCacheInventory(username)
+    }
+
+    private suspend fun fetchAndCacheInventory(
+        username: String,
+        sortBy: String = "",
+        sortOrder: String = "",
+    ): Result<List<Listing>> {
         logger.info { "Fetching inventory from API for user: [$username]." }
         var hasNext: Boolean
         var page = 1
         val listings = mutableListOf<Listing>()
 
         do {
-            val response = client.listUsersShop(username, page, 100)
+            val response = client.listUsersShop(username, page, 100, sortBy, sortOrder)
 
             when (response.status) {
                 HttpStatusCode.OK -> {
@@ -81,9 +95,4 @@ class ShopService(
         }
     }
 
-    suspend fun refreshInventoryByUser(username: String): Result<List<Listing>> {
-        logger.info { "Force refreshing inventory for user: [$username]." }
-        cache.clearCache(username)
-        return fetchAndCacheInventory(username)
-    }
 }

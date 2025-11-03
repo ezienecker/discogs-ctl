@@ -26,7 +26,7 @@ class ShopApiClientTest : StringSpec({
 
         val client = ShopApiClient(mockEngine, DiscogsClientConfiguration())
 
-        val response = client.listUsersShop("test-user", 1, 10)
+        val response = client.listUsersShop("test-user", 1, 10, "artist", "asc")
         response.status shouldBe HttpStatusCode.OK
         val listings = response.body<ShopResponse>().result
         listings.shouldNotBeNull()
@@ -46,7 +46,7 @@ class ShopApiClientTest : StringSpec({
 
         val client = ShopApiClient(mockEngine, DiscogsClientConfiguration())
 
-        val response = client.listUsersShop("test-user", 1, 10)
+        val response = client.listUsersShop("test-user", 1, 10, "artist", "asc")
         response.status shouldBe HttpStatusCode.BadRequest
     }
 

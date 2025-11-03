@@ -2,6 +2,7 @@ package de.ezienecker.collection.command
 
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.mordant.animation.progress.advance
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
@@ -12,6 +13,7 @@ import de.ezienecker.core.infrastructure.discogs.collection.Release
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
 
@@ -34,20 +36,20 @@ class Collection(
             discogs-ctl collection --username John-Doe --output wide
             
             # List collection for user John-Doe filtered by wantlist entries from user Jane-Roe:
-            discogs-ctl collection --username John-Doe --filtered-by-wantlist-from Jane-Roe
+            discogs-ctl collection --username John-Doe --filtered-by-wantlist Jane-Roe
             
             # List collection for user John-Doe filtered by shop entries from user Jane-Roe:
-            discogs-ctl collection --username John-Doe --filtered-by-shop-from Jane-Roe
+            discogs-ctl collection --username John-Doe --filtered-by-shop Jane-Roe
         """.trimIndent()
 
     private val fromWantListUsername by option(
-        "--filtered-by-wantlist-from", "-w",
+        "--filtered-by-wantlist", "-w",
         help = "The username for whose wantlist inventory you are fetching. " +
                 "If this option is set, only the entries that appear in the user's wantlist are displayed."
     )
 
     private val fromShopUsername by option(
-        "--filtered-by-shop-from", "-s",
+        "--filtered-by-shop", "-s",
         help = "The username for whose shop inventory you are fetching " +
                 "If this option is set, only the entries that appear in the user's inventory are displayed."
     )
@@ -57,11 +59,19 @@ class Collection(
 
         runIfUsernameSpecified { username ->
 
+            launch { progress.execute() }
+
+            progress.update { total = 3 }
+
             supervisorScope {
-                val collection = async { collectionService.listCollectionByUser(username) }
+
+                val collection = async { collectionService.listCollectionByUser(username, sortBy, sortOrder) }
+                    .also { it.invokeOnCompletion { progress.advance(1) } }
                 val filteredIdsFromShop = async { shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) }
+                    .also { it.invokeOnCompletion { progress.advance(1) } }
                 val filteredIdsFromWantList =
                     async { wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername) }
+                        .also { it.invokeOnCompletion { progress.advance(1) } }
 
                 process(collection.await(), filteredIdsFromShop.await(), filteredIdsFromWantList.await())
             }
@@ -93,7 +103,7 @@ class Collection(
                             addLineBreak(it.basicInformation.artists.joinToString(", ") { artist -> artist.name }),
                             addLineBreak(it.basicInformation.title),
                             it.basicInformation.formats.map { format ->
-                                "${format.name}, ${format.text}"
+                                format.name
                             },
                             addReleaseLink(it.id)
                         )

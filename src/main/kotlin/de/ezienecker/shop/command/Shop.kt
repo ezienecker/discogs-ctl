@@ -2,6 +2,7 @@ package de.ezienecker.shop.command
 
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.mordant.animation.progress.advance
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
@@ -13,6 +14,7 @@ import de.ezienecker.core.infrastructure.discogs.marketplace.Status
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
 
@@ -34,11 +36,11 @@ class Shop(
             discogs-ctl shop --username John-Doe --output wide
             
             # List shop inventory for user John-Doe filtered by wantlist entries from user Jane-Roe:
-            discogs-ctl shop --username John-Doe --filtered-by-wantlist-from Jane-Roe
+            discogs-ctl shop --username John-Doe --filtered-by-wantlist Jane-Roe
         """.trimIndent()
 
     private val fromWantListUsername by option(
-        "--filtered-by-wantlist-from", "-w",
+        "--filtered-by-wantlist", "-w",
         help = "The username for whose wantlist inventory you are fetching. " +
                 "If this option is set, only the entries that appear in the user's wantlist are displayed."
     )
@@ -48,9 +50,15 @@ class Shop(
 
         runIfUsernameSpecified { username ->
 
+            launch { progress.execute() }
+
+            progress.update { total = 2 }
+
             supervisorScope {
-                val listings = async { shopService.listInventoryByUser(username) }
+                val listings = async { shopService.listInventoryByUser(username, sortBy, sortOrder) }
+                    .also { it.invokeOnCompletion { progress.advance(1) } }
                 val filterIds = async { wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername) }
+                    .also { it.invokeOnCompletion { progress.advance(1) } }
 
                 process(listings.await(), filterIds.await())
             }

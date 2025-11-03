@@ -17,7 +17,11 @@ class CollectionService(
     private val cache: CollectionCacheService,
 ) {
 
-    suspend fun listCollectionByUser(username: String): Result<List<Release>> {
+    suspend fun listCollectionByUser(
+        username: String,
+        sortBy: String = "",
+        sortOrder: String = "",
+    ): Result<List<Release>> {
         logger.info { "Fetching collection for user: [$username] with cache support." }
 
         return if (cache.hasValidCache(username)) {
@@ -27,22 +31,26 @@ class CollectionService(
                 Result.success(cachedReleases)
             } catch (e: Exception) {
                 logger.warn(e) { "Failed to retrieve cached collection for user: [$username]. Falling back to API." }
-                fetchAndCacheCollection(username)
+                fetchAndCacheCollection(username, sortBy, sortOrder)
             }
         } else {
             logger.info { "No valid cache found for user: [$username]. Fetching from API." }
-            fetchAndCacheCollection(username)
+            fetchAndCacheCollection(username, sortBy, sortOrder)
         }
     }
 
-    private suspend fun fetchAndCacheCollection(username: String): Result<List<Release>> {
+    private suspend fun fetchAndCacheCollection(
+        username: String,
+        sortBy: String = "",
+        sortOrder: String = "",
+    ): Result<List<Release>> {
         logger.info { "Fetching collection from API for user: [$username]." }
         var hasNext: Boolean
         var page = 1
         val releases = mutableListOf<Release>()
 
         do {
-            val response = client.listUsersCollection(username, page, 100)
+            val response = client.listUsersCollection(username, page, 100, sortBy, sortOrder)
 
             when (response.status) {
                 HttpStatusCode.OK -> {

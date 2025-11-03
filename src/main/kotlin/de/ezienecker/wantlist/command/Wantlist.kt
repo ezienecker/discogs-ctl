@@ -2,6 +2,7 @@ package de.ezienecker.wantlist.command
 
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.mordant.animation.progress.advance
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
@@ -12,6 +13,7 @@ import de.ezienecker.core.infrastructure.discogs.wantlist.Want
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
 
@@ -41,11 +43,11 @@ class Wantlist(
         discogs-ctl wantlist --username John-Doe --output wide
         
         # List wantlist inventory for user John-Doe filtered by shop entries from user Jane-Roe:
-        discogs-ctl wantlist --username John-Doe --filtered-by-shop-from Jane-Roe
+        discogs-ctl wantlist --username John-Doe --filtered-by-shop Jane-Roe
         """.trimIndent()
 
     private val fromShopUsername by option(
-        "--filtered-by-shop-from", "-s",
+        "--filtered-by-shop", "-s",
         help = "The username for whose shop inventory you are fetching " +
                 "If this option is set, only the entries that appear in the user's inventory are displayed."
     )
@@ -55,9 +57,15 @@ class Wantlist(
 
         runIfUsernameSpecified { username ->
 
+            launch { progress.execute() }
+
+            progress.update { total = 2 }
+
             supervisorScope {
-                val wants = async { wantListService.listWantsByUser(username) }
+                val wants = async { wantListService.listWantsByUser(username, sortBy, sortOrder) }
+                    .also { it.invokeOnCompletion { progress.advance(1) } }
                 val filterIds = async { shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) }
+                    .also { it.invokeOnCompletion { progress.advance(1) } }
 
                 process(wants.await(), filterIds.await())
             }

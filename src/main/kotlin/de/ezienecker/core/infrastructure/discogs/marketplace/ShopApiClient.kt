@@ -5,6 +5,7 @@ import de.ezienecker.core.infrastructure.discogs.client.auth.providers.DiscogsCl
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 
 class ShopApiClient(
@@ -12,7 +13,18 @@ class ShopApiClient(
     configuration: DiscogsClientConfiguration
 ) : DiscogsClient(engine, configuration) {
 
-    suspend fun listUsersShop(username: String, page: Int, perPage: Int): HttpResponse {
-        return client.get("https://api.discogs.com/users/$username/inventory?page=$page&per_page=$perPage")
+    suspend fun listUsersShop(
+        username: String,
+        page: Int,
+        perPage: Int,
+        sortBy: String = "",
+        sortOrder: String = "",
+    ): HttpResponse {
+        return client.get("https://api.discogs.com/users/$username/inventory") {
+            parameter("page", page)
+            parameter("per_page", perPage)
+            parameter("sort", sortBy)
+            parameter("sort_order", sortOrder)
+        }
     }
 }

@@ -7,7 +7,11 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
+import com.github.ajalt.mordant.animation.coroutines.animateInCoroutine
 import com.github.ajalt.mordant.terminal.Terminal
+import com.github.ajalt.mordant.widgets.Spinner
+import com.github.ajalt.mordant.widgets.progress.progressBarLayout
+import com.github.ajalt.mordant.widgets.progress.spinner
 import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.marketplace.Condition
 import de.ezienecker.core.infrastructure.discogs.marketplace.Price
@@ -44,6 +48,24 @@ abstract class InventorySubCommand<T>(
         help = "Make the operation more talkative",
     )
         .flag(default = false)
+
+    val sortBy by option(
+        names = arrayOf("--sort-by"),
+        help = "Sort by field. One of: 'item' (title of the release), 'artist', 'price'. 'artist' is default",
+    )
+        .choice("item", "artist")
+        .default("artist")
+
+    val sortOrder by option(
+        names = arrayOf("--sort-order"),
+        help = "Sort order. One of: 'asc' (ascending), 'desc' (descending). 'asc' is default",
+    )
+        .choice("asc", "desc")
+        .default("asc")
+
+    val progress = progressBarLayout {
+        spinner(Spinner.Lines())
+    }.animateInCoroutine(terminal)
 
     fun handleVerboseOption() {
         if (verbose) {

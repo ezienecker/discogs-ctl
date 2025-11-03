@@ -60,14 +60,14 @@ class ShopServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns cachedListings
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername) }
+            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
 
             result.isSuccess shouldBe true
             result.getOrNull() shouldBe cachedListings
 
             verify { mockCacheService.hasValidCache(testUsername) }
             verify { mockCacheService.getCached(testUsername) }
-            coVerify(exactly = 0) { mockApiClient.listUsersShop(any(), any(), any()) }
+            coVerify(exactly = 0) { mockApiClient.listUsersShop(any(), any(), any(), any(), any()) }
         }
 
         test("should call API when no valid cache exists") {
@@ -86,16 +86,16 @@ class ShopServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns false
             every { mockHttpResponse.status } returns HttpStatusCode.OK
             coEvery { mockHttpResponse.body<ShopResponse>() } returns shopResponse
-            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100) } returns mockHttpResponse
+            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiListings) } just Runs
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername) }
+            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
 
             result.isSuccess shouldBe true
             result.getOrNull() shouldBe apiListings
 
             verify { mockCacheService.hasValidCache(testUsername) }
-            coVerify { mockApiClient.listUsersShop(testUsername, 1, 100) }
+            coVerify { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
             verify { mockCacheService.cache(testUsername, apiListings) }
         }
 
@@ -116,17 +116,17 @@ class ShopServiceTest : FunSpec({
             every { mockCacheService.getCached(testUsername) } throws RuntimeException("Cache error")
             every { mockHttpResponse.status } returns HttpStatusCode.OK
             coEvery { mockHttpResponse.body<ShopResponse>() } returns shopResponse
-            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100) } returns mockHttpResponse
+            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiListings) } just Runs
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername) }
+            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
 
             result.isSuccess shouldBe true
             result.getOrNull() shouldBe apiListings
 
             verify { mockCacheService.hasValidCache(testUsername) }
             verify { mockCacheService.getCached(testUsername) }
-            coVerify { mockApiClient.listUsersShop(testUsername, 1, 100) }
+            coVerify { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
             verify { mockCacheService.cache(testUsername, apiListings) }
         }
 
@@ -147,23 +147,23 @@ class ShopServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns apiListings
 
-            val firstResult = runBlocking { shopService.listInventoryByUser(testUsername) }
+            val firstResult = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
             firstResult.isSuccess shouldBe true
 
             // Second call - cache is expired (24 hours passed)
             every { mockCacheService.hasValidCache(testUsername) } returns false
             every { mockHttpResponse.status } returns HttpStatusCode.OK
             coEvery { mockHttpResponse.body<ShopResponse>() } returns shopResponse
-            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100) } returns mockHttpResponse
+            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiListings) } just Runs
 
-            val secondResult = runBlocking { shopService.listInventoryByUser(testUsername) }
+            val secondResult = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
             secondResult.isSuccess shouldBe true
 
             // Verify first call used cache, second call used API
             verify(exactly = 2) { mockCacheService.hasValidCache(testUsername) }
             verify(exactly = 1) { mockCacheService.getCached(testUsername) }
-            coVerify(exactly = 1) { mockApiClient.listUsersShop(testUsername, 1, 100) }
+            coVerify(exactly = 1) { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
             verify(exactly = 1) { mockCacheService.cache(testUsername, apiListings) }
         }
     }
@@ -204,32 +204,32 @@ class ShopServiceTest : FunSpec({
             val mockResponse1 = mockk<HttpResponse>()
             every { mockResponse1.status } returns HttpStatusCode.OK
             coEvery { mockResponse1.body<ShopResponse>() } returns page1Response
-            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100) } returns mockResponse1
+            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockResponse1
 
             val mockResponse2 = mockk<HttpResponse>()
             every { mockResponse2.status } returns HttpStatusCode.OK
             coEvery { mockResponse2.body<ShopResponse>() } returns page2Response
-            coEvery { mockApiClient.listUsersShop(testUsername, 2, 100) } returns mockResponse2
+            coEvery { mockApiClient.listUsersShop(testUsername, 2, 100, any(), any()) } returns mockResponse2
 
             every { mockCacheService.cache(testUsername, allListings) } just Runs
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername) }
+            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
 
             result.isSuccess shouldBe true
             result.getOrNull()?.size shouldBe 2
             result.getOrNull() shouldBe allListings
 
-            coVerify { mockApiClient.listUsersShop(testUsername, 1, 100) }
-            coVerify { mockApiClient.listUsersShop(testUsername, 2, 100) }
+            coVerify { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
+            coVerify { mockApiClient.listUsersShop(testUsername, 2, 100, any(), any()) }
             verify { mockCacheService.cache(testUsername, allListings) }
         }
 
         test("should handle API errors gracefully") {
             every { mockCacheService.hasValidCache(testUsername) } returns false
             every { mockHttpResponse.status } returns HttpStatusCode.Forbidden
-            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100) } returns mockHttpResponse
+            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername) }
+            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
 
             result.isFailure shouldBe true
             result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
@@ -240,9 +240,9 @@ class ShopServiceTest : FunSpec({
         test("should handle server errors") {
             every { mockCacheService.hasValidCache(testUsername) } returns false
             every { mockHttpResponse.status } returns HttpStatusCode.InternalServerError
-            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100) } returns mockHttpResponse
+            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername) }
+            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
 
             result.isFailure shouldBe true
             result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
@@ -269,7 +269,7 @@ class ShopServiceTest : FunSpec({
             every { mockCacheService.clearCache(testUsername) } just Runs
             every { mockHttpResponse.status } returns HttpStatusCode.OK
             coEvery { mockHttpResponse.body<ShopResponse>() } returns shopResponse
-            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100) } returns mockHttpResponse
+            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiListings) } just Runs
 
             val result = runBlocking { shopService.refreshInventoryByUser(testUsername) }
@@ -278,7 +278,7 @@ class ShopServiceTest : FunSpec({
             result.getOrNull() shouldBe apiListings
 
             verify { mockCacheService.clearCache(testUsername) }
-            coVerify { mockApiClient.listUsersShop(testUsername, 1, 100) }
+            coVerify { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
             verify { mockCacheService.cache(testUsername, apiListings) }
         }
     }
@@ -307,7 +307,7 @@ class ShopServiceTest : FunSpec({
         test("should return empty set when API fails") {
             every { mockCacheService.hasValidCache(testUsername) } returns false
             every { mockHttpResponse.status } returns HttpStatusCode.Forbidden
-            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100) } returns mockHttpResponse
+            coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
 
             val result = runBlocking { shopService.getIdsFromInventoryReleasesByUser(testUsername) }
 
