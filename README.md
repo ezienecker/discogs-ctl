@@ -59,16 +59,16 @@ maven clean install
 
 ##  Usage
 
-To run the project using `runsample`, execute the following command:
+To run the project after building it, you can add a alias to your shell configuration file (e.g., `.bashrc`, `.zshrc`):
 
 ```sh
-./runsample discogs-ctl wantlist --username Madlip89
+alias discogs-ctl="java -jar /discogs-ctl/target/discogs-clt-1.0.0-SNAPSHOT-jar-with-dependencies.jar"
 ```
 
-Or you can run the project without re-building it using the following command:
+With that set up, you can use the `discogs-ctl` command from anywhere in your terminal.
 
 ```sh
-./runsample-without-build discogs-ctl shop --username Madlip89
+discogs-ctl wantlist --username Madlip89
 ```
 
 **Configure defaults:**
@@ -76,7 +76,7 @@ Or you can run the project without re-building it using the following command:
 To configure the default username, run the following command:
 
 ```sh
-./runsample-without-build discogs-ctl config set username Madlip89
+discogs-ctl config set username Madlip89
 ```
 
 By default, all requests are unauthenticated. 
@@ -88,7 +88,7 @@ Go to your [Developer Settings](https://www.discogs.com/settings/developers) or 
 
 
 ```sh
-./runsample-without-build discogs-ctl config set token <personal_access_token>
+discogs-ctl config set token <personal_access_token>
 ```
 
 **Commands**
@@ -96,7 +96,7 @@ Go to your [Developer Settings](https://www.discogs.com/settings/developers) or 
 For a full list of available commands, run the following command:
 
 ```sh
-./runsample-without-build discogs-ctl --help
+discogs-ctl --help
 ```
 
 ##  Support

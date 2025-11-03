@@ -3,4 +3,4 @@
 task=$1
 shift 1
 
-./gradlew ":installDist" && "./build/install/${task}/bin/${task}" "$@"
+mvn clean package && "target/${task}/bin/${task}" "$@"

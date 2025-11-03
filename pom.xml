@@ -22,11 +22,11 @@
         <clikt.version>5.0.3</clikt.version>
         <mordant.version>3.0.2</mordant.version>
 
-        <kotlin.version>2.2.10</kotlin.version>
-        <ktor.version>3.2.3</ktor.version>
+        <kotlin.version>2.2.21</kotlin.version>
+        <ktor.version>3.3.1</ktor.version>
 
         <kotlin-logging-jvm.version>7.0.13</kotlin-logging-jvm.version>
-        <logback-classic.version>1.5.18</logback-classic.version>
+        <logback-classic.version>1.5.20</logback-classic.version>
 
         <kotest.version>5.9.1</kotest.version>
         <!-- This needs to be aligned with version defined in Kotest -->
