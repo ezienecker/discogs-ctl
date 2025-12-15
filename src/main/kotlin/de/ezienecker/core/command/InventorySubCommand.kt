@@ -20,6 +20,20 @@ import org.slf4j.LoggerFactory
 
 private val logger = KotlinLogging.logger {}
 
+sealed interface OutputFormat {
+    data object Compact : OutputFormat
+    data object Wide : OutputFormat
+    data object Json : OutputFormat
+
+    companion object {
+        fun from(value: String): OutputFormat = when (value.lowercase()) {
+            "wide" -> Wide
+            "json" -> Json
+            else -> Compact
+        }
+    }
+}
+
 abstract class InventorySubCommand<T>(
     name: String? = null,
     private val configurationService: ConfigurationService,
@@ -32,9 +46,9 @@ abstract class InventorySubCommand<T>(
 
     val format by option(
         names = arrayOf("--output", "-o"),
-        help = "Output format. One of: 'compact', 'wide'. 'compact' is default",
+        help = "Output format. One of: 'compact', 'wide', 'json'. 'compact' is default",
     )
-        .choice("compact", "wide")
+        .choice("compact", "wide", "json")
         .default("compact")
 
     private val force by option(
@@ -132,10 +146,11 @@ abstract class InventorySubCommand<T>(
     }
 
     fun printListings(entries: List<T>, filteredIds: Set<Long>) {
-        printListingsAsTable(entries, filteredIds)
+        val outputFormat = OutputFormat.from(format)
+        printListings(entries, filteredIds, outputFormat)
     }
 
-    abstract fun printListingsAsTable(inventory: List<T>, filteredIds: Set<Long>)
+    abstract fun printListings(inventory: List<T>, filteredIds: Set<Long>, outputFormat: OutputFormat)
 
     fun filterRelease(idsFromInventory: Set<Long>, id: Long) =
         if (idsFromInventory.isEmpty()) {

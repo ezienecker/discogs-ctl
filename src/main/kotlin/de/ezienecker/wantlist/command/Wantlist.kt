@@ -7,6 +7,7 @@ import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.core.command.InventorySubCommand
+import de.ezienecker.core.command.OutputFormat
 import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
 import de.ezienecker.core.infrastructure.discogs.wantlist.Want
@@ -16,6 +17,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
+import kotlinx.serialization.json.Json
 
 class Wantlist(
     private val shopService: ShopService,
@@ -78,7 +80,18 @@ class Wantlist(
             .onSuccess { printListings(it, filterIds) }
     }
 
-    override fun printListingsAsTable(inventory: List<Want>, filteredIds: Set<Long>) {
+    override fun printListings(inventory: List<Want>, filteredIds: Set<Long>, outputFormat: OutputFormat) {
+        val filteredInventory = inventory.filter {
+            filterRelease(filteredIds, it.basicInformation.id)
+        }
+
+        when (outputFormat) {
+            OutputFormat.Compact, OutputFormat.Wide -> printListingsAsTable(filteredInventory)
+            OutputFormat.Json -> printListingsAsJson(filteredInventory)
+        }
+    }
+
+    private fun printListingsAsTable(inventory: List<Want>) {
         terminal.println(table {
             header {
                 cellBorders = Borders.NONE
@@ -87,7 +100,6 @@ class Wantlist(
             body {
                 cellBorders = Borders.NONE
                 inventory.map { it.basicInformation }
-                    .filter { filterRelease(filteredIds, it.id) }
                     .forEach { want ->
                         row(
                             addLineBreak(want.artists.joinToString { it.name }),
@@ -97,5 +109,15 @@ class Wantlist(
                     }
             }
         })
+    }
+
+    private fun printListingsAsJson(inventory: List<Want>) {
+        val json = Json {
+            prettyPrint = true
+            ignoreUnknownKeys = true
+            encodeDefaults = true
+        }
+
+        echo(json.encodeToString(inventory))
     }
 }

@@ -7,6 +7,7 @@ import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.core.command.InventorySubCommand
+import de.ezienecker.core.command.OutputFormat
 import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
 import de.ezienecker.core.infrastructure.discogs.marketplace.Listing
@@ -17,6 +18,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
+import kotlinx.serialization.json.Json
 
 class Shop(
     private val shopService: ShopService,
@@ -71,7 +73,18 @@ class Shop(
             .onSuccess { printListings(it.filter { listing -> listing.status == Status.FOR_SALE }, filterIds) }
     }
 
-    override fun printListingsAsTable(inventory: List<Listing>, filteredIds: Set<Long>) {
+    override fun printListings(inventory: List<Listing>, filteredIds: Set<Long>, outputFormat: OutputFormat) {
+        val filteredInventory = inventory.filter {
+            filterRelease(filteredIds, it.release.id)
+        }
+
+        when (outputFormat) {
+            OutputFormat.Compact, OutputFormat.Wide -> printListingsAsTable(filteredInventory)
+            OutputFormat.Json -> printListingsAsJson(filteredInventory)
+        }
+    }
+
+    private fun printListingsAsTable(inventory: List<Listing>) {
         terminal.println(table {
             header {
                 cellBorders = Borders.NONE
@@ -81,21 +94,27 @@ class Shop(
             body {
                 cellBorders = Borders.NONE
 
-                inventory
-                    .filter {
-                        filterRelease(filteredIds, it.release.id)
-                    }
-                    .forEach {
-                        row(
-                            addLineBreak(it.release.artist.value),
-                            addLineBreak(it.release.title.value),
-                            it.mediaCondition.format(isWideFormatActive(format)),
-                            it.sleeveCondition.format(isWideFormatActive(format)),
-                            it.release.format.value,
-                            it.price.format(isWideFormatActive(format))
-                        )
-                    }
+                inventory.forEach {
+                    row(
+                        addLineBreak(it.release.artist.value),
+                        addLineBreak(it.release.title.value),
+                        it.mediaCondition.format(isWideFormatActive(format)),
+                        it.sleeveCondition.format(isWideFormatActive(format)),
+                        it.release.format.value,
+                        it.price.format(isWideFormatActive(format))
+                    )
+                }
             }
         })
+    }
+
+    private fun printListingsAsJson(inventory: List<Listing>) {
+        val json = Json {
+            prettyPrint = true
+            ignoreUnknownKeys = true
+            encodeDefaults = true
+        }
+
+        echo(json.encodeToString(inventory))
     }
 }

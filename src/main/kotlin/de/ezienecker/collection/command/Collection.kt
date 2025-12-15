@@ -8,6 +8,7 @@ import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.collection.service.CollectionService
 import de.ezienecker.core.command.InventorySubCommand
+import de.ezienecker.core.command.OutputFormat
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
 import de.ezienecker.core.infrastructure.discogs.collection.Release
 import de.ezienecker.shop.service.ShopService
@@ -16,6 +17,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
+import kotlinx.serialization.json.Json
 
 class Collection(
     private val collectionService: CollectionService,
@@ -84,7 +86,18 @@ class Collection(
             .onSuccess { printListings(it, filterIdsFromShop + filterIdsFromWantList) }
     }
 
-    override fun printListingsAsTable(inventory: List<Release>, filteredIds: Set<Long>) {
+    override fun printListings(inventory: List<Release>, filteredIds: Set<Long>, outputFormat: OutputFormat) {
+        val filteredInventory = inventory.filter {
+            filterRelease(filteredIds, it.basicInformation.id)
+        }
+
+        when (outputFormat) {
+            OutputFormat.Compact, OutputFormat.Wide -> printListingsAsTable(filteredInventory)
+            OutputFormat.Json -> printListingsAsJson(filteredInventory)
+        }
+    }
+
+    private fun printListingsAsTable(inventory: List<Release>) {
         terminal.println(table {
             header {
                 cellBorders = Borders.NONE
@@ -94,22 +107,28 @@ class Collection(
             body {
                 cellBorders = Borders.NONE
 
-                inventory
-                    .filter {
-                        filterRelease(filteredIds, it.basicInformation.id)
-                    }
-                    .forEach {
-                        row(
-                            addLineBreak(it.basicInformation.artists.joinToString(", ") { artist -> artist.name }),
-                            addLineBreak(it.basicInformation.title),
-                            it.basicInformation.formats.map { format ->
-                                format.name
-                            },
-                            addReleaseLink(it.id)
-                        )
-                    }
+                inventory.forEach {
+                    row(
+                        addLineBreak(it.basicInformation.artists.joinToString(", ") { artist -> artist.name }),
+                        addLineBreak(it.basicInformation.title),
+                        it.basicInformation.formats.map { format ->
+                            format.name
+                        },
+                        addReleaseLink(it.id)
+                    )
+                }
             }
         })
+    }
+
+    private fun printListingsAsJson(inventory: List<Release>) {
+        val json = Json {
+            prettyPrint = true
+            ignoreUnknownKeys = true
+            encodeDefaults = true
+        }
+
+        echo(json.encodeToString(inventory))
     }
 
     private fun addReleaseLink(id: Long): String =
