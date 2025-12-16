@@ -9,6 +9,7 @@ import com.github.ajalt.mordant.terminal.Terminal
 import de.ezienecker.collection.service.CollectionService
 import de.ezienecker.core.command.InventorySubCommand
 import de.ezienecker.core.command.OutputFormat
+import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
 import de.ezienecker.core.infrastructure.discogs.collection.Release
 import de.ezienecker.shop.service.ShopService
@@ -23,7 +24,7 @@ class Collection(
     private val collectionService: CollectionService,
     private val shopService: ShopService,
     private val wantListService: WantlistService,
-    configurationService: de.ezienecker.core.configuration.service.ConfigurationService,
+    configurationService: ConfigurationService,
     private val terminal: Terminal,
 ) : InventorySubCommand<Release>(configurationService = configurationService, terminal = terminal) {
 

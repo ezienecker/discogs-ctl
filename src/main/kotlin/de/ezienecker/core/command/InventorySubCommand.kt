@@ -10,8 +10,9 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.mordant.animation.coroutines.animateInCoroutine
 import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.widgets.Spinner
-import com.github.ajalt.mordant.widgets.progress.progressBarLayout
+import com.github.ajalt.mordant.widgets.progress.progressBarContextLayout
 import com.github.ajalt.mordant.widgets.progress.spinner
+import com.github.ajalt.mordant.widgets.progress.text
 import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.marketplace.Condition
 import de.ezienecker.core.infrastructure.discogs.marketplace.Price
@@ -77,9 +78,10 @@ abstract class InventorySubCommand<T>(
         .choice("asc", "desc")
         .default("asc")
 
-    val progress = progressBarLayout {
+    val progress = progressBarContextLayout {
+        text { context }
         spinner(Spinner.Lines())
-    }.animateInCoroutine(terminal)
+    }.animateInCoroutine(terminal, context = "Fetching data")
 
     fun handleVerboseOption() {
         if (verbose) {
