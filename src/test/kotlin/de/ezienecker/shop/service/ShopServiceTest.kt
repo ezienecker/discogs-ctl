@@ -35,7 +35,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 
 class ShopServiceTest : FunSpec({
 
@@ -60,10 +60,11 @@ class ShopServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns cachedListings
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
-
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe cachedListings
+            runTest {
+                val result = shopService.listInventoryByUser(testUsername, "artist", "asc")
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe cachedListings
+            }
 
             verify { mockCacheService.hasValidCache(testUsername) }
             verify { mockCacheService.getCached(testUsername) }
@@ -89,10 +90,11 @@ class ShopServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiListings) } just Runs
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
-
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiListings
+            runTest {
+                val result = shopService.listInventoryByUser(testUsername, "artist", "asc")
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiListings
+            }
 
             verify { mockCacheService.hasValidCache(testUsername) }
             coVerify { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
@@ -119,10 +121,11 @@ class ShopServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiListings) } just Runs
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
-
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiListings
+            runTest {
+                val result = shopService.listInventoryByUser(testUsername, "artist", "asc")
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiListings
+            }
 
             verify { mockCacheService.hasValidCache(testUsername) }
             verify { mockCacheService.getCached(testUsername) }
@@ -147,8 +150,10 @@ class ShopServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns apiListings
 
-            val firstResult = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
-            firstResult.isSuccess shouldBe true
+            runTest {
+                val firstResult = shopService.listInventoryByUser(testUsername, "artist", "asc")
+                firstResult.isSuccess shouldBe true
+            }
 
             // Second call - cache is expired (24 hours passed)
             every { mockCacheService.hasValidCache(testUsername) } returns false
@@ -157,14 +162,58 @@ class ShopServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiListings) } just Runs
 
-            val secondResult = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
-            secondResult.isSuccess shouldBe true
+            runTest {
+                val secondResult = shopService.listInventoryByUser(testUsername, "artist", "asc")
+                secondResult.isSuccess shouldBe true
+            }
 
             // Verify first call used cache, second call used API
             verify(exactly = 2) { mockCacheService.hasValidCache(testUsername) }
             verify(exactly = 1) { mockCacheService.getCached(testUsername) }
             coVerify(exactly = 1) { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
             verify(exactly = 1) { mockCacheService.cache(testUsername, apiListings) }
+        }
+    }
+
+    context("Cache sorting behavior") {
+        test("should sort cached listings by title ascending") {
+            val cachedListings = listOf(
+                createTestListing(id = 1, title = "Zulu"),
+                createTestListing(id = 2, title = "Alpha")
+            )
+
+            every { mockCacheService.hasValidCache(testUsername) } returns true
+            every { mockCacheService.getCached(testUsername) } returns cachedListings
+
+            runTest {
+                val result = shopService.listInventoryByUser(testUsername, "title", "asc")
+                result.isSuccess shouldBe true
+                result.getOrNull()!!.map { it.release.title.value } shouldBe listOf("Alpha", "Zulu")
+            }
+
+            verify { mockCacheService.hasValidCache(testUsername) }
+            verify { mockCacheService.getCached(testUsername) }
+            coVerify(exactly = 0) { mockApiClient.listUsersShop(any(), any(), any(), any(), any()) }
+        }
+
+        test("should sort cached listings by artist descending") {
+            val cachedListings = listOf(
+                createTestListing(id = 1, artistName = "Beta Band"),
+                createTestListing(id = 2, artistName = "Alpha Crew")
+            )
+
+            every { mockCacheService.hasValidCache(testUsername) } returns true
+            every { mockCacheService.getCached(testUsername) } returns cachedListings
+
+            runTest {
+                val result = shopService.listInventoryByUser(testUsername, "artist", "desc")
+                result.isSuccess shouldBe true
+                result.getOrNull()!!.map { it.release.artist.value } shouldBe listOf("Beta Band", "Alpha Crew")
+            }
+
+            verify { mockCacheService.hasValidCache(testUsername) }
+            verify { mockCacheService.getCached(testUsername) }
+            coVerify(exactly = 0) { mockApiClient.listUsersShop(any(), any(), any(), any(), any()) }
         }
     }
 
@@ -213,11 +262,13 @@ class ShopServiceTest : FunSpec({
 
             every { mockCacheService.cache(testUsername, allListings) } just Runs
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
+            runTest {
+                val result = shopService.listInventoryByUser(testUsername, "artist", "asc")
 
-            result.isSuccess shouldBe true
-            result.getOrNull()?.size shouldBe 2
-            result.getOrNull() shouldBe allListings
+                result.isSuccess shouldBe true
+                result.getOrNull()?.size shouldBe 2
+                result.getOrNull() shouldBe allListings
+            }
 
             coVerify { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
             coVerify { mockApiClient.listUsersShop(testUsername, 2, 100, any(), any()) }
@@ -229,12 +280,13 @@ class ShopServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.Forbidden
             coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
-
-            result.isFailure shouldBe true
-            result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            val exception = result.exceptionOrNull() as ApiException
-            exception.error.shouldBeInstanceOf<ApiError.Unknown>()
+            runTest {
+                val result = shopService.listInventoryByUser(testUsername, "artist", "asc")
+                result.isFailure shouldBe true
+                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
+                val exception = result.exceptionOrNull() as ApiException
+                exception.error.shouldBeInstanceOf<ApiError.Unknown>()
+            }
         }
 
         test("should handle server errors") {
@@ -242,12 +294,13 @@ class ShopServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.InternalServerError
             coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
 
-            val result = runBlocking { shopService.listInventoryByUser(testUsername, "artist", "asc") }
-
-            result.isFailure shouldBe true
-            result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            val exception = result.exceptionOrNull() as ApiException
-            exception.error.shouldBeInstanceOf<ApiError.Unknown>()
+            runTest {
+                val result = shopService.listInventoryByUser(testUsername, "artist", "asc")
+                result.isFailure shouldBe true
+                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
+                val exception = result.exceptionOrNull() as ApiException
+                exception.error.shouldBeInstanceOf<ApiError.Unknown>()
+            }
         }
     }
 
@@ -272,10 +325,11 @@ class ShopServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiListings) } just Runs
 
-            val result = runBlocking { shopService.refreshInventoryByUser(testUsername) }
-
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiListings
+            runTest {
+                val result = shopService.refreshInventoryByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiListings
+            }
 
             verify { mockCacheService.clearCache(testUsername) }
             coVerify { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) }
@@ -293,15 +347,17 @@ class ShopServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns listings
 
-            val result = runBlocking { shopService.getIdsFromInventoryReleasesByUser(testUsername) }
-
-            result shouldBe setOf(100L, 200L)
+            runTest {
+                val result = shopService.getIdsFromInventoryReleasesByUser(testUsername)
+                result shouldBe setOf(100L, 200L)
+            }
         }
 
         test("should return empty set for null username") {
-            val result = runBlocking { shopService.getIdsFromInventoryReleasesByUser(null) }
-
-            result shouldBe emptySet()
+            runTest {
+                val result = shopService.getIdsFromInventoryReleasesByUser(null)
+                result shouldBe emptySet()
+            }
         }
 
         test("should return empty set when API fails") {
@@ -309,9 +365,10 @@ class ShopServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.Forbidden
             coEvery { mockApiClient.listUsersShop(testUsername, 1, 100, any(), any()) } returns mockHttpResponse
 
-            val result = runBlocking { shopService.getIdsFromInventoryReleasesByUser(testUsername) }
-
-            result shouldBe emptySet()
+            runTest {
+                val result = shopService.getIdsFromInventoryReleasesByUser(testUsername)
+                result shouldBe emptySet()
+            }
         }
     }
 })
@@ -319,7 +376,8 @@ class ShopServiceTest : FunSpec({
 private fun createTestListing(
     id: Long = 1L,
     releaseId: Long = 100L,
-    title: String = "Test Album"
+    title: String = "Test Album",
+    artistName: String = "Test Artist"
 ): Listing {
     return Listing(
         id = id,
@@ -341,7 +399,7 @@ private fun createTestListing(
         release = Release(
             id = releaseId,
             description = Description("Test Album - Hip Hop - 2023 - Vinyl LP"),
-            artist = Artist("Test Artist"),
+            artist = Artist(artistName),
             format = Format("Vinyl LP"),
             title = Title(title)
         )

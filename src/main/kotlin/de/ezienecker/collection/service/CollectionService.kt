@@ -23,11 +23,14 @@ class CollectionService(
         sortOrder: String = "",
     ): Result<List<Release>> {
         logger.info { "Fetching collection for user: [$username] with cache support." }
+        logger.debug { "Sort by: [$sortBy], Sort order: [$sortOrder]." }
 
         return if (cache.hasValidCache(username)) {
             logger.info { "Using cached collection data for user: [$username]." }
             try {
-                val cachedReleases = cache.getCached(username)
+                val cachedReleases = cache.getCached(username).run {
+                    sortReleases(this, sortBy, sortOrder)
+                }
                 Result.success(cachedReleases)
             } catch (e: Exception) {
                 logger.warn(e) { "Failed to retrieve cached collection for user: [$username]. Falling back to API." }
@@ -104,5 +107,29 @@ class CollectionService(
         logger.info { "Force refreshing collection for user: [$username]." }
         cache.clearCache(username)
         return fetchAndCacheCollection(username)
+    }
+
+    private fun sortReleases(releases: List<Release>, sortBy: String, sortOrder: String): List<Release> {
+        if (sortBy.isBlank()) {
+            return releases
+        }
+
+        val comparator = when (sortBy.lowercase()) {
+            "title" -> compareBy<Release> { it.basicInformation.title.lowercase() }
+            "artist" -> compareBy { release ->
+                release.basicInformation.artists.firstOrNull()?.name?.lowercase() ?: ""
+            }
+            else -> {
+                logger.warn { "Unknown sort field: [$sortBy]. Returning unsorted list." }
+                return releases
+            }
+        }
+
+        return when (sortOrder.lowercase()) {
+            "desc" -> releases.sortedWith(comparator.reversed())
+            else -> releases.sortedWith(comparator)
+        }.also {
+            logger.debug { "Sorted ${releases.size} releases by [$sortBy] in [$sortOrder] order." }
+        }
     }
 }

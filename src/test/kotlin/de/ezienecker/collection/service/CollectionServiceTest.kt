@@ -25,7 +25,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 
 class CollectionServiceTest : FunSpec({
 
@@ -50,10 +50,11 @@ class CollectionServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns cachedReleases
             
-            val result = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe cachedReleases
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe cachedReleases
+            }
             
             verify { mockCacheService.hasValidCache(testUsername) }
             verify { mockCacheService.getCached(testUsername) }
@@ -79,10 +80,11 @@ class CollectionServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersCollection(testUsername, 1, 100) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiReleases) } just Runs
             
-            val result = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiReleases
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiReleases
+            }
             
             verify { mockCacheService.hasValidCache(testUsername) }
             coVerify { mockApiClient.listUsersCollection(testUsername, 1, 100) }
@@ -109,10 +111,11 @@ class CollectionServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersCollection(testUsername, 1, 100) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiReleases) } just Runs
             
-            val result = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiReleases
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiReleases
+            }
             
             verify { mockCacheService.hasValidCache(testUsername) }
             verify { mockCacheService.getCached(testUsername) }
@@ -137,9 +140,11 @@ class CollectionServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns apiReleases
             
-            val firstResult = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            firstResult.isSuccess shouldBe true
-            
+            runTest {
+                val firstResult = collectionService.listCollectionByUser(testUsername)
+                firstResult.isSuccess shouldBe true
+            }
+
             // Second call - cache is expired (24 hours passed)
             every { mockCacheService.hasValidCache(testUsername) } returns false
             every { mockHttpResponse.status } returns HttpStatusCode.OK
@@ -147,9 +152,11 @@ class CollectionServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersCollection(testUsername, 1, 100) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiReleases) } just Runs
             
-            val secondResult = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            secondResult.isSuccess shouldBe true
-            
+            runTest {
+                val secondResult = collectionService.listCollectionByUser(testUsername)
+                secondResult.isSuccess shouldBe true
+            }
+
             // Verify first call used cache, second call used API
             verify(exactly = 2) { mockCacheService.hasValidCache(testUsername) }
             verify(exactly = 1) { mockCacheService.getCached(testUsername) }
@@ -203,12 +210,14 @@ class CollectionServiceTest : FunSpec({
             
             every { mockCacheService.cache(testUsername, allReleases) } just Runs
             
-            val result = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            
-            result.isSuccess shouldBe true
-            result.getOrNull()?.size shouldBe 2
-            result.getOrNull() shouldBe allReleases
-            
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername)
+
+                result.isSuccess shouldBe true
+                result.getOrNull()?.size shouldBe 2
+                result.getOrNull() shouldBe allReleases
+            }
+
             coVerify { mockApiClient.listUsersCollection(testUsername, 1, 100) }
             coVerify { mockApiClient.listUsersCollection(testUsername, 2, 100) }
             verify { mockCacheService.cache(testUsername, allReleases) }
@@ -221,12 +230,14 @@ class CollectionServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.Forbidden
             coEvery { mockApiClient.listUsersCollection(testUsername, 1, 100) } returns mockHttpResponse
             
-            val result = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            
-            result.isFailure shouldBe true
-            result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            val exception = result.exceptionOrNull() as ApiException
-            exception.error shouldBe ApiError.NoAccessToCollection
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername)
+
+                result.isFailure shouldBe true
+                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
+                val exception = result.exceptionOrNull() as ApiException
+                exception.error shouldBe ApiError.NoAccessToCollection
+            }
         }
 
         test("should handle not found") {
@@ -234,12 +245,14 @@ class CollectionServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.NotFound
             coEvery { mockApiClient.listUsersCollection(testUsername, 1, 100) } returns mockHttpResponse
             
-            val result = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            
-            result.isFailure shouldBe true
-            result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            val exception = result.exceptionOrNull() as ApiException
-            exception.error shouldBe ApiError.NotFound
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername)
+
+                result.isFailure shouldBe true
+                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
+                val exception = result.exceptionOrNull() as ApiException
+                exception.error shouldBe ApiError.NotFound
+            }
         }
 
         test("should handle server errors") {
@@ -247,12 +260,14 @@ class CollectionServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.InternalServerError
             coEvery { mockApiClient.listUsersCollection(testUsername, 1, 100) } returns mockHttpResponse
             
-            val result = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            
-            result.isFailure shouldBe true
-            result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            val exception = result.exceptionOrNull() as ApiException
-            exception.error.shouldBeInstanceOf<ApiError.Server>()
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername)
+
+                result.isFailure shouldBe true
+                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
+                val exception = result.exceptionOrNull() as ApiException
+                exception.error.shouldBeInstanceOf<ApiError.Server>()
+            }
         }
 
         test("should handle unknown status codes") {
@@ -260,12 +275,14 @@ class CollectionServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.PaymentRequired
             coEvery { mockApiClient.listUsersCollection(testUsername, 1, 100) } returns mockHttpResponse
             
-            val result = runBlocking { collectionService.listCollectionByUser(testUsername) }
-            
-            result.isFailure shouldBe true
-            result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            val exception = result.exceptionOrNull() as ApiException
-            exception.error.shouldBeInstanceOf<ApiError.Unknown>()
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername)
+
+                result.isFailure shouldBe true
+                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
+                val exception = result.exceptionOrNull() as ApiException
+                exception.error.shouldBeInstanceOf<ApiError.Unknown>()
+            }
         }
     }
 
@@ -289,14 +306,63 @@ class CollectionServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersCollection(testUsername, 1, 100) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiReleases) } just Runs
             
-            val result = runBlocking { collectionService.refreshCollectionByUser(testUsername) }
-            
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiReleases
-            
+            runTest {
+                val result = collectionService.refreshCollectionByUser(testUsername)
+
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiReleases
+            }
+
             verify { mockCacheService.clearCache(testUsername) }
             coVerify { mockApiClient.listUsersCollection(testUsername, 1, 100) }
             verify { mockCacheService.cache(testUsername, apiReleases) }
+        }
+    }
+
+    context("Cache sorting behavior") {
+        test("should sort cached collection by title ascending") {
+            val cachedReleases = listOf(
+                createTestRelease(id = 1, title = "Zulu"),
+                createTestRelease(id = 2, title = "Alpha")
+            )
+
+            every { mockCacheService.hasValidCache(testUsername) } returns true
+            every { mockCacheService.getCached(testUsername) } returns cachedReleases
+
+            runTest {
+
+                val result = collectionService.listCollectionByUser(testUsername, "title", "asc")
+
+                result.isSuccess shouldBe true
+                result.getOrNull()!!.map { it.basicInformation.title } shouldBe listOf("Alpha", "Zulu")
+            }
+
+            verify { mockCacheService.hasValidCache(testUsername) }
+            verify { mockCacheService.getCached(testUsername) }
+            coVerify(exactly = 0) { mockApiClient.listUsersCollection(any(), any(), any(), any(), any()) }
+        }
+
+        test("should sort cached collection by artist descending") {
+            val cachedReleases = listOf(
+                createTestRelease(id = 1, artistName = "Beta Band"),
+                createTestRelease(id = 2, artistName = "Alpha Crew")
+            )
+
+            every { mockCacheService.hasValidCache(testUsername) } returns true
+            every { mockCacheService.getCached(testUsername) } returns cachedReleases
+
+            runTest {
+                val result = collectionService.listCollectionByUser(testUsername, "artist", "desc")
+
+                result.isSuccess shouldBe true
+                result.getOrNull()!!.map { release ->
+                    release.basicInformation.artists.first().name
+                } shouldBe listOf("Beta Band", "Alpha Crew")
+            }
+
+            verify { mockCacheService.hasValidCache(testUsername) }
+            verify { mockCacheService.getCached(testUsername) }
+            coVerify(exactly = 0) { mockApiClient.listUsersCollection(any(), any(), any(), any(), any()) }
         }
     }
 })
@@ -305,7 +371,8 @@ private fun createTestRelease(
     id: Long = 1L,
     instanceId: Long = 100L,
     rating: Int = 5,
-    title: String = "Test Album $id"
+    title: String = "Test Album $id",
+    artistName: String = "Test Artist"
 ): Release {
     return Release(
         id = id,
@@ -341,7 +408,7 @@ private fun createTestRelease(
             artists = listOf(
                 Artist(
                     id = 1L,
-                    name = "Test Artist",
+                    name = artistName,
                     anv = "",
                     join = "",
                     role = "",

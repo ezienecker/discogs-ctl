@@ -30,11 +30,14 @@ class ShopService(
         sortOrder: String = "",
     ): Result<List<Listing>> {
         logger.info { "Fetching inventory for user: [$username] with cache support." }
+        logger.debug { "Sort by: [$sortBy], Sort order: [$sortOrder]." }
 
         return if (cache.hasValidCache(username)) {
             logger.info { "Using cached inventory data for user: [$username]." }
             try {
-                val cachedListings = cache.getCached(username)
+                val cachedListings = cache.getCached(username).run {
+                    sortListings(this, sortBy, sortOrder)
+                }
                 Result.success(cachedListings)
             } catch (e: Exception) {
                 logger.warn(e) { "Failed to retrieve cached inventory for user: [$username]. Falling back to API." }
@@ -95,4 +98,25 @@ class ShopService(
         }
     }
 
+    private fun sortListings(listings: List<Listing>, sortBy: String, sortOrder: String): List<Listing> {
+        if (sortBy.isBlank()) {
+            return listings
+        }
+
+        val comparator = when (sortBy.lowercase()) {
+            "title" -> compareBy<Listing> { it.release.title.value.lowercase() }
+            "artist" -> compareBy { it.release.artist.value.lowercase() }
+            else -> {
+                logger.warn { "Unknown sort field: [$sortBy]. Returning unsorted list." }
+                return listings
+            }
+        }
+
+        return when (sortOrder.lowercase()) {
+            "desc" -> listings.sortedWith(comparator.reversed())
+            else -> listings.sortedWith(comparator)
+        }.also {
+            logger.debug { "Sorted ${listings.size} releases by [$sortBy] in [$sortOrder] order." }
+        }
+    }
 }

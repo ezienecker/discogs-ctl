@@ -26,7 +26,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 
 class WantlistServiceTest : FunSpec({
 
@@ -51,10 +51,11 @@ class WantlistServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns cachedWants
 
-            val result = runBlocking { wantlistService.listWantsByUser(testUsername) }
-
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe cachedWants
+            runTest {
+                val result = wantlistService.listWantsByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe cachedWants
+            }
 
             verify { mockCacheService.hasValidCache(testUsername) }
             verify { mockCacheService.getCached(testUsername) }
@@ -80,10 +81,11 @@ class WantlistServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersWantList(testUsername, 1, 100) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiWants) } just Runs
 
-            val result = runBlocking { wantlistService.listWantsByUser(testUsername) }
-
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiWants
+            runTest {
+                val result = wantlistService.listWantsByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiWants
+            }
 
             verify { mockCacheService.hasValidCache(testUsername) }
             coVerify { mockApiClient.listUsersWantList(testUsername, 1, 100) }
@@ -110,10 +112,11 @@ class WantlistServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersWantList(testUsername, 1, 100) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiWants) } just Runs
 
-            val result = runBlocking { wantlistService.listWantsByUser(testUsername) }
-
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiWants
+            runTest {
+                val result = wantlistService.listWantsByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiWants
+            }
 
             verify { mockCacheService.hasValidCache(testUsername) }
             verify { mockCacheService.getCached(testUsername) }
@@ -138,8 +141,10 @@ class WantlistServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns apiWants
 
-            val firstResult = runBlocking { wantlistService.listWantsByUser(testUsername) }
-            firstResult.isSuccess shouldBe true
+            runTest {
+                val firstResult = wantlistService.listWantsByUser(testUsername)
+                firstResult.isSuccess shouldBe true
+            }
 
             // Second call - cache is expired (24 hours passed)
             every { mockCacheService.hasValidCache(testUsername) } returns false
@@ -148,8 +153,10 @@ class WantlistServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersWantList(testUsername, 1, 100) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiWants) } just Runs
 
-            val secondResult = runBlocking { wantlistService.listWantsByUser(testUsername) }
-            secondResult.isSuccess shouldBe true
+            runTest {
+                val secondResult = wantlistService.listWantsByUser(testUsername)
+                secondResult.isSuccess shouldBe true
+            }
 
             // Verify first call used cache, second call used API
             verify(exactly = 2) { mockCacheService.hasValidCache(testUsername) }
@@ -204,11 +211,12 @@ class WantlistServiceTest : FunSpec({
 
             every { mockCacheService.cache(testUsername, allWants) } just Runs
 
-            val result = runBlocking { wantlistService.listWantsByUser(testUsername) }
-
-            result.isSuccess shouldBe true
-            result.getOrNull()?.size shouldBe 2
-            result.getOrNull() shouldBe allWants
+            runTest {
+                val result = wantlistService.listWantsByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull()?.size shouldBe 2
+                result.getOrNull() shouldBe allWants
+            }
 
             coVerify { mockApiClient.listUsersWantList(testUsername, 1, 100) }
             coVerify { mockApiClient.listUsersWantList(testUsername, 2, 100) }
@@ -222,12 +230,13 @@ class WantlistServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.Forbidden
             coEvery { mockApiClient.listUsersWantList(testUsername, 1, 100) } returns mockHttpResponse
 
-            val result = runBlocking { wantlistService.listWantsByUser(testUsername) }
-
-            result.isFailure shouldBe true
-            result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            val exception = result.exceptionOrNull() as ApiException
-            exception.error shouldBe ApiError.NoAccessToCollection
+            runTest {
+                val result = wantlistService.listWantsByUser(testUsername)
+                result.isFailure shouldBe true
+                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
+                val exception = result.exceptionOrNull() as ApiException
+                exception.error shouldBe ApiError.NoAccessToCollection
+            }
         }
 
         test("should handle unknown status codes") {
@@ -235,12 +244,13 @@ class WantlistServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.InternalServerError
             coEvery { mockApiClient.listUsersWantList(testUsername, 1, 100) } returns mockHttpResponse
 
-            val result = runBlocking { wantlistService.listWantsByUser(testUsername) }
-
-            result.isFailure shouldBe true
-            result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            val exception = result.exceptionOrNull() as ApiException
-            exception.error.shouldBeInstanceOf<ApiError.Unknown>()
+            runTest {
+                val result = wantlistService.listWantsByUser(testUsername)
+                result.isFailure shouldBe true
+                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
+                val exception = result.exceptionOrNull() as ApiException
+                exception.error.shouldBeInstanceOf<ApiError.Unknown>()
+            }
         }
     }
 
@@ -264,10 +274,11 @@ class WantlistServiceTest : FunSpec({
             coEvery { mockApiClient.listUsersWantList(testUsername, 1, 100) } returns mockHttpResponse
             every { mockCacheService.cache(testUsername, apiWants) } just Runs
 
-            val result = runBlocking { wantlistService.refreshWantlistByUser(testUsername) }
-
-            result.isSuccess shouldBe true
-            result.getOrNull() shouldBe apiWants
+            runTest {
+                val result = wantlistService.refreshWantlistByUser(testUsername)
+                result.isSuccess shouldBe true
+                result.getOrNull() shouldBe apiWants
+            }
 
             verify { mockCacheService.clearCache(testUsername) }
             coVerify { mockApiClient.listUsersWantList(testUsername, 1, 100) }
@@ -285,15 +296,17 @@ class WantlistServiceTest : FunSpec({
             every { mockCacheService.hasValidCache(testUsername) } returns true
             every { mockCacheService.getCached(testUsername) } returns wants
 
-            val result = runBlocking { wantlistService.getIdsFromWantlistReleasesByUser(testUsername) }
-
-            result shouldBe setOf(100L, 200L)
+            runTest {
+                val result = wantlistService.getIdsFromWantlistReleasesByUser(testUsername)
+                result shouldBe setOf(100L, 200L)
+            }
         }
 
         test("should return empty set when username is null") {
-            val result = runBlocking { wantlistService.getIdsFromWantlistReleasesByUser(null) }
-
-            result shouldBe emptySet()
+            runTest {
+                val result = wantlistService.getIdsFromWantlistReleasesByUser(null)
+                result shouldBe emptySet()
+            }
         }
 
         test("should return empty set when wantlist fetch fails") {
@@ -301,9 +314,55 @@ class WantlistServiceTest : FunSpec({
             every { mockHttpResponse.status } returns HttpStatusCode.Forbidden
             coEvery { mockApiClient.listUsersWantList(testUsername, 1, 100) } returns mockHttpResponse
 
-            val result = runBlocking { wantlistService.getIdsFromWantlistReleasesByUser(testUsername) }
+            runTest {
+                val result = wantlistService.getIdsFromWantlistReleasesByUser(testUsername)
+                result shouldBe emptySet()
+            }
+        }
+    }
 
-            result shouldBe emptySet()
+    context("Cache sorting behavior") {
+        test("should sort cached wantlist by title ascending") {
+            val cachedWants = listOf(
+                createTestWant(id = 1, releaseId = 101, title = "Zulu"),
+                createTestWant(id = 2, releaseId = 102, title = "Alpha")
+            )
+
+            every { mockCacheService.hasValidCache(testUsername) } returns true
+            every { mockCacheService.getCached(testUsername) } returns cachedWants
+
+            runTest {
+                val result = wantlistService.listWantsByUser(testUsername, "title", "asc")
+                result.isSuccess shouldBe true
+                result.getOrNull()!!.map { it.basicInformation.title } shouldBe listOf("Alpha", "Zulu")
+            }
+
+            verify { mockCacheService.hasValidCache(testUsername) }
+            verify { mockCacheService.getCached(testUsername) }
+            coVerify(exactly = 0) { mockApiClient.listUsersWantList(any(), any(), any(), any(), any()) }
+        }
+
+        test("should sort cached wantlist by artist descending") {
+            val cachedWants = listOf(
+                createTestWant(id = 1, releaseId = 101, artistName = "Beta Band"),
+                createTestWant(id = 2, releaseId = 102, artistName = "Alpha Crew")
+            )
+
+            every { mockCacheService.hasValidCache(testUsername) } returns true
+            every { mockCacheService.getCached(testUsername) } returns cachedWants
+
+            runTest {
+                val result = wantlistService.listWantsByUser(testUsername, "artist", "desc")
+
+                result.isSuccess shouldBe true
+                result.getOrNull()!!.map { want ->
+                    want.basicInformation.artists.first().name
+                } shouldBe listOf("Beta Band", "Alpha Crew")
+            }
+
+            verify { mockCacheService.hasValidCache(testUsername) }
+            verify { mockCacheService.getCached(testUsername) }
+            coVerify(exactly = 0) { mockApiClient.listUsersWantList(any(), any(), any(), any(), any()) }
         }
     }
 })
@@ -311,7 +370,9 @@ class WantlistServiceTest : FunSpec({
 private fun createTestWant(
     id: Long = 1L,
     rating: Int = 5,
-    releaseId: Long = id
+    releaseId: Long = id,
+    title: String = "Test Album $id",
+    artistName: String = "Test Artist"
 ): Want {
     return Want(
         id = id,
@@ -319,7 +380,7 @@ private fun createTestWant(
         resourceUrl = Url("https://api.discogs.com/releases/$id"),
         basicInformation = BasicInformation(
             id = releaseId,
-            title = "Test Album $id",
+            title = title,
             year = 2023,
             thumb = "https://example.com/thumb.jpg",
             coverImage = "https://example.com/cover.jpg",
@@ -344,7 +405,7 @@ private fun createTestWant(
             artists = listOf(
                 Artist(
                     id = 1,
-                    name = "Test Artist",
+                    name = artistName,
                     anv = "",
                     join = "",
                     role = "",

@@ -34,7 +34,9 @@ class WantlistService(
         return if (cache.hasValidCache(username)) {
             logger.info { "Using cached wantlist data for user: [$username]." }
             try {
-                val cachedWants = cache.getCached(username)
+                val cachedWants = cache.getCached(username).run {
+                    sortWants(this, sortBy, sortOrder)
+                }
                 Result.success(cachedWants)
             } catch (e: Exception) {
                 logger.warn(e) { "Failed to retrieve cached wantlist for user: [$username]. Falling back to API." }
@@ -98,5 +100,30 @@ class WantlistService(
         logger.info { "Force refreshing wantlist for user: [$username]." }
         cache.clearCache(username)
         return fetchAndCacheWantlist(username)
+    }
+
+    private fun sortWants(wants: List<Want>, sortBy: String, sortOrder: String): List<Want> {
+        if (sortBy.isBlank()) {
+            return wants
+        }
+
+        val comparator = when (sortBy.lowercase()) {
+            "title" -> compareBy<Want> { it.basicInformation.title.lowercase() }
+            "artist" -> compareBy { want ->
+                want.basicInformation.artists.firstOrNull()?.name?.lowercase() ?: ""
+            }
+
+            else -> {
+                logger.warn { "Unknown sort field: [$sortBy]. Returning unsorted list." }
+                return wants
+            }
+        }
+
+        return when (sortOrder.lowercase()) {
+            "desc" -> wants.sortedWith(comparator.reversed())
+            else -> wants.sortedWith(comparator)
+        }.also {
+            logger.debug { "Sorted ${wants.size} releases by [$sortBy] in [$sortOrder] order." }
+        }
     }
 }
