@@ -25,11 +25,13 @@ sealed interface OutputFormat {
     data object Compact : OutputFormat
     data object Wide : OutputFormat
     data object Json : OutputFormat
+    data object Display : OutputFormat
 
     companion object {
         fun from(value: String): OutputFormat = when (value.lowercase()) {
             "wide" -> Wide
             "json" -> Json
+            "display" -> Display
             else -> Compact
         }
     }
@@ -47,9 +49,9 @@ abstract class InventorySubCommand<T>(
 
     val format by option(
         names = arrayOf("--output", "-o"),
-        help = "Output format. One of: 'compact', 'wide', 'json'. 'compact' is default",
+        help = "Output format. One of: 'compact', 'wide', 'json', 'display'. 'compact' is default",
     )
-        .choice("compact", "wide", "json")
+        .choice("compact", "wide", "json", "display")
         .default("compact")
 
     private val force by option(
@@ -160,4 +162,6 @@ abstract class InventorySubCommand<T>(
         } else {
             idsFromInventory.contains(id)
         }
+
+    fun getReleaseLink(id: Long): String = "https://www.discogs.com/release/$id"
 }

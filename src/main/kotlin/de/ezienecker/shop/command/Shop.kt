@@ -3,6 +3,7 @@ package de.ezienecker.shop.command
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.mordant.animation.progress.advance
+import com.github.ajalt.mordant.rendering.TextAlign
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
@@ -81,6 +82,7 @@ class Shop(
         when (outputFormat) {
             OutputFormat.Compact, OutputFormat.Wide -> printListingsAsTable(filteredInventory)
             OutputFormat.Json -> printListingsAsJson(filteredInventory)
+            OutputFormat.Display -> printListingsAsDisplay(filteredInventory)
         }
     }
 
@@ -116,5 +118,28 @@ class Shop(
         }
 
         echo(json.encodeToString(inventory))
+    }
+
+    private fun printListingsAsDisplay(inventory: List<Listing>) {
+        terminal.println(table {
+            body {
+                cellBorders = Borders.NONE
+
+                inventory.forEachIndexed { index, listing ->
+                    row {
+                        cell("-[ Record ${(index + 1)} ]---------------------") {
+                            columnSpan = 2
+                            align = TextAlign.LEFT
+                        }
+                    }
+                    row("Artist", "| ${listing.release.artist.value}")
+                    row("Title", "| ${listing.release.title.value}")
+                    row("Media Condition", "| ${listing.mediaCondition.format(isWideFormatActive(format))}")
+                    row("Sleeve Condition", "| ${listing.sleeveCondition.format(isWideFormatActive(format))}")
+                    row("Format", "| ${listing.release.format.value}")
+                    row("Price", "| ${listing.price.format(isWideFormatActive(format))}")
+                }
+            }
+        })
     }
 }

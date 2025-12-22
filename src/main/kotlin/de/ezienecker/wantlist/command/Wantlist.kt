@@ -3,6 +3,7 @@ package de.ezienecker.wantlist.command
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.mordant.animation.progress.advance
+import com.github.ajalt.mordant.rendering.TextAlign
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
@@ -88,6 +89,7 @@ class Wantlist(
         when (outputFormat) {
             OutputFormat.Compact, OutputFormat.Wide -> printListingsAsTable(filteredInventory)
             OutputFormat.Json -> printListingsAsJson(filteredInventory)
+            OutputFormat.Display -> printListingsAsDisplay(filteredInventory)
         }
     }
 
@@ -119,5 +121,26 @@ class Wantlist(
         }
 
         echo(json.encodeToString(inventory))
+    }
+
+    private fun printListingsAsDisplay(inventory: List<Want>) {
+        terminal.println(table {
+            body {
+                cellBorders = Borders.NONE
+
+                inventory.forEachIndexed { index, want ->
+                        row {
+                            cell("-[ Record ${(index + 1)} ]---------------------") {
+                                columnSpan = 2
+                                align = TextAlign.LEFT
+                            }
+                        }
+                        row("Artist", "| ${want.basicInformation.artists.joinToString { it.name }}")
+                        row("Title", "| ${want.basicInformation.title}")
+                        row("Format", "| ${want.basicInformation.formats.joinToString { it.formattedOutput() }}")
+                        row("Link", "| ${getReleaseLink(want.id)}")
+                    }
+            }
+        })
     }
 }

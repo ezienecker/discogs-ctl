@@ -3,6 +3,7 @@ package de.ezienecker.collection.command
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.mordant.animation.progress.advance
+import com.github.ajalt.mordant.rendering.TextAlign
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
@@ -95,6 +96,7 @@ class Collection(
         when (outputFormat) {
             OutputFormat.Compact, OutputFormat.Wide -> printListingsAsTable(filteredInventory)
             OutputFormat.Json -> printListingsAsJson(filteredInventory)
+            OutputFormat.Display -> printListingsAsDisplay(filteredInventory)
         }
     }
 
@@ -115,7 +117,7 @@ class Collection(
                         it.basicInformation.formats.map { format ->
                             format.name
                         },
-                        addReleaseLink(it.id)
+                        getReleaseLink(it.id)
                     )
                 }
             }
@@ -132,6 +134,24 @@ class Collection(
         echo(json.encodeToString(inventory))
     }
 
-    private fun addReleaseLink(id: Long): String =
-        "https://www.discogs.com/release/$id"
+    private fun printListingsAsDisplay(inventory: List<Release>) {
+        terminal.println(table {
+            body {
+                cellBorders = Borders.NONE
+
+                inventory.forEachIndexed { index, release ->
+                    row {
+                        cell("-[ Record ${(index + 1)} ]---------------------") {
+                            columnSpan = 2
+                            align = TextAlign.LEFT
+                        }
+                    }
+                    row("Artist", "| ${release.basicInformation.artists.joinToString { it.name }}")
+                    row("Title", "| ${release.basicInformation.title}")
+                    row("Format", "| ${release.basicInformation.formats.map { it.name }}")
+                    row("Link", "| ${getReleaseLink(release.id)}")
+                }
+            }
+        })
+    }
 }
