@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-task=$1
-shift 1
-
-"./build/install/${task}/bin/${task}" "$@"
