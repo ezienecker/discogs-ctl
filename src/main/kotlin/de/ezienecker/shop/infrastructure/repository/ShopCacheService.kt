@@ -78,12 +78,13 @@ class ShopCacheService(val clock: Clock, val json: Json) {
     fun cache(username: String, listings: List<Listing>) = transaction {
         logger.debug { "Caching ${listings.size} listings for user: [$username]" }
 
-        // Clear existing cache for this user
-        Listings.deleteWhere { Listings.username eq username }
+        clearCache(username)
 
         val now = clock.now()
 
-        listings.forEach { listing ->
+        listings
+            .distinctBy { it.id }
+            .forEach { listing ->
             Listings.insert {
                 it[this.username] = username
                 it[listingId] = listing.id

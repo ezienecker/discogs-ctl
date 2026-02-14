@@ -58,12 +58,13 @@ class CollectionCacheService(val clock: Clock, val json: Json) {
     fun cache(username: String, releases: List<Release>) = transaction {
         logger.debug { "Caching ${releases.size} releases for user: [$username]." }
 
-        // Clear existing cache for this user
-        CachedCollections.deleteWhere { CachedCollections.username eq username }
+        clearCache(username)
 
         val now = clock.now()
 
-        releases.forEach { release ->
+        releases
+            .distinctBy { it.id to it.instanceId }
+            .forEach { release ->
             CachedCollections.insert {
                 it[this.username] = username
                 it[releaseId] = release.id

@@ -58,21 +58,22 @@ class WantlistCacheService(val clock: Clock, val json: Json) {
     fun cache(username: String, wants: List<Want>) = transaction {
         logger.debug { "Caching ${wants.size} wants for user: [$username]" }
 
-        // Clear existing cache for this user
-        Wants.deleteWhere { Wants.username eq username }
+        clearCache(username)
 
         val now = clock.now()
 
-        wants.forEach { want ->
-            Wants.insert {
-                it[this.username] = username
-                it[wantId] = want.id
-                it[rating] = want.rating
-                it[resourceUrl] = want.resourceUrl.value
-                it[basicInformation] = json.encodeToString(want.basicInformation)
-                it[cachedAt] = now
+        wants
+            .distinctBy { it.id }
+            .forEach { want ->
+                Wants.insert {
+                    it[this.username] = username
+                    it[wantId] = want.id
+                    it[rating] = want.rating
+                    it[resourceUrl] = want.resourceUrl.value
+                    it[basicInformation] = json.encodeToString(want.basicInformation)
+                    it[cachedAt] = now
+                }
             }
-        }
 
         logger.info { "Successfully cached ${wants.size} wants for user: [$username]" }
     }
