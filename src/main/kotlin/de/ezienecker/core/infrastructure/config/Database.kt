@@ -6,9 +6,9 @@ import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.shop.infrastructure.repository.Listings
 import de.ezienecker.wantlist.infrastructure.repository.WantBasicInformation
 import de.ezienecker.wantlist.infrastructure.repository.Wants
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.SchemaUtils
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 fun configureDatabaseConnection() {
     Database.connect(

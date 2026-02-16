@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package de.ezienecker
 
 import com.github.ajalt.clikt.core.Context
@@ -26,8 +28,9 @@ import de.ezienecker.wantlist.command.Wantlist
 import de.ezienecker.wantlist.infrastructure.repository.WantlistCacheService
 import de.ezienecker.wantlist.service.WantlistService
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private val logger = KotlinLogging.logger {}
 

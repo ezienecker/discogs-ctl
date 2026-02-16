@@ -1,10 +1,12 @@
 package de.ezienecker.wantlist.infrastructure.repository
 
-import kotlinx.datetime.Instant
-import org.jetbrains.exposed.dao.id.LongIdTable
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.dao.id.LongIdTable
+import org.jetbrains.exposed.v1.datetime.timestamp
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 object Wants : LongIdTable("wants") {
     val username: Column<String> = varchar("username", 255)
     val wantId: Column<Long> = long("want_id")

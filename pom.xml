@@ -21,7 +21,7 @@
         <kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
 
         <clikt.version>5.0.3</clikt.version>
-        <exposed.version>0.61.0</exposed.version>
+        <exposed.version>1.0.0</exposed.version>
         <!-- This needs to be aligned with version defined in Kotest -->
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <kotest.version>5.9.1</kotest.version>

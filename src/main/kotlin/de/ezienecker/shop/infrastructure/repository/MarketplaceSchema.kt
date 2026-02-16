@@ -1,10 +1,12 @@
 package de.ezienecker.shop.infrastructure.repository
 
-import kotlinx.datetime.Instant
-import org.jetbrains.exposed.dao.id.LongIdTable
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.dao.id.LongIdTable
+import org.jetbrains.exposed.v1.datetime.timestamp
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 object Listings : LongIdTable("listings") {
     val username: Column<String> = varchar("username", 255)
     val listingId: Column<Long> = long("listing_id")
