@@ -41,20 +41,19 @@ class WantlistCacheService(val clock: Clock, val json: Json) {
     fun getCached(username: String): List<Want> = transaction {
         logger.debug { "Retrieving cached wantlist for user: [$username]" }
 
-        val cachedWants = Wants.selectAll().where {
+        Wants.selectAll().where {
             Wants.username eq username
         }.map { row ->
             val basicInfo = json.decodeFromString<BasicInformation>(row[Wants.basicInformation])
             Want(
-                id = row[Wants.wantId],
+                releaseId = row[Wants.wantId],
                 rating = row[Wants.rating],
                 resourceUrl = Url(row[Wants.resourceUrl]),
                 basicInformation = basicInfo
             )
+        }.also {
+            logger.info { "Retrieved ${it.size} cached wants for user: [$username]" }
         }
-
-        logger.info { "Retrieved ${cachedWants.size} cached wants for user: [$username]" }
-        cachedWants
     }
 
     /**
@@ -68,11 +67,11 @@ class WantlistCacheService(val clock: Clock, val json: Json) {
         val now = clock.now()
 
         wants
-            .distinctBy { it.id }
+            .distinctBy { it.releaseId }
             .forEach { want ->
                 Wants.insert {
                     it[this.username] = username
-                    it[wantId] = want.id
+                    it[wantId] = want.releaseId
                     it[rating] = want.rating
                     it[resourceUrl] = want.resourceUrl.value
                     it[basicInformation] = json.encodeToString(want.basicInformation)

@@ -30,7 +30,7 @@ class WantlistApiClientTest : StringSpec({
         response.status shouldBe HttpStatusCode.OK
         val wants = response.body<WantsResponse>().result
         wants.shouldNotBeNull()
-        wants.first().id shouldBe 14622960
+        wants.first().releaseId shouldBe 14622960
         wants.first().basicInformation.title shouldBe "May God Bless Your Hustle"
     }
 

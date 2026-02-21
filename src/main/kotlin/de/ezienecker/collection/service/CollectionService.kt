@@ -22,7 +22,7 @@ class CollectionService(
         sortBy: String = "",
         sortOrder: String = "",
     ): Result<List<Release>> {
-        logger.info { "Fetching collection for user: [$username] with cache support." }
+        logger.info { "Fetching collection for user: [$username]." }
         logger.debug { "Sort by: [$sortBy], Sort order: [$sortOrder]." }
 
         return if (cache.hasValidCache(username)) {

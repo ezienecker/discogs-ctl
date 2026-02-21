@@ -1,4 +1,4 @@
-package de.ezienecker.core.infrastructure.discogs.marketplace
+package de.ezienecker.core.infrastructure.discogs.shop
 
 import de.ezienecker.core.infrastructure.discogs.shared.Pagination
 import de.ezienecker.core.infrastructure.discogs.shared.Response

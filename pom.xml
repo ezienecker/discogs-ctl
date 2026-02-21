@@ -26,6 +26,7 @@
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <kotest.version>5.9.1</kotest.version>
         <kotlin-logging-jvm.version>7.0.13</kotlin-logging-jvm.version>
+        <ksoup.version>0.2.5</ksoup.version>
         <ktor.version>3.3.3</ktor.version>
         <logback-classic.version>1.5.22</logback-classic.version>
         <mockk.version>1.14.7</mockk.version>
@@ -60,6 +61,11 @@
             <version>${mordant.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fleeksoft.ksoup</groupId>
+            <artifactId>ksoup-jvm</artifactId>
+            <version>${ksoup.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
             <artifactId>ktor-client-core-jvm</artifactId>

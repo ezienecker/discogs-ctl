@@ -1,6 +1,8 @@
 package de.ezienecker.core.infrastructure.discogs.marketplace
 
 import de.ezienecker.core.infrastructure.discogs.client.auth.providers.DiscogsClientConfiguration
+import de.ezienecker.core.infrastructure.discogs.shop.ShopApiClient
+import de.ezienecker.core.infrastructure.discogs.shop.ShopResponse
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe

@@ -2,25 +2,25 @@ package de.ezienecker.shop.service
 
 import de.ezienecker.core.infrastructure.discogs.client.ApiError
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
-import de.ezienecker.core.infrastructure.discogs.marketplace.Artist
-import de.ezienecker.core.infrastructure.discogs.marketplace.Comments
-import de.ezienecker.core.infrastructure.discogs.marketplace.Condition
-import de.ezienecker.core.infrastructure.discogs.marketplace.Currency
-import de.ezienecker.core.infrastructure.discogs.marketplace.Description
-import de.ezienecker.core.infrastructure.discogs.marketplace.Format
-import de.ezienecker.core.infrastructure.discogs.marketplace.Listing
-import de.ezienecker.core.infrastructure.discogs.marketplace.Price
-import de.ezienecker.core.infrastructure.discogs.marketplace.Release
-import de.ezienecker.core.infrastructure.discogs.marketplace.Seller
-import de.ezienecker.core.infrastructure.discogs.marketplace.ShopApiClient
-import de.ezienecker.core.infrastructure.discogs.marketplace.ShopResponse
-import de.ezienecker.core.infrastructure.discogs.marketplace.Status
-import de.ezienecker.core.infrastructure.discogs.marketplace.Title
-import de.ezienecker.core.infrastructure.discogs.marketplace.Uri
-import de.ezienecker.core.infrastructure.discogs.marketplace.Url
-import de.ezienecker.core.infrastructure.discogs.marketplace.Username
 import de.ezienecker.core.infrastructure.discogs.shared.Pagination
 import de.ezienecker.core.infrastructure.discogs.shared.Urls
+import de.ezienecker.core.infrastructure.discogs.shop.Artist
+import de.ezienecker.core.infrastructure.discogs.shop.Comments
+import de.ezienecker.core.infrastructure.discogs.shop.Condition
+import de.ezienecker.core.infrastructure.discogs.shop.Currency
+import de.ezienecker.core.infrastructure.discogs.shop.Description
+import de.ezienecker.core.infrastructure.discogs.shop.Format
+import de.ezienecker.core.infrastructure.discogs.shop.Listing
+import de.ezienecker.core.infrastructure.discogs.shop.Price
+import de.ezienecker.core.infrastructure.discogs.shop.Release
+import de.ezienecker.core.infrastructure.discogs.shop.Seller
+import de.ezienecker.core.infrastructure.discogs.shop.ShopApiClient
+import de.ezienecker.core.infrastructure.discogs.shop.ShopResponse
+import de.ezienecker.core.infrastructure.discogs.shop.Status
+import de.ezienecker.core.infrastructure.discogs.shop.Title
+import de.ezienecker.core.infrastructure.discogs.shop.Uri
+import de.ezienecker.core.infrastructure.discogs.shop.Url
+import de.ezienecker.core.infrastructure.discogs.shop.Username
 import de.ezienecker.shop.infrastructure.repository.ShopCacheService
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -303,7 +303,6 @@ class ShopServiceTest : FunSpec({
             }
         }
     }
-
 
     context("refreshInventoryByUser") {
         test("should clear cache and fetch fresh data") {

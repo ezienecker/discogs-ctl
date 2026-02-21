@@ -1,4 +1,4 @@
-package de.ezienecker.core.infrastructure.discogs.marketplace
+package de.ezienecker.core.infrastructure.discogs.shop
 
 import de.ezienecker.core.infrastructure.discogs.client.DiscogsClient
 import de.ezienecker.core.infrastructure.discogs.client.auth.providers.DiscogsClientConfiguration
@@ -10,7 +10,7 @@ import io.ktor.client.statement.HttpResponse
 
 class ShopApiClient(
     engine: HttpClientEngine = CIO.create(),
-    configuration: DiscogsClientConfiguration
+    configuration: DiscogsClientConfiguration,
 ) : DiscogsClient(engine, configuration) {
 
     suspend fun listUsersShop(

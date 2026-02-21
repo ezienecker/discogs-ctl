@@ -14,18 +14,23 @@ import de.ezienecker.collection.command.Collection
 import de.ezienecker.collection.infrastructure.repository.CollectionCacheService
 import de.ezienecker.collection.service.CollectionService
 import de.ezienecker.config.command.Config
+import de.ezienecker.core.batch.DefaultBatchProcessor
 import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.config.configureDatabaseConnection
 import de.ezienecker.core.infrastructure.config.setupSchema
 import de.ezienecker.core.infrastructure.discogs.collection.CollectionApiClient
-import de.ezienecker.core.infrastructure.discogs.marketplace.ShopApiClient
+import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceApiClient
+import de.ezienecker.core.infrastructure.discogs.shop.ShopApiClient
 import de.ezienecker.core.infrastructure.discogs.wantlist.WantlistApiClient
 import de.ezienecker.core.version.VersionProvider
 import de.ezienecker.shop.command.Shop
 import de.ezienecker.shop.infrastructure.repository.ShopCacheService
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.command.Wantlist
+import de.ezienecker.wantlist.infrastructure.repository.MarketplaceCacheService
 import de.ezienecker.wantlist.infrastructure.repository.WantlistCacheService
+import de.ezienecker.wantlist.service.MarketplaceListingTransformService
+import de.ezienecker.wantlist.service.MarketplaceService
 import de.ezienecker.wantlist.service.WantlistService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.json.Json
@@ -68,6 +73,12 @@ fun main(args: Array<String>) {
     val wantlistService = WantlistService(
         client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
         cache = WantlistCacheService(clock, json),
+        marketplaceService = MarketplaceService(
+            client = MarketplaceApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+            marketplaceListingsTransformService = MarketplaceListingTransformService(),
+            cache = MarketplaceCacheService(clock, json),
+        ),
+        batchProcessor = DefaultBatchProcessor(),
     )
 
     DiscogsCtl()

@@ -1,4 +1,4 @@
-package de.ezienecker.core.infrastructure.discogs.marketplace
+package de.ezienecker.core.infrastructure.discogs.shop
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

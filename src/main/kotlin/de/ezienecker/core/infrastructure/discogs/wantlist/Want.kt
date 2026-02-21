@@ -11,7 +11,8 @@ data class Want(
     val basicInformation: BasicInformation,
     @SerialName("resource_url")
     val resourceUrl: Url,
-    val id: Long,
+    @SerialName("id")
+    val releaseId: Long,
 )
 
 @Serializable

@@ -2,9 +2,9 @@ package de.ezienecker.shop.service
 
 import de.ezienecker.core.infrastructure.discogs.client.ApiError
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
-import de.ezienecker.core.infrastructure.discogs.marketplace.Listing
-import de.ezienecker.core.infrastructure.discogs.marketplace.ShopApiClient
-import de.ezienecker.core.infrastructure.discogs.marketplace.ShopResponse
+import de.ezienecker.core.infrastructure.discogs.shop.Listing
+import de.ezienecker.core.infrastructure.discogs.shop.ShopApiClient
+import de.ezienecker.core.infrastructure.discogs.shop.ShopResponse
 import de.ezienecker.shop.infrastructure.repository.ShopCacheService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.call.body
@@ -29,9 +29,10 @@ class ShopService(
         sortBy: String = "",
         sortOrder: String = "",
     ): Result<List<Listing>> {
-        logger.info { "Fetching inventory for user: [$username] with cache support." }
+        logger.info { "Fetching inventory for user: [$username]." }
         logger.debug { "Sort by: [$sortBy], Sort order: [$sortOrder]." }
 
+        logger.debug { "Checking if user: [$username] has valid cache." }
         return if (cache.hasValidCache(username)) {
             logger.info { "Using cached inventory data for user: [$username]." }
             try {

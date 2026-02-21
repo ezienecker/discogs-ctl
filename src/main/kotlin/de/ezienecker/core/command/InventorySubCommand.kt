@@ -14,8 +14,8 @@ import com.github.ajalt.mordant.widgets.progress.progressBarContextLayout
 import com.github.ajalt.mordant.widgets.progress.spinner
 import com.github.ajalt.mordant.widgets.progress.text
 import de.ezienecker.core.configuration.service.ConfigurationService
-import de.ezienecker.core.infrastructure.discogs.marketplace.Condition
-import de.ezienecker.core.infrastructure.discogs.marketplace.Price
+import de.ezienecker.core.infrastructure.discogs.shop.Condition
+import de.ezienecker.core.infrastructure.discogs.shop.Price
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.slf4j.LoggerFactory
 

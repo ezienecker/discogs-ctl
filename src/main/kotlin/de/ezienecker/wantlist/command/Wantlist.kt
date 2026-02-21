@@ -1,7 +1,10 @@
 package de.ezienecker.wantlist.command
 
 import com.github.ajalt.clikt.core.Context
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.mordant.animation.progress.advance
 import com.github.ajalt.mordant.rendering.TextAlign
 import com.github.ajalt.mordant.table.Borders
@@ -11,6 +14,8 @@ import de.ezienecker.core.command.InventorySubCommand
 import de.ezienecker.core.command.OutputFormat
 import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
+import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceListing
+import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceSeller
 import de.ezienecker.core.infrastructure.discogs.wantlist.Want
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
@@ -47,6 +52,12 @@ class Wantlist(
         
         # List wantlist inventory for user John-Doe filtered by shop entries from user Jane-Roe:
         discogs-ctl wantlist --username John-Doe --filtered-by-shop Jane-Roe
+        
+        # Show the 10 sellers (default) with the most listings for the wantlist entries, along with the details of their listings.
+        discogs-ctl wantlist --group-by-seller
+        
+        # Only shows the top 5 sellers with the most listings for the wantlist entries, along with the details of their listings.
+        discogs-ctl wantlist --group-by-seller --limit-group-by-seller 5
         """.trimIndent()
 
     private val fromShopUsername by option(
@@ -54,6 +65,21 @@ class Wantlist(
         help = "The username for whose shop inventory you are fetching " +
                 "If this option is set, only the entries that appear in the user's inventory are displayed."
     )
+
+    private val groupBySeller by option(
+        "--group-by-seller", "-g",
+        help = "When set, the wantlist entries are grouped by seller."
+    )
+        .flag(default = false)
+
+    private val limitGroupBySellerEntries by option(
+        "--limit-group-by-seller", "-l",
+        help = "Note this option is always applied when --group-by-seller is set, even if --limit-group-by-seller is not explicitly specified, in which case the default value of 10 is applied." +
+                "This option limits the number of seller entries shown when the --group-by-seller option is set.",
+        metavar = "<number>"
+    )
+        .int()
+        .default(10)
 
     override fun run(): Unit = runBlocking {
         handleVerboseOption()
@@ -67,18 +93,44 @@ class Wantlist(
             supervisorScope {
                 val wants = async { wantListService.listWantsByUser(username, sortBy, sortOrder) }
                     .also { it.invokeOnCompletion { progress.advance(1) } }
-                val filterIds = async { shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) }
-                    .also { it.invokeOnCompletion { progress.advance(1) } }
 
-                process(wants.await(), filterIds.await())
+                if (groupBySeller) {
+
+                    val releaseIds = wants.await().fold(
+                        onSuccess = { it.map { want -> want.releaseId } },
+                        onFailure = { emptyList() }
+                    )
+
+                    val marketplaceListingsGroupedBySeller =
+                        wantListService.getMarketplaceListingsForWants(releaseIds)
+                            .entries
+                            .sortedByDescending { it.value.size }
+                            .take(limitGroupBySellerEntries)
+                            .associate { it.key to it.value }
+
+                    showWantlistEntriesGroupedBySeller(marketplaceListingsGroupedBySeller)
+                } else {
+                    val filterIds = async { shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) }
+                        .also { it.invokeOnCompletion { progress.advance(1) } }
+
+                    showWantlistEntries(wants.await(), filterIds.await())
+                }
             }
         }
     }
 
-    fun process(wants: Result<List<Want>>, filterIds: Set<Long>) {
+    fun showWantlistEntries(wants: Result<List<Want>>, filterIds: Set<Long>) {
         wants
             .onFailure { printError((it as ApiException).error.message) }
             .onSuccess { printListings(it, filterIds) }
+    }
+
+    fun showWantlistEntriesGroupedBySeller(marketplaceListingsGroupedBySeller: Map<MarketplaceSeller, List<MarketplaceListing>>) {
+        if (marketplaceListingsGroupedBySeller.isEmpty()) {
+            terminal.println("No marketplace listings found for the wantlist entries.")
+        } else {
+            printMarketplaceListingsGroupedBySeller(marketplaceListingsGroupedBySeller)
+        }
     }
 
     override fun printListings(inventory: List<Want>, filteredIds: Set<Long>, outputFormat: OutputFormat) {
@@ -129,17 +181,43 @@ class Wantlist(
                 cellBorders = Borders.NONE
 
                 inventory.forEachIndexed { index, want ->
-                        row {
-                            cell("-[ Record ${(index + 1)} ]---------------------") {
-                                columnSpan = 2
-                                align = TextAlign.LEFT
-                            }
+                    row {
+                        cell("-[ Record ${(index + 1)} ]---------------------") {
+                            columnSpan = 2
+                            align = TextAlign.LEFT
                         }
-                        row("Artist", "| ${want.basicInformation.artists.joinToString { it.name }}")
-                        row("Title", "| ${want.basicInformation.title}")
-                        row("Format", "| ${want.basicInformation.formats.joinToString { it.formattedOutput() }}")
-                        row("Link", "| ${getReleaseLink(want.id)}")
                     }
+                    row("Artist", "| ${want.basicInformation.artists.joinToString { it.name }}")
+                    row("Title", "| ${want.basicInformation.title}")
+                    row("Format", "| ${want.basicInformation.formats.joinToString { it.formattedOutput() }}")
+                    row("Link", "| ${getReleaseLink(want.releaseId)}")
+                }
+            }
+        })
+    }
+
+    private fun printMarketplaceListingsGroupedBySeller(marketplaceListingsGroupedBySeller: Map<MarketplaceSeller, List<MarketplaceListing>>) {
+        terminal.println(table {
+            body {
+                cellBorders = Borders.NONE
+
+                marketplaceListingsGroupedBySeller.forEach { (seller, listings) ->
+                    row {
+                        cell("-[ Seller: ${seller.name} - ${listings.size} item(s)]---------------------") {
+                            columnSpan = 2
+                            align = TextAlign.LEFT
+                        }
+                    }
+
+                    listings.forEach { listing ->
+                        row("Title", "| ${listing.title}")
+                        row("Media", "| ${listing.mediaCondition}")
+                        row("Sleeve", "| ${listing.sleeveCondition}")
+                        row("Price", "| ${listing.price}")
+                        row("Ships from:", "| ${listing.shippingLocation}")
+                        row()
+                    }
+                }
             }
         })
     }

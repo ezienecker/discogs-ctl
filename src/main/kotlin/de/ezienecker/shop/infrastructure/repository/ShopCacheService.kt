@@ -2,16 +2,16 @@
 
 package de.ezienecker.shop.infrastructure.repository
 
-import de.ezienecker.core.infrastructure.discogs.marketplace.Comments
-import de.ezienecker.core.infrastructure.discogs.marketplace.Condition
-import de.ezienecker.core.infrastructure.discogs.marketplace.Currency
-import de.ezienecker.core.infrastructure.discogs.marketplace.Listing
-import de.ezienecker.core.infrastructure.discogs.marketplace.Price
-import de.ezienecker.core.infrastructure.discogs.marketplace.Release
-import de.ezienecker.core.infrastructure.discogs.marketplace.Seller
-import de.ezienecker.core.infrastructure.discogs.marketplace.Status
-import de.ezienecker.core.infrastructure.discogs.marketplace.Uri
-import de.ezienecker.core.infrastructure.discogs.marketplace.Url
+import de.ezienecker.core.infrastructure.discogs.shop.Comments
+import de.ezienecker.core.infrastructure.discogs.shop.Condition
+import de.ezienecker.core.infrastructure.discogs.shop.Currency
+import de.ezienecker.core.infrastructure.discogs.shop.Listing
+import de.ezienecker.core.infrastructure.discogs.shop.Price
+import de.ezienecker.core.infrastructure.discogs.shop.Release
+import de.ezienecker.core.infrastructure.discogs.shop.Seller
+import de.ezienecker.core.infrastructure.discogs.shop.Status
+import de.ezienecker.core.infrastructure.discogs.shop.Uri
+import de.ezienecker.core.infrastructure.discogs.shop.Url
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.core.and
@@ -48,7 +48,7 @@ class ShopCacheService(val clock: Clock, val json: Json) {
     fun getCached(username: String): List<Listing> = transaction {
         logger.debug { "Retrieving cached inventory for user: [$username]" }
 
-        val cachedListings = Listings.selectAll().where {
+        Listings.selectAll().where {
             Listings.username eq username
         }.map { row ->
             val seller =
@@ -71,10 +71,9 @@ class ShopCacheService(val clock: Clock, val json: Json) {
                 seller = seller,
                 release = release
             )
+        }.also {
+            logger.info { "Retrieved ${it.size} cached listings for user: [$username]" }
         }
-
-        logger.info { "Retrieved ${cachedListings.size} cached listings for user: [$username]" }
-        cachedListings
     }
 
     /**
@@ -110,24 +109,19 @@ class ShopCacheService(val clock: Clock, val json: Json) {
         logger.info { "Successfully cached ${listings.size} listings for user: [$username]" }
     }
 
-    /**
-     * Clear cache data for a specific user
-     */
     fun clearCache(username: String) = transaction {
         logger.info { "Clearing inventory cache for user: [$username]" }
         Listings.deleteWhere { Listings.username eq username }
         logger.info { "Successfully cleared inventory cache for user: [$username]" }
     }
 
-    /**
-     * Clear expired cache entries
-     */
     fun clearExpiredCache() = transaction {
         val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
-        val deletedCount = Listings.deleteWhere {
+        Listings.deleteWhere {
             Listings.cachedAt less cutoffTime
+        }.also {
+            logger.info { "Cleared [$it] expired inventory cache entries" }
         }
-        logger.info { "Cleared $deletedCount expired inventory cache entries" }
     }
 
     companion object {

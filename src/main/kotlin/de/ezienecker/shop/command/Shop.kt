@@ -11,8 +11,8 @@ import de.ezienecker.core.command.InventorySubCommand
 import de.ezienecker.core.command.OutputFormat
 import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
-import de.ezienecker.core.infrastructure.discogs.marketplace.Listing
-import de.ezienecker.core.infrastructure.discogs.marketplace.Status
+import de.ezienecker.core.infrastructure.discogs.shop.Listing
+import de.ezienecker.core.infrastructure.discogs.shop.Status
 import de.ezienecker.shop.service.ShopService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.async

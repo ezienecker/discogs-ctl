@@ -79,7 +79,7 @@ class WantlistTest : FunSpec({
                         id = 1L
                     ),
                     resourceUrl = Url("https://api.discogs.com/users/test-user/wants/1"),
-                    id = 100L
+                    releaseId = 100L
                 )
             )
 
@@ -101,7 +101,7 @@ class WantlistTest : FunSpec({
                 json.decodeFromString<List<Want>>(result.output)
             }
 
-            wants.first().id shouldBe 100L
+            wants.first().releaseId shouldBe 100L
             wants.first().rating shouldBe 5
             wants.first().basicInformation.title shouldBe "Wanted Album"
             wants.first().basicInformation.artists[0].name shouldBe "Wanted Artist"
@@ -148,7 +148,7 @@ class WantlistTest : FunSpec({
                         id = 2L
                     ),
                     resourceUrl = Url("https://api.discogs.com/users/test-user/wants/2"),
-                    id = 200L
+                    releaseId = 200L
                 )
             )
 
@@ -171,7 +171,7 @@ class WantlistTest : FunSpec({
             }
 
             parsedWants.size shouldBe 1
-            parsedWants.first().id shouldBe 200L
+            parsedWants.first().releaseId shouldBe 200L
             parsedWants.first().rating shouldBe 4
             parsedWants.first().basicInformation.title shouldBe "Another Wanted Album"
             parsedWants.first().basicInformation.artists[0].name shouldBe "Another Wanted Artist"
@@ -211,7 +211,7 @@ class WantlistTest : FunSpec({
                         id = 100L
                     ),
                     resourceUrl = Url("https://api.discogs.com/users/test-user/wants/100"),
-                    id = 1000L
+                    releaseId = 1000L
                 ),
                 Want(
                     rating = 3,
@@ -245,7 +245,7 @@ class WantlistTest : FunSpec({
                         id = 200L
                     ),
                     resourceUrl = Url("https://api.discogs.com/users/test-user/wants/200"),
-                    id = 2000L
+                    releaseId = 2000L
                 )
             )
 
@@ -306,7 +306,7 @@ class WantlistTest : FunSpec({
                         id = 500L
                     ),
                     resourceUrl = Url("https://api.discogs.com/users/test-user/wants/500"),
-                    id = 5000L
+                    releaseId = 5000L
                 )
             )
 
@@ -363,7 +363,7 @@ class WantlistTest : FunSpec({
                         id = 1L
                     ),
                     resourceUrl = Url("https://api.discogs.com/users/test-user/wants/1"),
-                    id = 100L
+                    releaseId = 100L
                 )
             )
 

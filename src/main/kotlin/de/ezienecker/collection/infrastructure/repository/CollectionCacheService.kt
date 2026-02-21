@@ -41,7 +41,7 @@ class CollectionCacheService(val clock: Clock.System, val json: Json) {
     fun getCached(username: String): List<Release> = transaction {
         logger.debug { "Retrieving cached collection for user: [$username]." }
 
-        val cachedReleases = CachedCollections.selectAll().where {
+        CachedCollections.selectAll().where {
             CachedCollections.username eq username
         }.map { row ->
             val basicInfo = json.decodeFromString<BasicInformation>(row[CachedCollections.basicInformation])
@@ -52,10 +52,9 @@ class CollectionCacheService(val clock: Clock.System, val json: Json) {
                 rating = row[CachedCollections.rating],
                 basicInformation = basicInfo
             )
+        }.also {
+            logger.info { "Retrieved ${it.size} cached releases for user: [$username]." }
         }
-
-        logger.info { "Retrieved ${cachedReleases.size} cached releases for user: [$username]." }
-        cachedReleases
     }
 
     /**
