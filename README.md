@@ -4,7 +4,7 @@
     <img src="docs/discogs-ctl-icon.jpg" width="15%" align="left" style="margin-right: 5px"/>
     <div style="display: inline-block;">
     <p>
-	    <em>A command line tool for Discogs users to compare their own store with another user's wantlist.</em>
+	    <em>A CLI tool for Discogs to browse and cross-reference collections, shops and wantlists between users.</em>
     </p>
     <p>
         <img src="https://img.shields.io/github/license/ezienecker/discogs-ctl?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
@@ -21,11 +21,12 @@
 </div>
 <br clear="left"/>
 
-##  Motivation
+##  What it does
 
-I want to know whether someone is looking for a record in their wantlist that I offer in my store or that I have twice in my collection.
-Wantlists can contain several hundred records and go over several pages, so it is very tedious to compare them manually and work through them page by page.
-The tool shows me which record I offer that are contained in another user's wantlist.
+- **Browse collections, shops & wantlists** – Fetch any Discogs user's inventory and display it in the terminal as a table, detail view or JSON.
+- **Cross-reference inventories** – Filter your shop by items on another user's wantlist – or the other way around. Works with collections too.
+- **Group by seller** – See which sellers have the most listings matching a wantlist, including listing details.
+- **Caching & configuration** – Results are cached locally. Username and API token can be stored persistently.
 
 ##  Demo
 
