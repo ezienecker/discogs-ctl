@@ -2,6 +2,7 @@
 
 package de.ezienecker.wantlist.infrastructure.repository
 
+import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceListing
 import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceSeller
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -16,15 +17,18 @@ import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 private val logger = KotlinLogging.logger {}
 
-class MarketplaceCacheService(val clock: Clock, val json: Json) {
+class MarketplaceCacheService(
+    val clock: Clock,
+    val json: Json,
+    val configurationService: ConfigurationService,
+) {
 
     fun hasValidCache(releaseId: Long): Boolean = transaction {
-        val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
         MarketplaceListings.select(MarketplaceListings.id).where {
             (MarketplaceListings.releaseId eq releaseId) and
                     (MarketplaceListings.cachedAt greater cutoffTime)
@@ -86,7 +90,7 @@ class MarketplaceCacheService(val clock: Clock, val json: Json) {
     }
 
     fun clearExpiredCache() = transaction {
-        val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
         MarketplaceListings.deleteWhere {
             MarketplaceListings.cachedAt less cutoffTime
         }.also {
@@ -94,7 +98,5 @@ class MarketplaceCacheService(val clock: Clock, val json: Json) {
         }
     }
 
-    companion object {
-        private val CACHE_EXPIRY_DURATION = 24.hours
-    }
+    private fun getCacheExpiryDuration() = configurationService.getMarketplaceListingsCacheDuration()
 }

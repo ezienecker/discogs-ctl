@@ -17,11 +17,15 @@ class MarketplaceService(
     private val cache: MarketplaceCacheService,
 ) {
 
-    suspend fun getListingsByReleaseId(releaseId: Long): Result<List<MarketplaceListing>> {
+    suspend fun getListingsByReleaseId(
+        releaseId: Long,
+        forceUpdate: Boolean = false,
+    ): Result<List<MarketplaceListing>> {
         logger.info { "Fetching marketplace listings for release with ID: [$releaseId]." }
 
         logger.debug { "Checking if release with ID: [$releaseId] has valid cache entry." }
-        return if (cache.hasValidCache(releaseId)) {
+        val hasValidCache = cache.hasValidCache(releaseId)
+        return if (hasValidCache && !forceUpdate) {
             logger.info { "Using cached marketplace listings data for release with ID: [$releaseId]." }
             try {
                 val cachedMarketplaceListings = cache.getCached(releaseId)
@@ -31,7 +35,8 @@ class MarketplaceService(
                 fetchAndCacheInventory(releaseId)
             }
         } else {
-            logger.info { "No valid cache found for release with ID: [$releaseId]. Fetching from API." }
+            logger.info { "Fetching collection from API for release with ID: [$releaseId]." }
+            logger.debug { "Either no valid cache [$hasValidCache] is found or a force update [$forceUpdate] is requested." }
             fetchAndCacheInventory(releaseId)
         }
     }
@@ -53,9 +58,11 @@ class MarketplaceService(
             val body = response.body<String>()
             logger.warn { "Failed to fetch marketplace listings for release ID: [$releaseId]. Status: [${response.status}]." }
             logger.debug { "Message: [$body]" }
-            return Result.failure(ApiException(
-                ApiError.Unknown(Exception("There is an client error when fetching marketplace listings for release with ID: [$releaseId]. Status: [${response.status}]."))
-            ))
+            return Result.failure(
+                ApiException(
+                    ApiError.Unknown(Exception("There is an client error when fetching marketplace listings for release with ID: [$releaseId]. Status: [${response.status}]."))
+                )
+            )
         } else {
             logger.warn { "Failed to fetch marketplace listings for release ID: [$releaseId]. Status: [${response.status}]." }
             return Result.failure(ApiException(ApiError.Unknown(Exception("Unexpected status: ${response.status}"))))

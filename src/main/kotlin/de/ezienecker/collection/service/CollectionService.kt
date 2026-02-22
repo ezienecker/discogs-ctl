@@ -21,11 +21,14 @@ class CollectionService(
         username: String,
         sortBy: String = "",
         sortOrder: String = "",
+        forceUpdate: Boolean = false,
     ): Result<List<Release>> {
         logger.info { "Fetching collection for user: [$username]." }
         logger.debug { "Sort by: [$sortBy], Sort order: [$sortOrder]." }
 
-        return if (cache.hasValidCache(username)) {
+        logger.debug { "Checking if user: [$username] has valid cache for the collection." }
+        val hasValidCache = cache.hasValidCache(username)
+        return if (hasValidCache && !forceUpdate) {
             logger.info { "Using cached collection data for user: [$username]." }
             try {
                 val cachedReleases = cache.getCached(username).run {
@@ -37,7 +40,8 @@ class CollectionService(
                 fetchAndCacheCollection(username, sortBy, sortOrder)
             }
         } else {
-            logger.info { "No valid cache found for user: [$username]. Fetching from API." }
+            logger.info { "Fetching collection from API for user: [$username]." }
+            logger.debug { "Either no valid cache [$hasValidCache] is found or a force update [$forceUpdate] is requested." }
             fetchAndCacheCollection(username, sortBy, sortOrder)
         }
     }

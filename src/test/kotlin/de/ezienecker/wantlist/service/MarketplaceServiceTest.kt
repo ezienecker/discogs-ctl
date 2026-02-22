@@ -110,24 +110,22 @@ class MarketplaceServiceTest : FunSpec({
             val apiListings = listOf(createTestListing(releaseId = testReleaseId))
             val htmlContent = "<html><body>Test HTML</body></html>"
 
-            // First call - no cache exists yet, API is called
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns htmlContent
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns apiListings
-            every { mockCacheService.cache(testReleaseId, apiListings) } just Runs
-
             runTest {
+                // First call - no cache exists yet, API is called
+                every { mockCacheService.hasValidCache(testReleaseId) } returns false
+                every { mockHttpResponse.status } returns HttpStatusCode.OK
+                coEvery { mockHttpResponse.body<String>() } returns htmlContent
+                coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
+                every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns apiListings
+                every { mockCacheService.cache(testReleaseId, apiListings) } just Runs
+
                 val firstResult = marketplaceService.getListingsByReleaseId(testReleaseId)
                 firstResult.isSuccess shouldBe true
-            }
 
-            // Second call - cache is now valid and used
-            every { mockCacheService.hasValidCache(testReleaseId) } returns true
-            every { mockCacheService.getCached(testReleaseId) } returns apiListings
+                // Second call - cache is now valid and used
+                every { mockCacheService.hasValidCache(testReleaseId) } returns true
+                every { mockCacheService.getCached(testReleaseId) } returns apiListings
 
-            runTest {
                 val secondResult = marketplaceService.getListingsByReleaseId(testReleaseId)
                 secondResult.isSuccess shouldBe true
             }

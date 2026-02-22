@@ -69,12 +69,12 @@ class Collection(
 
             supervisorScope {
 
-                val collection = async { collectionService.listCollectionByUser(username, sortBy, sortOrder) }
+                val collection = async { collectionService.listCollectionByUser(username, sortBy, sortOrder, force) }
                     .also { it.invokeOnCompletion { progress.advance(1) } }
-                val filteredIdsFromShop = async { shopService.getIdsFromInventoryReleasesByUser(fromShopUsername) }
+                val filteredIdsFromShop = async { shopService.getIdsFromInventoryReleasesByUser(fromShopUsername, force) }
                     .also { it.invokeOnCompletion { progress.advance(1) } }
                 val filteredIdsFromWantList =
-                    async { wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername) }
+                    async { wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername, force) }
                         .also { it.invokeOnCompletion { progress.advance(1) } }
 
                 process(collection.await(), filteredIdsFromShop.await(), filteredIdsFromWantList.await())

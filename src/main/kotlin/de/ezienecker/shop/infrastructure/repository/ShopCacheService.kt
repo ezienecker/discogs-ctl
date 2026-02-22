@@ -2,6 +2,7 @@
 
 package de.ezienecker.shop.infrastructure.repository
 
+import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.shop.Comments
 import de.ezienecker.core.infrastructure.discogs.shop.Condition
 import de.ezienecker.core.infrastructure.discogs.shop.Currency
@@ -24,18 +25,21 @@ import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 private val logger = KotlinLogging.logger {}
 
-class ShopCacheService(val clock: Clock, val json: Json) {
+class ShopCacheService(
+    val clock: Clock,
+    val json: Json,
+    val configurationService: ConfigurationService,
+) {
 
     /**
      * Check if inventory data exists in cache and is not expired
      */
     fun hasValidCache(username: String): Boolean = transaction {
-        val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
         Listings.select(Listings.id).where {
             (Listings.username eq username) and
                     (Listings.cachedAt greater cutoffTime)
@@ -89,22 +93,22 @@ class ShopCacheService(val clock: Clock, val json: Json) {
         listings
             .distinctBy { it.id }
             .forEach { listing ->
-            Listings.insert {
-                it[this.username] = username
-                it[listingId] = listing.id
-                it[resourceUrl] = listing.resourceUrl.value
-                it[uri] = listing.uri.value
-                it[status] = listing.status.name
-                it[mediaCondition] = listing.mediaCondition.name
-                it[sleeveCondition] = listing.sleeveCondition.name
-                it[comments] = listing.comments.value
-                it[priceValue] = listing.price.value
-                it[priceCurrency] = listing.price.currency.value
-                it[seller] = json.encodeToString(listing.seller)
-                it[release] = json.encodeToString(listing.release)
-                it[cachedAt] = now
+                Listings.insert {
+                    it[this.username] = username
+                    it[listingId] = listing.id
+                    it[resourceUrl] = listing.resourceUrl.value
+                    it[uri] = listing.uri.value
+                    it[status] = listing.status.name
+                    it[mediaCondition] = listing.mediaCondition.name
+                    it[sleeveCondition] = listing.sleeveCondition.name
+                    it[comments] = listing.comments.value
+                    it[priceValue] = listing.price.value
+                    it[priceCurrency] = listing.price.currency.value
+                    it[seller] = json.encodeToString(listing.seller)
+                    it[release] = json.encodeToString(listing.release)
+                    it[cachedAt] = now
+                }
             }
-        }
 
         logger.info { "Successfully cached ${listings.size} listings for user: [$username]" }
     }
@@ -116,7 +120,7 @@ class ShopCacheService(val clock: Clock, val json: Json) {
     }
 
     fun clearExpiredCache() = transaction {
-        val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
         Listings.deleteWhere {
             Listings.cachedAt less cutoffTime
         }.also {
@@ -124,7 +128,5 @@ class ShopCacheService(val clock: Clock, val json: Json) {
         }
     }
 
-    companion object {
-        private val CACHE_EXPIRY_DURATION = 24.hours
-    }
+    private fun getCacheExpiryDuration() = configurationService.getShopCacheDuration()
 }

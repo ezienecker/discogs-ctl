@@ -17,8 +17,11 @@ class ShopService(
     private val cache: ShopCacheService,
 ) {
 
-    suspend fun getIdsFromInventoryReleasesByUser(username: String?) = username?.let { user ->
-        listInventoryByUser(user).fold(
+    suspend fun getIdsFromInventoryReleasesByUser(
+        username: String?,
+        forceUpdate: Boolean = false,
+    ) = username?.let { user ->
+        listInventoryByUser(user, forceUpdate = forceUpdate).fold(
             onSuccess = { inventory -> inventory.map { it.release.id }.toSet() },
             onFailure = { emptySet() }
         )
@@ -28,12 +31,14 @@ class ShopService(
         username: String,
         sortBy: String = "",
         sortOrder: String = "",
+        forceUpdate: Boolean = false,
     ): Result<List<Listing>> {
         logger.info { "Fetching inventory for user: [$username]." }
         logger.debug { "Sort by: [$sortBy], Sort order: [$sortOrder]." }
 
-        logger.debug { "Checking if user: [$username] has valid cache." }
-        return if (cache.hasValidCache(username)) {
+        logger.debug { "Checking if user: [$username] has valid cache for the shop inventory." }
+        val hasValidCache = cache.hasValidCache(username)
+        return if (hasValidCache && !forceUpdate) {
             logger.info { "Using cached inventory data for user: [$username]." }
             try {
                 val cachedListings = cache.getCached(username).run {
@@ -45,7 +50,8 @@ class ShopService(
                 fetchAndCacheInventory(username, sortBy, sortOrder)
             }
         } else {
-            logger.info { "No valid cache found for user: [$username]. Fetching from API." }
+            logger.info { "Fetching collection from API for user: [$username]." }
+            logger.debug { "Either no valid cache [$hasValidCache] is found or a force update [$forceUpdate] is requested." }
             fetchAndCacheInventory(username, sortBy, sortOrder)
         }
     }

@@ -64,19 +64,19 @@ fun main(args: Array<String>) {
         client = CollectionApiClient(
             configuration = configurationService.getDiscogsClientConfiguration()
         ),
-        cache = CollectionCacheService(clock, json),
+        cache = CollectionCacheService(clock, json, configurationService),
     )
     val shopService = ShopService(
         client = ShopApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
-        cache = ShopCacheService(clock, json),
+        cache = ShopCacheService(clock, json, configurationService),
     )
     val wantlistService = WantlistService(
         client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
-        cache = WantlistCacheService(clock, json),
+        cache = WantlistCacheService(clock, json, configurationService),
         marketplaceService = MarketplaceService(
             client = MarketplaceApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
             marketplaceListingsTransformService = MarketplaceListingTransformService(),
-            cache = MarketplaceCacheService(clock, json),
+            cache = MarketplaceCacheService(clock, json, configurationService),
         ),
         batchProcessor = DefaultBatchProcessor(),
     )

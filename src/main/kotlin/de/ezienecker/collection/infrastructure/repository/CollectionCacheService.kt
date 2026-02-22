@@ -2,6 +2,7 @@
 
 package de.ezienecker.collection.infrastructure.repository
 
+import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.collection.BasicInformation
 import de.ezienecker.core.infrastructure.discogs.collection.Release
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -16,19 +17,22 @@ import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 private val logger = KotlinLogging.logger {}
 
-class CollectionCacheService(val clock: Clock.System, val json: Json) {
+class CollectionCacheService(
+    val clock: Clock.System,
+    val json: Json,
+    val configurationService: ConfigurationService,
+) {
 
     /**
      * Check if collection data exists in cache and is not expired
      */
     @OptIn(ExperimentalTime::class)
     fun hasValidCache(username: String): Boolean = transaction {
-        val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
         CachedCollections.select(CachedCollections.id).where {
             (CachedCollections.username eq username) and
                     (CachedCollections.cachedAt greater cutoffTime)
@@ -70,16 +74,16 @@ class CollectionCacheService(val clock: Clock.System, val json: Json) {
         releases
             .distinctBy { it.id to it.instanceId }
             .forEach { release ->
-            CachedCollections.insert {
-                it[this.username] = username
-                it[releaseId] = release.id
-                it[instanceId] = release.instanceId
-                it[dateAdded] = release.dateAdded
-                it[rating] = release.rating
-                it[basicInformation] = json.encodeToString(release.basicInformation)
-                it[cachedAt] = now
+                CachedCollections.insert {
+                    it[this.username] = username
+                    it[releaseId] = release.id
+                    it[instanceId] = release.instanceId
+                    it[dateAdded] = release.dateAdded
+                    it[rating] = release.rating
+                    it[basicInformation] = json.encodeToString(release.basicInformation)
+                    it[cachedAt] = now
+                }
             }
-        }
 
         logger.info { "Successfully cached ${releases.size} releases for user: [$username]." }
     }
@@ -97,14 +101,12 @@ class CollectionCacheService(val clock: Clock.System, val json: Json) {
      * Clear expired cache entries
      */
     fun clearExpiredCache() = transaction {
-        val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
         val deletedCount = CachedCollections.deleteWhere {
             CachedCollections.cachedAt less cutoffTime
         }
         logger.info { "Cleared $deletedCount expired collection cache entries." }
     }
 
-    companion object {
-        private val CACHE_EXPIRY_DURATION = 24.hours
-    }
+    private fun getCacheExpiryDuration() = configurationService.getCollectionCacheDuration()
 }

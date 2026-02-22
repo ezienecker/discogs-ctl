@@ -1,8 +1,14 @@
 package de.ezienecker.core.configuration.model
 
+import kotlin.time.Duration
+
 data class Configuration(
     val username: Username?,
     val token: Token?,
+    val collectionCacheDuration: Duration?,
+    val shopCacheDuration: Duration?,
+    val wantlistCacheDuration: Duration?,
+    val marketplaceListingsCacheDuration: Duration?,
 )
 
 @JvmInline

@@ -91,7 +91,7 @@ class Wantlist(
             progress.update { total = 2 }
 
             supervisorScope {
-                val wants = async { wantListService.listWantsByUser(username, sortBy, sortOrder) }
+                val wants = async { wantListService.listWantsByUser(username, sortBy, sortOrder, force) }
                     .also { it.invokeOnCompletion { progress.advance(1) } }
 
                 if (groupBySeller) {
@@ -102,11 +102,12 @@ class Wantlist(
                     )
 
                     val marketplaceListingsGroupedBySeller =
-                        wantListService.getMarketplaceListingsForWants(releaseIds)
+                        wantListService.getMarketplaceListingsForWants(releaseIds, force)
                             .entries
                             .sortedByDescending { it.value.size }
                             .take(limitGroupBySellerEntries)
                             .associate { it.key to it.value }
+                            .also { progress.advance(1) }
 
                     showWantlistEntriesGroupedBySeller(marketplaceListingsGroupedBySeller)
                 } else {

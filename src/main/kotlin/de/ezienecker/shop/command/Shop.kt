@@ -58,9 +58,9 @@ class Shop(
             progress.update { total = 2 }
 
             supervisorScope {
-                val listings = async { shopService.listInventoryByUser(username, sortBy, sortOrder) }
+                val listings = async { shopService.listInventoryByUser(username, sortBy, sortOrder, force) }
                     .also { it.invokeOnCompletion { progress.advance(1) } }
-                val filterIds = async { wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername) }
+                val filterIds = async { wantListService.getIdsFromWantlistReleasesByUser(fromWantListUsername, force) }
                     .also { it.invokeOnCompletion { progress.advance(1) } }
 
                 process(listings.await(), filterIds.await())

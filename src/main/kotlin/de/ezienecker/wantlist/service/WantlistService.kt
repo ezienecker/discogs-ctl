@@ -22,7 +22,10 @@ class WantlistService(
     private val batchProcessor: BatchProcessor<Long, List<MarketplaceListing>>,
 ) {
 
-    suspend fun getMarketplaceListingsForWants(releaseIds: List<Long>): Map<MarketplaceSeller, List<MarketplaceListing>> {
+    suspend fun getMarketplaceListingsForWants(
+        releaseIds: List<Long>,
+        forceUpdate: Boolean = false,
+    ): Map<MarketplaceSeller, List<MarketplaceListing>> {
         logger.info { "Fetching marketplace listings for [${releaseIds.size}] releases from wantlist." }
 
         val allListings = batchProcessor.processParallelBatch(
@@ -32,7 +35,7 @@ class WantlistService(
         ) { batchOfReleaseIds ->
             logger.debug { "Processing batch of ${batchOfReleaseIds.size} release IDs." }
             batchOfReleaseIds.flatMap { releaseId ->
-                marketplaceService.getListingsByReleaseId(releaseId).getOrElse { emptyList() }
+                marketplaceService.getListingsByReleaseId(releaseId, forceUpdate).getOrElse { emptyList() }
             }
         }
 
@@ -44,8 +47,11 @@ class WantlistService(
         return groupedBySeller
     }
 
-    suspend fun getIdsFromWantlistReleasesByUser(username: String?) = username?.let { user ->
-        listWantsByUser(user).fold(
+    suspend fun getIdsFromWantlistReleasesByUser(
+        username: String?,
+        forceUpdate: Boolean = false,
+    ) = username?.let { user ->
+        listWantsByUser(user, forceUpdate = forceUpdate).fold(
             onSuccess = { wants -> wants.map { it.basicInformation.id }.toSet() },
             onFailure = { emptySet() }
         )
@@ -55,10 +61,13 @@ class WantlistService(
         username: String,
         sortBy: String = "",
         sortOrder: String = "",
+        forceUpdate: Boolean = false,
     ): Result<List<Want>> {
         logger.info { "Fetching wantlist for user: [$username]." }
 
-        return if (cache.hasValidCache(username)) {
+        logger.debug { "Checking if user: [$username] has valid cache for the wantlist." }
+        val hasValidCache = cache.hasValidCache(username)
+        return if (hasValidCache && !forceUpdate) {
             logger.info { "Using cached wantlist data for user: [$username]." }
             try {
                 val cachedWants = cache.getCached(username).run {
@@ -70,7 +79,8 @@ class WantlistService(
                 fetchAndCacheWantlist(username, sortBy, sortOrder)
             }
         } else {
-            logger.info { "No valid cache found for user: [$username]. Fetching from API." }
+            logger.info { "Fetching collection from API for user: [$username]." }
+            logger.debug { "Either no valid cache [$hasValidCache] is found or a force update [$forceUpdate] is requested." }
             fetchAndCacheWantlist(username, sortBy, sortOrder)
         }
     }

@@ -54,7 +54,7 @@ abstract class InventorySubCommand<T>(
         .choice("compact", "wide", "json", "display")
         .default("compact")
 
-    private val force by option(
+    val force by option(
         names = arrayOf("--force-update", "-f"),
         help = "Force update the cache",
     )

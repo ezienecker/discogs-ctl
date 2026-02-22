@@ -2,6 +2,7 @@
 
 package de.ezienecker.wantlist.infrastructure.repository
 
+import de.ezienecker.core.configuration.service.ConfigurationService
 import de.ezienecker.core.infrastructure.discogs.wantlist.BasicInformation
 import de.ezienecker.core.infrastructure.discogs.wantlist.Url
 import de.ezienecker.core.infrastructure.discogs.wantlist.Want
@@ -17,18 +18,21 @@ import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 private val logger = KotlinLogging.logger {}
 
-class WantlistCacheService(val clock: Clock, val json: Json) {
+class WantlistCacheService(
+    val clock: Clock,
+    val json: Json,
+    val configurationService: ConfigurationService,
+) {
 
     /**
      * Check if wantlist data exists in cache and is not expired
      */
     fun hasValidCache(username: String): Boolean = transaction {
-        val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
         Wants.select(Wants.id).where {
             (Wants.username eq username) and
                     (Wants.cachedAt greater cutoffTime)
@@ -95,14 +99,12 @@ class WantlistCacheService(val clock: Clock, val json: Json) {
      * Clear expired cache entries
      */
     fun clearExpiredCache() = transaction {
-        val cutoffTime = clock.now() - CACHE_EXPIRY_DURATION
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
         val deletedCount = Wants.deleteWhere {
             Wants.cachedAt less cutoffTime
         }
         logger.info { "Cleared $deletedCount expired wantlist cache entries" }
     }
 
-    companion object {
-        private val CACHE_EXPIRY_DURATION = 24.hours
-    }
+    private fun getCacheExpiryDuration() = configurationService.getWantlistCacheDuration()
 }
