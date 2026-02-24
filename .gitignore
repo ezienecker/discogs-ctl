@@ -1,6 +1,8 @@
-# Maven
-/target/
-!.mvn/wrapper/maven-wrapper.jar
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
 **/logs/
 **/*.log
 **/*.tmp
@@ -23,7 +25,5 @@ out/
 Thumbs.db
 
 # Sonstiges
-.gradle/
-build/
 bin/
 /docs/internal/

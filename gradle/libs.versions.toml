@@ -1,0 +1,71 @@
+[versions]
+kotlin = "2.2.21"
+clikt = "5.0.3"
+exposed = "1.0.0"
+junit-jupiter = "5.8.2"
+kotest = "5.9.1"
+kotlin-logging = "7.0.13"
+ksoup = "0.2.5"
+ktor = "3.3.3"
+logback = "1.5.22"
+mockk = "1.14.7"
+mordant = "3.0.2"
+shadow = "8.3.6"
+sqlite-jdbc = "3.51.1.0"
+
+[libraries]
+clikt = { module = "com.github.ajalt.clikt:clikt-jvm", version.ref = "clikt" }
+
+mordant = { module = "com.github.ajalt.mordant:mordant-jvm", version.ref = "mordant" }
+mordant-coroutines = { module = "com.github.ajalt.mordant:mordant-coroutines-jvm", version.ref = "mordant" }
+
+ksoup = { module = "com.fleeksoft.ksoup:ksoup-jvm", version.ref = "ksoup" }
+
+ktor-client-core = { module = "io.ktor:ktor-client-core-jvm", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio-jvm", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth-jvm", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation-jvm", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor" }
+ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock-jvm", version.ref = "ktor" }
+
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+exposed-kotlin-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
+exposed-json = { module = "org.jetbrains.exposed:exposed-json", version.ref = "exposed" }
+
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
+
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+mockk = { module = "io.mockk:mockk-jvm", version.ref = "mockk" }
+
+[bundles]
+mordant = ["mordant", "mordant-coroutines"]
+ktor-client = [
+    "ktor-client-core",
+    "ktor-client-cio",
+    "ktor-client-auth",
+    "ktor-client-content-negotiation",
+    "ktor-client-logging",
+    "ktor-serialization-json",
+]
+exposed = [
+    "exposed-core",
+    "exposed-dao",
+    "exposed-jdbc",
+    "exposed-kotlin-datetime",
+    "exposed-json",
+]
+logging = ["logback-classic", "kotlin-logging"]
+kotest = ["kotest-runner-junit5", "kotest-assertions-core"]
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }

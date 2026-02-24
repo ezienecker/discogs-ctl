@@ -1,25 +1,11 @@
 # Discogs-CTL
 
-<div align="left">
-    <img src="docs/discogs-ctl-icon.jpg" width="15%" align="left" style="margin-right: 5px"/>
-    <div style="display: inline-block;">
-    <p>
-	    <em>A CLI tool for Discogs to browse and cross-reference collections, shops and wantlists between users.</em>
-    </p>
-    <p>
-        <img src="https://img.shields.io/github/license/ezienecker/discogs-ctl?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-        <img src="https://img.shields.io/github/last-commit/ezienecker/discogs-ctl?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-        <img src="https://img.shields.io/github/languages/top/ezienecker/discogs-ctl?style=default&color=0080ff" alt="repo-top-language">
-        <img src="https://img.shields.io/github/languages/count/ezienecker/discogs-ctl?style=default&color=0080ff" alt="repo-language-count">
-    </p>
-        <p><!-- default option, no dependency badges. -->
-</p>
-        <p>
-	<!-- default option, no dependency badges. -->
-</p>
-    </div>
-</div>
-<br clear="left"/>
+A CLI tool for Discogs to browse and cross-reference collections, shops and wantlists between users.
+
+<img src="https://img.shields.io/github/license/ezienecker/discogs-ctl?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
+<img src="https://img.shields.io/github/last-commit/ezienecker/discogs-ctl?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+<img src="https://img.shields.io/github/languages/top/discogs-ctl?style=default&color=0080ff" alt="repo-top-language">
+<img src="https://img.shields.io/github/languages/count/ezienecker/discogs-ctl?style=default&color=0080ff" alt="repo-language-count">
 
 ##  What it does
 
@@ -41,29 +27,27 @@ Install `discogs-ctl` using one of the following methods:
 Before getting started with discogs-ctl, ensure your runtime environment meets the following requirements:
 
 - **Programming Language:** Kotlin
-- **Package Manager:** Maven
+- **Build Tool:** Gradle (wrapper included)
 
 1. Clone the discogs-ctl repository:
-```sh
-git clone https://github.com/ezienecker/discogs-ctl
-```
-
+    ```sh
+    git clone https://github.com/ezienecker/discogs-ctl
+    ```
 2. Navigate to the project directory:
-```sh
-cd discogs-ctl
-```
-
-3. Install the project dependencies:
-```sh
-maven clean install
-```
+    ```sh
+    cd discogs-ctl
+    ```
+3. Build the project:
+    ```sh
+    ./gradlew build
+    ```
 
 ##  Usage
 
-To run the project after building it, you can add a alias to your shell configuration file (e.g., `.bashrc`, `.zshrc`):
+To run the project after building it, you can add an alias to your shell configuration file (e.g., `.bashrc`, `.zshrc`):
 
 ```sh
-alias discogs-ctl="java -jar /discogs-ctl/target/discogs-clt-1.0.0-SNAPSHOT-jar-with-dependencies.jar"
+alias discogs-ctl="java -jar /path/to/discogs-ctl/build/libs/discogs-ctl-1.0.0-SNAPSHOT.jar"
 ```
 
 With that set up, you can use the `discogs-ctl` command from anywhere in your terminal.
