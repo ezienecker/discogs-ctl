@@ -18,6 +18,7 @@ import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceListing
 import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceSeller
 import de.ezienecker.core.infrastructure.discogs.wantlist.Want
 import de.ezienecker.shop.service.ShopService
+import de.ezienecker.wantlist.service.MarketplaceService
 import de.ezienecker.wantlist.service.WantlistService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ import kotlinx.serialization.json.Json
 class Wantlist(
     private val shopService: ShopService,
     private val wantListService: WantlistService,
+    private val marketplaceService: MarketplaceService,
     configurationService: ConfigurationService,
     private val terminal: Terminal,
 ) : InventorySubCommand<Want>(
@@ -102,7 +104,7 @@ class Wantlist(
                     )
 
                     val marketplaceListingsGroupedBySeller =
-                        wantListService.getMarketplaceListingsForWants(releaseIds, force)
+                        marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds, force)
                             .entries
                             .sortedByDescending { it.value.size }
                             .take(limitGroupBySellerEntries)
@@ -197,7 +199,24 @@ class Wantlist(
         })
     }
 
-    private fun printMarketplaceListingsGroupedBySeller(marketplaceListingsGroupedBySeller: Map<MarketplaceSeller, List<MarketplaceListing>>) {
+    private fun printMarketplaceListingsGroupedBySeller(
+        marketplaceListingsGroupedBySeller: Map<MarketplaceSeller, List<MarketplaceListing>>
+    ) {
+        when (OutputFormat.from(format)) {
+            OutputFormat.Compact, OutputFormat.Wide ->
+                printMarketplaceListingsGroupedBySellerAsTable(marketplaceListingsGroupedBySeller)
+
+            OutputFormat.Json ->
+                echo("Currently not supported.")
+
+            OutputFormat.Display ->
+                printMarketplaceListingsGroupedBySellerAsDisplay(marketplaceListingsGroupedBySeller)
+        }
+    }
+
+    private fun printMarketplaceListingsGroupedBySellerAsTable(
+        marketplaceListingsGroupedBySeller: Map<MarketplaceSeller, List<MarketplaceListing>>
+    ) {
         terminal.println(table {
             body {
                 cellBorders = Borders.NONE
@@ -210,7 +229,38 @@ class Wantlist(
                         }
                     }
 
-                    listings.forEach { listing ->
+                    row("Title", "Media", "Sleeve", "Price", "Ships from")
+
+                    listings
+                        .sortedBy { it.title }
+                        .forEach { listing ->
+                        row(listing.title, listing.mediaCondition, listing.sleeveCondition, listing.price, listing.shippingLocation)
+                    }
+
+                    row()
+                }
+            }
+        })
+    }
+
+    private fun printMarketplaceListingsGroupedBySellerAsDisplay(
+        marketplaceListingsGroupedBySeller: Map<MarketplaceSeller, List<MarketplaceListing>>
+    ) {
+        terminal.println(table {
+            body {
+                cellBorders = Borders.NONE
+
+                marketplaceListingsGroupedBySeller.forEach { (seller, listings) ->
+                    row {
+                        cell("-[ Seller: ${seller.name} - ${listings.size} item(s)]---------------------") {
+                            columnSpan = 2
+                            align = TextAlign.LEFT
+                        }
+                    }
+
+                    listings
+                        .sortedBy { it.title }
+                        .forEach { listing ->
                         row("Title", "| ${listing.title}")
                         row("Media", "| ${listing.mediaCondition}")
                         row("Sleeve", "| ${listing.sleeveCondition}")

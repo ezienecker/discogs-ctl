@@ -1,22 +1,14 @@
 package de.ezienecker.wantlist.service
 
-import de.ezienecker.core.infrastructure.discogs.client.ApiError
-import de.ezienecker.core.infrastructure.discogs.client.ApiException
+import de.ezienecker.core.batch.BatchProcessor
 import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceApiClient
 import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceListing
 import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceSeller
 import de.ezienecker.wantlist.infrastructure.repository.MarketplaceCacheService
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeInstanceOf
-import io.ktor.client.call.body
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.HttpStatusCode
-import io.mockk.Runs
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
@@ -26,378 +18,345 @@ class MarketplaceServiceTest : FunSpec({
     lateinit var mockApiClient: MarketplaceApiClient
     lateinit var mockTransformService: MarketplaceListingTransformService
     lateinit var mockCacheService: MarketplaceCacheService
-    lateinit var mockHttpResponse: HttpResponse
+    lateinit var mockBatchProcessor: BatchProcessor<Long, List<MarketplaceListing>>
     lateinit var marketplaceService: MarketplaceService
-
-    val testReleaseId = 12345L
 
     beforeEach {
         mockApiClient = mockk()
         mockTransformService = mockk()
         mockCacheService = mockk()
-        mockHttpResponse = mockk()
-        marketplaceService = MarketplaceService(mockApiClient, mockTransformService, mockCacheService)
+        mockBatchProcessor = mockk()
+        marketplaceService =
+            MarketplaceService(mockApiClient, mockTransformService, mockCacheService, mockBatchProcessor)
     }
 
-    context("Cache behavior of getListingsByReleaseId function") {
-        test("should use cache when valid cache exists") {
-            val cachedListings = listOf(createTestListing(releaseId = testReleaseId))
-
-            every { mockCacheService.hasValidCache(testReleaseId) } returns true
-            every { mockCacheService.getCached(testReleaseId) } returns cachedListings
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                result.isSuccess shouldBe true
-                result.getOrNull() shouldBe cachedListings
-            }
-
-            verify { mockCacheService.hasValidCache(testReleaseId) }
-            verify { mockCacheService.getCached(testReleaseId) }
-            coVerify(exactly = 0) { mockApiClient.getListingsByReleaseId(any()) }
-            verify(exactly = 0) { mockTransformService.transformListings(any(), any()) }
-        }
-
-        test("should call API when no valid cache exists") {
-            val apiListings = listOf(createTestListing(releaseId = testReleaseId))
-            val htmlContent = "<html><body>Test HTML</body></html>"
-
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns htmlContent
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns apiListings
-            every { mockCacheService.cache(testReleaseId, apiListings) } just Runs
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                result.isSuccess shouldBe true
-                result.getOrNull() shouldBe apiListings
-            }
-
-            verify { mockCacheService.hasValidCache(testReleaseId) }
-            coVerify { mockApiClient.getListingsByReleaseId(testReleaseId) }
-            verify { mockTransformService.transformListings(testReleaseId, htmlContent) }
-            verify { mockCacheService.cache(testReleaseId, apiListings) }
-        }
-
-        test("should fallback to API when cache retrieval fails") {
-            val apiListings = listOf(createTestListing(releaseId = testReleaseId))
-            val htmlContent = "<html><body>Test HTML</body></html>"
-
-            every { mockCacheService.hasValidCache(testReleaseId) } returns true
-            every { mockCacheService.getCached(testReleaseId) } throws RuntimeException("Database connection error")
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns htmlContent
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns apiListings
-            every { mockCacheService.cache(testReleaseId, apiListings) } just Runs
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                result.isSuccess shouldBe true
-                result.getOrNull() shouldBe apiListings
-            }
-
-            verify { mockCacheService.hasValidCache(testReleaseId) }
-            verify { mockCacheService.getCached(testReleaseId) }
-            coVerify { mockApiClient.getListingsByReleaseId(testReleaseId) }
-            verify { mockTransformService.transformListings(testReleaseId, htmlContent) }
-            verify { mockCacheService.cache(testReleaseId, apiListings) }
-        }
-
-        test("should handle cache expiry correctly") {
-            val apiListings = listOf(createTestListing(releaseId = testReleaseId))
-            val htmlContent = "<html><body>Test HTML</body></html>"
-
-            runTest {
-                // First call - no cache exists yet, API is called
-                every { mockCacheService.hasValidCache(testReleaseId) } returns false
-                every { mockHttpResponse.status } returns HttpStatusCode.OK
-                coEvery { mockHttpResponse.body<String>() } returns htmlContent
-                coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-                every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns apiListings
-                every { mockCacheService.cache(testReleaseId, apiListings) } just Runs
-
-                val firstResult = marketplaceService.getListingsByReleaseId(testReleaseId)
-                firstResult.isSuccess shouldBe true
-
-                // Second call - cache is now valid and used
-                every { mockCacheService.hasValidCache(testReleaseId) } returns true
-                every { mockCacheService.getCached(testReleaseId) } returns apiListings
-
-                val secondResult = marketplaceService.getListingsByReleaseId(testReleaseId)
-                secondResult.isSuccess shouldBe true
-            }
-
-            // Verify first call used API, second call used cache
-            verify(exactly = 2) { mockCacheService.hasValidCache(testReleaseId) }
-            verify(exactly = 1) { mockCacheService.getCached(testReleaseId) }
-            coVerify(exactly = 1) { mockApiClient.getListingsByReleaseId(testReleaseId) }
-            verify(exactly = 1) { mockTransformService.transformListings(testReleaseId, htmlContent) }
-            verify(exactly = 1) { mockCacheService.cache(testReleaseId, apiListings) }
-        }
-    }
-
-    context("API error handling") {
-        test("should handle non-OK HTTP status") {
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.NotFound
-            coEvery { mockHttpResponse.body<String>() } returns "Not Found"
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-
-                result.isFailure shouldBe true
-                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-                val exception = result.exceptionOrNull() as ApiException
-                exception.error.shouldBeInstanceOf<ApiError.Unknown>()
-            }
-
-            verify { mockCacheService.hasValidCache(testReleaseId) }
-            coVerify { mockApiClient.getListingsByReleaseId(testReleaseId) }
-            verify(exactly = 0) { mockCacheService.cache(any(), any()) }
-        }
-
-        test("should handle forbidden access (403)") {
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.Forbidden
-            coEvery { mockHttpResponse.body<String>() } returns "Forbidden"
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-
-                result.isFailure shouldBe true
-                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            }
-
-            coVerify { mockApiClient.getListingsByReleaseId(testReleaseId) }
-            verify(exactly = 0) { mockCacheService.cache(any(), any()) }
-        }
-
-        test("should handle server error (500)") {
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.InternalServerError
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-
-                result.isFailure shouldBe true
-                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            }
-
-            coVerify { mockApiClient.getListingsByReleaseId(testReleaseId) }
-            verify(exactly = 0) { mockCacheService.cache(any(), any()) }
-        }
-
-        test("should handle service unavailable (503)") {
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.ServiceUnavailable
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-
-                result.isFailure shouldBe true
-                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            }
-        }
-
-        test("should handle bad request (400)") {
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.BadRequest
-            coEvery { mockHttpResponse.body<String>() } returns "Bad Request"
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-
-                result.isFailure shouldBe true
-                result.exceptionOrNull().shouldBeInstanceOf<ApiException>()
-            }
-        }
-    }
-
-    context("Edge cases") {
-        test("should handle empty marketplace listings from API") {
-            val emptyListings = emptyList<MarketplaceListing>()
-            val htmlContent = "<html><body></body></html>"
-
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns htmlContent
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns emptyListings
-            every { mockCacheService.cache(testReleaseId, emptyListings) } just Runs
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                result.isSuccess shouldBe true
-                result.getOrNull() shouldBe emptyListings
-            }
-
-            verify { mockCacheService.cache(testReleaseId, emptyListings) }
-        }
-
-        test("should handle very large listing response") {
-            val largeListings = (1..1000).map { createTestListing(releaseId = testReleaseId, title = "Album $it") }
-            val htmlContent = "<html><body>Large HTML content</body></html>"
-
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns htmlContent
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns largeListings
-            every { mockCacheService.cache(testReleaseId, largeListings) } just Runs
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                result.isSuccess shouldBe true
-                result.getOrNull()?.size shouldBe 1000
-            }
-
-            verify { mockCacheService.cache(testReleaseId, largeListings) }
-        }
-
-        test("should continue successfully even if cache fails to save") {
-            val apiListings = listOf(createTestListing(releaseId = testReleaseId))
-            val htmlContent = "<html><body>Test HTML</body></html>"
-
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns htmlContent
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns apiListings
-            every { mockCacheService.cache(testReleaseId, apiListings) } throws RuntimeException("Cache write failed")
-
-            runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                // Should still return success since the API call was successful
-                result.isSuccess shouldBe true
-                result.getOrNull() shouldBe apiListings
-            }
-
-            verify { mockCacheService.cache(testReleaseId, apiListings) }
-        }
-
-        test("should handle multiple consecutive calls for same release ID") {
-            val cachedListings = listOf(createTestListing(releaseId = testReleaseId))
-
-            every { mockCacheService.hasValidCache(testReleaseId) } returns true
-            every { mockCacheService.getCached(testReleaseId) } returns cachedListings
-
-            runTest {
-                // Make multiple calls
-                repeat(5) {
-                    val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                    result.isSuccess shouldBe true
-                    result.getOrNull() shouldBe cachedListings
-                }
-            }
-
-            // All calls should use cache
-            verify(exactly = 5) { mockCacheService.hasValidCache(testReleaseId) }
-            verify(exactly = 5) { mockCacheService.getCached(testReleaseId) }
-            coVerify(exactly = 0) { mockApiClient.getListingsByReleaseId(testReleaseId) }
-        }
-
-        test("should handle different release IDs independently") {
-            val releaseId1 = 111L
-            val releaseId2 = 222L
-            val listings1 = listOf(createTestListing(releaseId = releaseId1))
-            val listings2 = listOf(createTestListing(releaseId = releaseId2))
-
-            every { mockCacheService.hasValidCache(releaseId1) } returns true
-            every { mockCacheService.getCached(releaseId1) } returns listings1
-            every { mockCacheService.hasValidCache(releaseId2) } returns true
-            every { mockCacheService.getCached(releaseId2) } returns listings2
-
-            runTest {
-                val result1 = marketplaceService.getListingsByReleaseId(releaseId1)
-                val result2 = marketplaceService.getListingsByReleaseId(releaseId2)
-
-                result1.isSuccess shouldBe true
-                result2.isSuccess shouldBe true
-                result1.getOrNull() shouldBe listings1
-                result2.getOrNull() shouldBe listings2
-            }
-
-            verify { mockCacheService.hasValidCache(releaseId1) }
-            verify { mockCacheService.hasValidCache(releaseId2) }
-            verify { mockCacheService.getCached(releaseId1) }
-            verify { mockCacheService.getCached(releaseId2) }
-        }
-
-        test("should handle transformation service returning null values") {
-            val listingsWithNulls = listOf(
-                MarketplaceListing(
-                    releaseId = testReleaseId,
-                    title = "",
-                    resourceUrl = "",
-                    mediaCondition = "",
-                    sleeveCondition = "",
-                    price = "",
-                    seller = MarketplaceSeller(""),
-                    shippingLocation = ""
+    context("getMarketplaceListingsByReleaseIds") {
+        test("should return empty map when given empty release ID list") {
+            every { mockCacheService.findByReleaseIdNotIn(emptyList()) } returns emptyList()
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = emptyList(),
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
                 )
+            } returns emptyList()
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(emptyList())
+                result shouldBe emptyMap()
+            }
+
+            verify { mockCacheService.findByReleaseIdNotIn(emptyList()) }
+        }
+
+        test("should group listings by seller") {
+            val releaseIds = listOf(1L, 2L, 3L)
+            val listings = listOf(
+                createTestListing(releaseId = 1L, sellerName = "seller-A", price = "$10.00"),
+                createTestListing(releaseId = 2L, sellerName = "seller-B", price = "$20.00"),
+                createTestListing(releaseId = 3L, sellerName = "seller-A", price = "$15.00")
             )
-            val htmlContent = "<html><body>Malformed HTML</body></html>"
 
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns htmlContent
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, htmlContent) } returns listingsWithNulls
-            every { mockCacheService.cache(testReleaseId, listingsWithNulls) } just Runs
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
 
             runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                result.isSuccess shouldBe true
-                result.getOrNull() shouldBe listingsWithNulls
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                result.size shouldBe 2
+                result[MarketplaceSeller("seller-A")]?.size shouldBe 2
+                result[MarketplaceSeller("seller-B")]?.size shouldBe 1
             }
         }
-    }
 
-    context("Response body handling") {
-        test("should handle HTML with special characters") {
-            val specialHtml = "<html><body>Price: €25.99 • Seller: Test & Co.</body></html>"
-            val listings = listOf(createTestListing(releaseId = testReleaseId, price = "€25.99"))
+        test("should handle single seller with multiple listings") {
+            val releaseIds = listOf(1L, 2L, 3L)
+            val listings = listOf(
+                createTestListing(releaseId = 1L, sellerName = "mega-seller", price = "$10.00"),
+                createTestListing(releaseId = 2L, sellerName = "mega-seller", price = "$20.00"),
+                createTestListing(releaseId = 3L, sellerName = "mega-seller", price = "$30.00")
+            )
 
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns specialHtml
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, specialHtml) } returns listings
-            every { mockCacheService.cache(testReleaseId, listings) } just Runs
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
 
             runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                result.isSuccess shouldBe true
-            }
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
 
-            verify { mockTransformService.transformListings(testReleaseId, specialHtml) }
+                result.size shouldBe 1
+                result[MarketplaceSeller("mega-seller")]?.size shouldBe 3
+            }
         }
 
-        test("should handle very large HTML response") {
-            val largeHtml = "<html><body>" + "x".repeat(1000000) + "</body></html>"
-            val listings = listOf(createTestListing(releaseId = testReleaseId))
+        test("should handle releases with no marketplace listings") {
+            val releaseIds = listOf(1L, 2L, 3L)
 
-            every { mockCacheService.hasValidCache(testReleaseId) } returns false
-            every { mockHttpResponse.status } returns HttpStatusCode.OK
-            coEvery { mockHttpResponse.body<String>() } returns largeHtml
-            coEvery { mockApiClient.getListingsByReleaseId(testReleaseId) } returns mockHttpResponse
-            every { mockTransformService.transformListings(testReleaseId, largeHtml) } returns listings
-            every { mockCacheService.cache(testReleaseId, listings) } just Runs
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(emptyList())
 
             runTest {
-                val result = marketplaceService.getListingsByReleaseId(testReleaseId)
-                result.isSuccess shouldBe true
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+                result shouldBe emptyMap()
+            }
+        }
+
+        test("should handle mix of releases with and without listings") {
+            val releaseIds = listOf(1L, 2L, 3L, 4L)
+            val listings = listOf(
+                createTestListing(releaseId = 1L, sellerName = "seller-A"),
+                createTestListing(releaseId = 3L, sellerName = "seller-B")
+            )
+
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                result.size shouldBe 2
+                result.values.flatten().size shouldBe 2
+            }
+        }
+
+        test("should handle large number of release IDs (batch processing)") {
+            val releaseIds = (1L..100L).toList()
+            val listings = releaseIds.map { id ->
+                createTestListing(releaseId = id, sellerName = "seller-${id % 10}")
             }
 
-            verify { mockTransformService.transformListings(testReleaseId, largeHtml) }
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                // Should be grouped by 10 different sellers (seller-0 to seller-9)
+                result.size shouldBe 10
+                result.values.flatten().size shouldBe 100
+            }
+        }
+
+        test("should handle single release ID") {
+            val releaseIds = listOf(42L)
+            val listings = listOf(
+                createTestListing(releaseId = 42L, sellerName = "solo-seller")
+            )
+
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                result.size shouldBe 1
+                result[MarketplaceSeller("solo-seller")]?.size shouldBe 1
+            }
+        }
+
+        test("should handle multiple listings from same seller for same release") {
+            val releaseIds = listOf(1L)
+            val listings = listOf(
+                createTestListing(releaseId = 1L, sellerName = "seller-A", price = "$10.00"),
+                createTestListing(releaseId = 1L, sellerName = "seller-A", price = "$12.00"),
+                createTestListing(releaseId = 1L, sellerName = "seller-A", price = "$15.00")
+            )
+
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                result.size shouldBe 1
+                result[MarketplaceSeller("seller-A")]?.size shouldBe 3
+            }
+        }
+
+        test("should handle sellers with special characters in names") {
+            val releaseIds = listOf(1L, 2L)
+            val listings = listOf(
+                createTestListing(releaseId = 1L, sellerName = "seller-ñ-ümlaut"),
+                createTestListing(releaseId = 2L, sellerName = "seller-日本語")
+            )
+
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                result.size shouldBe 2
+                result.keys.map { it.name } shouldBe listOf("seller-ñ-ümlaut", "seller-日本語")
+            }
+        }
+
+        test("should handle very large number of sellers") {
+            val releaseIds = (1L..500L).toList()
+            // Each release has a unique seller
+            val listings = releaseIds.map { id ->
+                createTestListing(releaseId = id, sellerName = "seller-$id")
+            }
+
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                result.size shouldBe 500
+                result.values.all { it.size == 1 } shouldBe true
+            }
+        }
+
+        test("should preserve all listing details when grouping by seller") {
+            val releaseIds = listOf(1L, 2L)
+            val listing1 = createTestListing(
+                releaseId = 1L,
+                sellerName = "seller-A",
+                title = "Album 1",
+                price = "$10.00"
+            )
+            val listing2 = createTestListing(
+                releaseId = 2L,
+                sellerName = "seller-A",
+                title = "Album 2",
+                price = "$20.00"
+            )
+
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns releaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it.toSet() == releaseIds.toSet() },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listOf(listing1, listing2))
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                val sellerListings = result[MarketplaceSeller("seller-A")]!!
+                sellerListings.size shouldBe 2
+                sellerListings[0].title shouldBe "Album 1"
+                sellerListings[0].price shouldBe "$10.00"
+                sellerListings[1].title shouldBe "Album 2"
+                sellerListings[1].price shouldBe "$20.00"
+            }
+        }
+
+        test("should handle duplicate release IDs gracefully") {
+            val releaseIds = listOf(1L, 1L, 2L, 2L, 3L)
+            val uniqueReleaseIds = releaseIds
+            val listings = listOf(
+                createTestListing(releaseId = 1L, sellerName = "seller-A"),
+                createTestListing(releaseId = 2L, sellerName = "seller-B"),
+                createTestListing(releaseId = 3L, sellerName = "seller-C")
+            )
+
+            every { mockCacheService.findByReleaseIdNotIn(releaseIds) } returns uniqueReleaseIds
+            every { mockCacheService.getAllCached(emptyList()) } returns emptyList()
+
+            coEvery {
+                mockBatchProcessor.processParallelBatch(
+                    items = match { it == uniqueReleaseIds },
+                    batchSize = 20,
+                    concurrency = 5,
+                    processor = any()
+                )
+            } returns listOf(listings)
+
+            runTest {
+                val result = marketplaceService.getMarketplaceListingsByReleaseIds(releaseIds)
+
+                result.size shouldBe 3
+                result.values.flatten().size shouldBe 3
+            }
         }
     }
 })

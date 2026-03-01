@@ -7,9 +7,11 @@ import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceListing
 import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceSeller
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.v1.core.ResultRow
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.greater
+import org.jetbrains.exposed.v1.core.inList
 import org.jetbrains.exposed.v1.core.less
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 import org.jetbrains.exposed.v1.jdbc.insert
@@ -27,6 +29,26 @@ class MarketplaceCacheService(
     val configurationService: ConfigurationService,
 ) {
 
+    fun findByReleaseIdNotIn(releaseIds: List<Long>): List<Long> = transaction {
+        logger.debug { "Finding release IDs from input list that are not in cache: [$releaseIds]." }
+
+        if (releaseIds.isEmpty()) {
+            return@transaction emptyList()
+        }
+
+        val cutoffTime = clock.now() - getCacheExpiryDuration()
+        val cachedReleaseIds = MarketplaceListings.select(MarketplaceListings.releaseId).where {
+            (MarketplaceListings.releaseId inList releaseIds) and
+                    (MarketplaceListings.cachedAt greater cutoffTime)
+        }.withDistinct().map { row ->
+            row[MarketplaceListings.releaseId]
+        }.toSet()
+
+        releaseIds.filterNot { it in cachedReleaseIds }.also {
+            logger.info { "Found [${it.size}] releases with no valid cached marketplace listings." }
+        }
+    }
+
     fun hasValidCache(releaseId: Long): Boolean = transaction {
         val cutoffTime = clock.now() - getCacheExpiryDuration()
         MarketplaceListings.select(MarketplaceListings.id).where {
@@ -35,27 +57,38 @@ class MarketplaceCacheService(
         }.count() > 0
     }
 
+    fun getAllCached(releaseIds: List<Long>) = transaction {
+        logger.debug { "Retrieving cached marketplace listings for release IDs: [$releaseIds]." }
+
+        MarketplaceListings
+            .selectAll()
+            .where { MarketplaceListings.releaseId inList releaseIds }
+            .map { mapRowToMarketplaceListing(it) }
+            .also {
+                logger.info { "Retrieved [${it.size}] cached marketplace listings for release IDs: [$releaseIds]." }
+            }
+    }
+
     fun getCached(releaseId: Long): List<MarketplaceListing> = transaction {
         logger.debug { "Retrieving cached marketplace listings for release with ID: [$releaseId]" }
 
-        MarketplaceListings.selectAll().where {
-            MarketplaceListings.releaseId eq releaseId
-        }.map { row ->
-
-            MarketplaceListing(
-                releaseId = row[MarketplaceListings.releaseId],
-                title = row[MarketplaceListings.title],
-                resourceUrl = row[MarketplaceListings.resourceUrl],
-                mediaCondition = row[MarketplaceListings.mediaCondition],
-                sleeveCondition = row[MarketplaceListings.sleeveCondition],
-                price = row[MarketplaceListings.priceWithCurrency],
-                seller = MarketplaceSeller(row[MarketplaceListings.seller]),
-                shippingLocation = row[MarketplaceListings.shippingLocation],
-            )
-        }.also {
-            logger.info { "Retrieved ${it.size} cached marketplace listings for release with ID: [$releaseId]" }
-        }
+        MarketplaceListings
+            .selectAll()
+            .where { MarketplaceListings.releaseId eq releaseId }
+            .map { mapRowToMarketplaceListing(it) }
+            .also { logger.info { "Retrieved ${it.size} cached marketplace listings for release with ID: [$releaseId]" } }
     }
+
+    private fun mapRowToMarketplaceListing(row: ResultRow): MarketplaceListing = MarketplaceListing(
+        releaseId = row[MarketplaceListings.releaseId],
+        title = row[MarketplaceListings.title],
+        resourceUrl = row[MarketplaceListings.resourceUrl],
+        mediaCondition = row[MarketplaceListings.mediaCondition],
+        sleeveCondition = row[MarketplaceListings.sleeveCondition],
+        price = row[MarketplaceListings.priceWithCurrency],
+        seller = MarketplaceSeller(row[MarketplaceListings.seller]),
+        shippingLocation = row[MarketplaceListings.shippingLocation],
+    )
 
     fun cache(releaseId: Long, marketplaceListings: List<MarketplaceListing>) = transaction {
         logger.debug { "Caching ${marketplaceListings.size} marketplace listings for release with ID: [$releaseId]" }

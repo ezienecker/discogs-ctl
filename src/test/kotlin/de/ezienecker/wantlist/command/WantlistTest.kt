@@ -10,6 +10,7 @@ import de.ezienecker.core.infrastructure.discogs.wantlist.Label
 import de.ezienecker.core.infrastructure.discogs.wantlist.Url
 import de.ezienecker.core.infrastructure.discogs.wantlist.Want
 import de.ezienecker.shop.service.ShopService
+import de.ezienecker.wantlist.service.MarketplaceService
 import de.ezienecker.wantlist.service.WantlistService
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -25,6 +26,7 @@ class WantlistTest : FunSpec({
 
     lateinit var mockShopService: ShopService
     lateinit var mockWantlistService: WantlistService
+    lateinit var mockMarketplaceService: MarketplaceService
     lateinit var mockConfigurationService: ConfigurationService
     lateinit var terminal: Terminal
     lateinit var wantlist: Wantlist
@@ -34,13 +36,15 @@ class WantlistTest : FunSpec({
     beforeEach {
         mockShopService = mockk()
         mockWantlistService = mockk()
+        mockMarketplaceService = mockk()
         mockConfigurationService = mockk()
         terminal = Terminal()
         wantlist = Wantlist(
             mockShopService,
             mockWantlistService,
+            mockMarketplaceService,
             mockConfigurationService,
-            terminal
+            terminal,
         )
     }
 

@@ -1,10 +1,7 @@
 package de.ezienecker.wantlist.service
 
-import de.ezienecker.core.batch.BatchProcessor
 import de.ezienecker.core.infrastructure.discogs.client.ApiError
 import de.ezienecker.core.infrastructure.discogs.client.ApiException
-import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceListing
-import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceSeller
 import de.ezienecker.core.infrastructure.discogs.wantlist.Want
 import de.ezienecker.core.infrastructure.discogs.wantlist.WantlistApiClient
 import de.ezienecker.core.infrastructure.discogs.wantlist.WantsResponse
@@ -18,34 +15,7 @@ private val logger = KotlinLogging.logger {}
 class WantlistService(
     private val client: WantlistApiClient,
     private val cache: WantlistCacheService,
-    private val marketplaceService: MarketplaceService,
-    private val batchProcessor: BatchProcessor<Long, List<MarketplaceListing>>,
 ) {
-
-    suspend fun getMarketplaceListingsForWants(
-        releaseIds: List<Long>,
-        forceUpdate: Boolean = false,
-    ): Map<MarketplaceSeller, List<MarketplaceListing>> {
-        logger.info { "Fetching marketplace listings for [${releaseIds.size}] releases from wantlist." }
-
-        val allListings = batchProcessor.processParallelBatch(
-            items = releaseIds,
-            batchSize = 20,
-            concurrency = 5
-        ) { batchOfReleaseIds ->
-            logger.debug { "Processing batch of ${batchOfReleaseIds.size} release IDs." }
-            batchOfReleaseIds.flatMap { releaseId ->
-                marketplaceService.getListingsByReleaseId(releaseId, forceUpdate).getOrElse { emptyList() }
-            }
-        }
-
-        val flattenedListings = allListings.flatten()
-        val groupedBySeller = flattenedListings.groupBy { it.seller }
-
-        logger.info { "Found [${flattenedListings.size}] listings from [${groupedBySeller.size}] sellers." }
-
-        return groupedBySeller
-    }
 
     suspend fun getIdsFromWantlistReleasesByUser(
         username: String?,

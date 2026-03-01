@@ -73,11 +73,11 @@ fun main(args: Array<String>) {
     val wantlistService = WantlistService(
         client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
         cache = WantlistCacheService(clock, json, configurationService),
-        marketplaceService = MarketplaceService(
-            client = MarketplaceApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
-            marketplaceListingsTransformService = MarketplaceListingTransformService(),
-            cache = MarketplaceCacheService(clock, json, configurationService),
-        ),
+    )
+    val marketplaceService = MarketplaceService(
+        client = MarketplaceApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        marketplaceListingsTransformService = MarketplaceListingTransformService(),
+        cache = MarketplaceCacheService(clock, json, configurationService),
         batchProcessor = DefaultBatchProcessor(),
     )
 
@@ -91,7 +91,7 @@ fun main(args: Array<String>) {
                 ),
             Collection(collectionService, shopService, wantlistService, configurationService, terminal),
             Shop(shopService, wantlistService, configurationService, terminal),
-            Wantlist(shopService, wantlistService, configurationService, terminal),
+            Wantlist(shopService, wantlistService, marketplaceService, configurationService, terminal),
         ).main(args)
 }
 
