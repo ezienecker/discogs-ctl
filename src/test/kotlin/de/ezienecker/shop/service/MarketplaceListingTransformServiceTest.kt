@@ -12,87 +12,157 @@ class MarketplaceListingTransformServiceTest : StringSpec({
 
     "should transform single listing from real HTML" {
         val releaseId = 42424242L
+        //<editor-fold desc="Realistic HTML snippet for a single listing">
         val listingHtml = """
             <html>
             <body>
-            <div id="pjax_container">
-                <table>
-                    <tbody>
-                        <tr class="shortcut_navigable" data-release-id="42424242">
-                            <td class="item_picture as_float">
-                                <div class="hide_mobile community_data_text">
-                                    <div class="community_rating">
-                                        Rated: <strong>4.80</strong>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="item_description">
-                                <strong>
-                                    <a href="/sell/item/2085508604" class="item_description_title" data-followable="true">John Doe and Band - 1995 (LP, Ltd, Mixtape, Whi)</a>
-                                </strong>
-                                <br />
-                                <p class="hide_mobile label_and_cat">
-                                    <span class="mplabel">Label:</span><a href="https://www.discogs.com/label/1683917-Air-Vinyl-Records">Air Vinyl Records</a><br />
-                                    <span class="mplabel">Cat#:</span>
-                                    <span class="item_catno">AV051-LP</span>
-                                    <br />
-                                </p>
-                                <p class="item_condition">
-                                    <span class="mplabel condition-label-desktop">Media Condition:</span>
-                                    <span class="mplabel condition-label-mobile">Media:</span>
-                                    <span>
-                                        Mint (M)
-                                        <span class="has-tooltip" role="note" tabindex="0">
-                                            <i class="icon icon-info-circle muted" role="img" aria-hidden="true"></i>
-                                            <span class="tooltip multi-line-tooltip sr-only" role="tooltip">
-                                                <span class="tooltip-inner">
-                                                    Absolutely perfect in every way. Certainly never been played. Should be used sparingly as a grade.            
-                                                </span>
-                                            </span>
-                                        </span>
-                                    </span>
-                                    <br />
-                                    <span class="mplabel condition-label-desktop">Sleeve Condition:</span>
-                                    <span class="mplabel condition-label-mobile">Sleeve:</span>
-                                    <span class="item_sleeve_condition">Mint (M)</span>
-                                    <br />
-                                </p>
-                            </td>
-                            <td class="seller_info">
+            <div id="page" class="marketplace_less_than_six_filters with_tabs aside_off_canvas">
+                <div class="lr float_fix mprelease_info" role="main" aria-label="release">
+                    <div class="left">
+                    </div>
+                    <div class="right">
+                        <div class="section statistics toggle_section    toggle_section_remember"
+                             data-toggle-section-id="statistics" id="statistics">
+                            <div class="toggle_section_control" data-for=".statistics">
+                                <h2>
+                                    Statistics
+                                </h2>
+                            </div>
+                            <div class="section_content toggle_section_content">
                                 <ul>
                                     <li>
-                                        <div class="seller_block">
-                                            <span class="mplabel seller_label">Seller:</span>
-                                            <strong><a href="/seller/John Doe/profile">John Doe</a></strong>
-                                        </div>
+                                        <span>Have:</span>
+                                        <a class="coll_num" id="coll_num_r36524902"
+                                           href="/release/stats/36524902#collection">1</a>
                                     </li>
                                     <li>
-                                        <span class="star_rating" alt="John Doe rating 5.0 stars out of 5" role="img" aria-label="John Doe rating 5.0 out of 5">
-                                            <i role="img" aria-hidden="true" class="icon icon-star"></i>
-                                        </span> 
-                                        <strong>100.0%</strong><span>,</span>
-                                        <a href="/sell/seller_feedback/John Doe" target="_top" class="section_link">240 ratings</a>
+                                        <span>Want:</span>
+                                        <a class="want_num" id="want_num_r" href="/release/stats/36524902#wantlist">17</a>
                                     </li>
-                                    <li><span class="mplabel">Ships From:</span>United States</li>
+                                    <li>
+                                        <span>Avg Rating:</span>
+                                        <span class="rating_value">4.15</span> / 5
+                                    </li>
+                                    <li>
+                    <span>Ratings:<span4>
+                    <a href="/release/stats/36524902"><span class="rating_count">13</span></a>
+                </span4></span></li>
                                 </ul>
-                            </td>
-                            <td class="item_price hide_mobile">
-                                <div>
-                                    <span class="price" data-currency=USD data-pricevalue=24.99>$24.99</span>
-                                    <br />
-                                    <span class="item_shipping">
-                                        +$24.00
-                                        <button class="show-shipping-methods" data-seller-username="John Doe" data-seller-id="966843">shipping</button>
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                <ul class="last">
+                                    <li>
+                                        <span>Last Sold:</span>
+                                        <a href="/sell/history/36524902">01 Mar 26</a>
+                                    </li>
+                                    <li>
+                                        <span>Lowest:</span>
+                                        €19.99
+                                    </li>
+                                    <li>
+                                        <span>Median:</span>
+                                        €21.87
+                                    </li>
+                                    <li>
+                                        <span>Highest:</span>
+                                        €312.49
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div id="page_content" role="main">
+                    <div id="other_versions_wrap" class="other_versions_wrap">
+                        <div class="other_versions_table">
+                            <div id="pjax_container">
+                                <table>
+                                    <tbody>
+                                    <tr class="shortcut_navigable" data-release-id="42424242">
+                                        <td class="item_picture as_float">
+                                            <div class="hide_mobile community_data_text">
+                                                <div class="community_rating">
+                                                    Rated: <strong>4.80</strong>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="item_description">
+                                            <strong>
+                                                <a href="/sell/item/2085508604" class="item_description_title"
+                                                   data-followable="true">John Doe and Band - 1995 (LP, Ltd, Mixtape, Whi)</a>
+                                            </strong>
+                                            <br/>
+                                            <p class="hide_mobile label_and_cat">
+                                                <span class="mplabel">Label:</span><a
+                                                    href="https://www.discogs.com/label/1683917-Air-Vinyl-Records">Air Vinyl
+                                                Records</a><br/>
+                                                <span class="mplabel">Cat#:</span>
+                                                <span class="item_catno">AV051-LP</span>
+                                                <br/>
+                                            </p>
+                                            <p class="item_condition">
+                                                <span class="mplabel condition-label-desktop">Media Condition:</span>
+                                                <span class="mplabel condition-label-mobile">Media:</span>
+                                                <span>
+                                                Mint (M)
+                                                <span class="has-tooltip" role="note" tabindex="0">
+                                                    <i class="icon icon-info-circle muted" role="img" aria-hidden="true"></i>
+                                                    <span class="tooltip multi-line-tooltip sr-only" role="tooltip">
+                                                        <span class="tooltip-inner">
+                                                            Absolutely perfect in every way. Certainly never been played. Should be used sparingly as a grade.
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                                <br/>
+                                                <span class="mplabel condition-label-desktop">Sleeve Condition:</span>
+                                                <span class="mplabel condition-label-mobile">Sleeve:</span>
+                                                <span class="item_sleeve_condition">Mint (M)</span>
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td class="seller_info">
+                                            <ul>
+                                                <li>
+                                                    <div class="seller_block">
+                                                        <span class="mplabel seller_label">Seller:</span>
+                                                        <strong><a href="/seller/John Doe/profile">John Doe</a></strong>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                <span class="star_rating" alt="John Doe rating 5.0 stars out of 5" role="img"
+                                                      aria-label="John Doe rating 5.0 out of 5">
+                                                    <i role="img" aria-hidden="true" class="icon icon-star"></i>
+                                                </span>
+                                                    <strong>100.0%</strong><span>,</span>
+                                                    <a href="/sell/seller_feedback/John Doe" target="_top" class="section_link">240
+                                                        ratings</a>
+                                                </li>
+                                                <li><span class="mplabel">Ships From:</span>United States</li>
+                                            </ul>
+                                        </td>
+                                        <td class="item_price hide_mobile">
+                                            <div>
+                                                <span class="price" data-currency=USD data-pricevalue=24.99>$24.99</span>
+                                                <br/>
+                                                <span class="item_shipping">
+                                                +$24.00
+                                                <button class="show-shipping-methods" data-seller-username="John Doe"
+                                                        data-seller-id="966843">shipping</button>
+                                            </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             </body>
             </html>
         """.trimIndent()
+        //</editor-fold>
 
         val result = marketplaceListingTransformService.transformListings(releaseId, listingHtml)
 
@@ -103,86 +173,151 @@ class MarketplaceListingTransformServiceTest : StringSpec({
         result[0].mediaCondition shouldBe "Mint (M)"
         result[0].sleeveCondition shouldBe "Mint (M)"
         result[0].price shouldBe "$24.99"
+        result[0].medianPriceIndicator shouldBe "€21.87"
         result[0].seller shouldBe MarketplaceSeller("John Doe")
         result[0].shippingLocation shouldBe "United States"
     }
 
     "should transform multiple listings from real HTML" {
         val releaseId = 42424242L
+        //<editor-fold desc="Realistic HTML snippet for a single listing">
         val listingHtml = """
             <html>
             <body>
-            <div id="pjax_container">
-                <table>
-                    <tbody>
-                        <tr class="shortcut_navigable" data-release-id="42424242">
-                            <td class="item_picture as_float"></td>
-                            <td class="item_description">
-                                <strong>
-                                    <a href="/sell/item/2085508604" class="item_description_title">John Doe and Band - 1995 (LP, Ltd, Mixtape, Whi)</a>
-                                </strong>
-                                <p class="item_condition">
-                                    <span class="mplabel condition-label-desktop">Media Condition:</span>
-                                    <span>Mint (M)</span>
-                                    <br />
-                                    <span class="mplabel condition-label-desktop">Sleeve Condition:</span>
-                                    <span class="item_sleeve_condition">Mint (M)</span>
-                                </p>
-                            </td>
-                            <td class="seller_info">
+            <div id="page" class="marketplace_less_than_six_filters with_tabs aside_off_canvas">
+                <div class="lr float_fix mprelease_info" role="main" aria-label="release">
+                    <div class="left">
+                    </div>
+                    <div class="right">
+                        <div class="section statistics toggle_section    toggle_section_remember"
+                             data-toggle-section-id="statistics" id="statistics">
+                            <div class="toggle_section_control" data-for=".statistics">
+                                <h2>
+                                    Statistics
+                                </h2>
+                            </div>
+                            <div class="section_content toggle_section_content">
                                 <ul>
                                     <li>
-                                        <div class="seller_block">
-                                            <strong><a href="/seller/John Doe/profile">John Doe</a></strong>
-                                        </div>
+                                        <span>Have:</span>
+                                        <a class="coll_num" id="coll_num_r36524902"
+                                           href="/release/stats/36524902#collection">1</a>
                                     </li>
-                                    <li></li>
-                                    <li>United States</li>
-                                </ul>
-                            </td>
-                            <td class="item_price hide_mobile">
-                                <div>
-                                    <span class="price">$24.99</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="shortcut_navigable unavailable" data-release-id="42424242">
-                            <td class="item_picture as_float"></td>
-                            <td class="item_description">
-                                <strong>
-                                    <a href="/sell/item/2131463900" class="item_description_title">John Doe and Band - 1995 (LP, Ltd, Mixtape, Whi)</a>
-                                </strong>
-                                <p class="item_condition">
-                                    <span class="mplabel condition-label-desktop">Media Condition:</span>
-                                    <span>Mint (M)</span>
-                                    <br />
-                                    <span class="mplabel condition-label-desktop">Sleeve Condition:</span>
-                                    <span class="item_sleeve_condition">Mint (M)</span>
-                                </p>
-                            </td>
-                            <td class="seller_info">
-                                <ul>
                                     <li>
-                                        <div class="seller_block">
-                                            <strong><a href="/seller/Jane Doe/profile">Jane Doe</a></strong>
-                                        </div>
+                                        <span>Want:</span>
+                                        <a class="want_num" id="want_num_r" href="/release/stats/36524902#wantlist">17</a>
                                     </li>
-                                    <li></li>
-                                    <li>United States</li>
+                                    <li>
+                                        <span>Avg Rating:</span>
+                                        <span class="rating_value">4.15</span> / 5
+                                    </li>
+                                    <li>
+                                <span>Ratings:<span4>
+                                <a href="/release/stats/36524902"><span class="rating_count">13</span></a>
+                            </span4></span></li>
                                 </ul>
-                            </td>
-                            <td class="item_price hide_mobile">
-                                <div>
-                                    <span class="price">$50.00</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                <ul class="last">
+                                    <li>
+                                        <span>Last Sold:</span>
+                                        <a href="/sell/history/36524902">01 Mar 26</a>
+                                    </li>
+                                    <li>
+                                        <span>Lowest:</span>
+                                        €19.99
+                                    </li>
+                                    <li>
+                                        <span>Median:</span>
+                                        €35.50
+                                    </li>
+                                    <li>
+                                        <span>Highest:</span>
+                                        €312.49
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div id="page_content" role="main">
+                    <div id="other_versions_wrap" class="other_versions_wrap">
+                        <div class="other_versions_table">
+                            <div id="pjax_container">
+                                <table>
+                                    <tbody>
+                                    <tr class="shortcut_navigable" data-release-id="42424242">
+                                        <td class="item_picture as_float"></td>
+                                        <td class="item_description">
+                                            <strong>
+                                                <a href="/sell/item/2085508604" class="item_description_title">John Doe and Band - 1995 (LP, Ltd, Mixtape, Whi)</a>
+                                            </strong>
+                                            <p class="item_condition">
+                                                <span class="mplabel condition-label-desktop">Media Condition:</span>
+                                                <span>Mint (M)</span>
+                                                <br />
+                                                <span class="mplabel condition-label-desktop">Sleeve Condition:</span>
+                                                <span class="item_sleeve_condition">Mint (M)</span>
+                                            </p>
+                                        </td>
+                                        <td class="seller_info">
+                                            <ul>
+                                                <li>
+                                                    <div class="seller_block">
+                                                        <strong><a href="/seller/John Doe/profile">John Doe</a></strong>
+                                                    </div>
+                                                </li>
+                                                <li></li>
+                                                <li>United States</li>
+                                            </ul>
+                                        </td>
+                                        <td class="item_price hide_mobile">
+                                            <div>
+                                                <span class="price">$24.99</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="shortcut_navigable unavailable" data-release-id="42424242">
+                                        <td class="item_picture as_float"></td>
+                                        <td class="item_description">
+                                            <strong>
+                                                <a href="/sell/item/2131463900" class="item_description_title">John Doe and Band - 1995 (LP, Ltd, Mixtape, Whi)</a>
+                                            </strong>
+                                            <p class="item_condition">
+                                                <span class="mplabel condition-label-desktop">Media Condition:</span>
+                                                <span>Mint (M)</span>
+                                                <br />
+                                                <span class="mplabel condition-label-desktop">Sleeve Condition:</span>
+                                                <span class="item_sleeve_condition">Mint (M)</span>
+                                            </p>
+                                        </td>
+                                        <td class="seller_info">
+                                            <ul>
+                                                <li>
+                                                    <div class="seller_block">
+                                                        <strong><a href="/seller/Jane Doe/profile">Jane Doe</a></strong>
+                                                    </div>
+                                                </li>
+                                                <li></li>
+                                                <li>United States</li>
+                                            </ul>
+                                        </td>
+                                        <td class="item_price hide_mobile">
+                                            <div>
+                                                <span class="price">$50.00</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             </body>
             </html>
         """.trimIndent()
+        //</editor-fold>
 
         val result = marketplaceListingTransformService.transformListings(releaseId, listingHtml)
 
@@ -193,6 +328,7 @@ class MarketplaceListingTransformServiceTest : StringSpec({
         result[0].title shouldBe "John Doe and Band - 1995 (LP, Ltd, Mixtape, Whi)"
         result[0].seller shouldBe MarketplaceSeller("John Doe")
         result[0].price shouldBe "$24.99"
+        result[0].medianPriceIndicator shouldBe "€35.50"
         result[0].shippingLocation shouldBe "United States"
 
         // Second listing
@@ -200,11 +336,13 @@ class MarketplaceListingTransformServiceTest : StringSpec({
         result[1].title shouldBe "John Doe and Band - 1995 (LP, Ltd, Mixtape, Whi)"
         result[1].seller shouldBe MarketplaceSeller("Jane Doe")
         result[1].price shouldBe "$50.00"
+        result[1].medianPriceIndicator shouldBe "€35.50"
         result[1].shippingLocation shouldBe "United States"
     }
 
     "should handle empty table body" {
         val releaseId = 42424242L
+        //<editor-fold desc="Realistic HTML snippet for a single listing">
         val listingHtml = """
             <html>
                <body>
@@ -288,14 +426,70 @@ class MarketplaceListingTransformServiceTest : StringSpec({
                </body>
             </html>
         """.trimIndent()
+        //</editor-fold>
 
         val result = marketplaceListingTransformService.transformListings(releaseId, listingHtml)
 
         result shouldHaveSize 0
     }
 
+    "should handle missing median price" {
+        val releaseId = 42424242L
+        //<editor-fold desc="Realistic HTML snippet for a single listing">
+        val listingHtml = """
+            <html>
+            <body>
+            <div id="pjax_container">
+                <table>
+                    <tbody>
+                        <tr class="shortcut_navigable">
+                            <td class="item_picture as_float"></td>
+                            <td class="item_description">
+                                <strong>
+                                    <a href="/sell/item/123" class="item_description_title">Test Album</a>
+                                </strong>
+                                <p class="item_condition">
+                                    <span class="mplabel condition-label-desktop">Media Condition:</span>
+                                    <span>Mint (M)</span>
+                                    <br />
+                                    <span class="mplabel condition-label-desktop">Sleeve Condition:</span>
+                                    <span class="item_sleeve_condition">Mint (M)</span>
+                                </p>
+                            </td>
+                            <td class="seller_info">
+                                <ul>
+                                    <li>
+                                        <div class="seller_block">
+                                            <strong><a href="/seller/test/profile">TestSeller</a></strong>
+                                        </div>
+                                    </li>
+                                    <li></li>
+                                    <li>Germany</li>
+                                </ul>
+                            </td>
+                            <td class="item_price hide_mobile">
+                                <div>
+                                    <span class="price">€15.00</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </body>
+            </html>
+        """.trimIndent()
+        //</editor-fold>
+
+        val result = marketplaceListingTransformService.transformListings(releaseId, listingHtml)
+
+        result shouldHaveSize 1
+        result[0].medianPriceIndicator shouldBe ""
+    }
+
     "should handle missing media condition" {
         val releaseId = 42424242L
+        //<editor-fold desc="Realistic HTML snippet for a single listing">
         val listingHtml = """
             <html>
             <body>
@@ -336,6 +530,7 @@ class MarketplaceListingTransformServiceTest : StringSpec({
             </body>
             </html>
         """.trimIndent()
+        //</editor-fold>
 
         val result = marketplaceListingTransformService.transformListings(releaseId, listingHtml)
 
@@ -346,6 +541,7 @@ class MarketplaceListingTransformServiceTest : StringSpec({
 
     "should handle missing sleeve condition" {
         val releaseId = 42424242L
+        //<editor-fold desc="Realistic HTML snippet for a single listing">
         val listingHtml = """
             <html>
             <body>
@@ -387,6 +583,7 @@ class MarketplaceListingTransformServiceTest : StringSpec({
             </body>
             </html>
         """.trimIndent()
+        //</editor-fold>
 
         val result = marketplaceListingTransformService.transformListings(releaseId, listingHtml)
 

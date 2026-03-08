@@ -7,10 +7,10 @@ data class MarketplaceListing(
     val mediaCondition: String,
     val sleeveCondition: String,
     val price: String,
+    val medianPriceIndicator: String,
     val seller: MarketplaceSeller,
     val shippingLocation: String,
 )
-
 
 @JvmInline
 value class MarketplaceSeller(val name: String)

@@ -234,13 +234,46 @@ class Wantlist(
                     listings
                         .sortedBy { it.title }
                         .forEach { listing ->
-                        row(listing.title, listing.mediaCondition, listing.sleeveCondition, listing.price, listing.shippingLocation)
-                    }
+                            row(
+                                listing.title,
+                                listing.mediaCondition,
+                                listing.sleeveCondition,
+                                formatPriceWithIndicator(listing),
+                                listing.shippingLocation
+                            )
+                        }
 
                     row()
                 }
             }
         })
+    }
+
+    private fun extractPriceValue(priceString: String): Double? {
+        val numericPattern = Regex("""([0-9]+[.,]?[0-9]*)""")
+        val match = numericPattern.find(priceString)
+
+        return match?.value?.replace(",", ".")?.toDoubleOrNull()
+    }
+
+    fun formatPriceWithIndicator(listing: MarketplaceListing): String {
+        val rawPrice = extractPriceValue(listing.price)
+        val indicator = if (listing.medianPriceIndicator.isNotBlank()) {
+            val rawMedianPriceIndicator = extractPriceValue(listing.medianPriceIndicator)
+            if (rawMedianPriceIndicator == null || rawPrice == null) {
+                ""
+            } else if (rawPrice < rawMedianPriceIndicator) {
+                "↓"
+            } else if (rawPrice > rawMedianPriceIndicator) {
+                "↑"
+            } else {
+                ""
+            }
+        } else {
+            ""
+        }
+
+        return "${listing.price} $indicator"
     }
 
     private fun printMarketplaceListingsGroupedBySellerAsDisplay(
@@ -261,13 +294,13 @@ class Wantlist(
                     listings
                         .sortedBy { it.title }
                         .forEach { listing ->
-                        row("Title", "| ${listing.title}")
-                        row("Media", "| ${listing.mediaCondition}")
-                        row("Sleeve", "| ${listing.sleeveCondition}")
-                        row("Price", "| ${listing.price}")
-                        row("Ships from:", "| ${listing.shippingLocation}")
-                        row()
-                    }
+                            row("Title", "| ${listing.title}")
+                            row("Media", "| ${listing.mediaCondition}")
+                            row("Sleeve", "| ${listing.sleeveCondition}")
+                            row("Price (above/below indicator)", "| ${formatPriceWithIndicator(listing)}")
+                            row("Ships from:", "| ${listing.shippingLocation}")
+                            row()
+                        }
                 }
             }
         })

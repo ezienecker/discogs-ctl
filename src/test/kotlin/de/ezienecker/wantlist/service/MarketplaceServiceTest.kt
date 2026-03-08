@@ -374,6 +374,7 @@ private fun createTestListing(
         mediaCondition = "Near Mint (NM or M-)",
         sleeveCondition = "Very Good Plus (VG+)",
         price = price,
+        medianPriceIndicator = "",
         seller = MarketplaceSeller(sellerName),
         shippingLocation = "United States"
     )

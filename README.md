@@ -19,6 +19,8 @@
 - **Cross-reference inventories** – Filter your shop by items on another user's wantlist – or the other way around.
   Works with collections too.
 - **Group by seller** – See which sellers have the most listings matching a wantlist, including listing details.
+- **Price indicators** – Visual indicators (↑/↓) show whether a listing's price is above or below the median price from
+  recently sold items.
 - **Caching & configuration** – Results are cached locally. Username and API token can be stored persistently.
 
 ## Demo

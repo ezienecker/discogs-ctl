@@ -14,6 +14,7 @@ object MarketplaceListings : LongIdTable("marketplace_listings") {
     val mediaCondition: Column<String> = varchar("media_condition", 50)
     val sleeveCondition: Column<String> = varchar("sleeve_condition", 50)
     val priceWithCurrency: Column<String> = varchar("price_with_currency", 50)
+    val medianPriceIndicator: Column<String> = varchar("median_price_indicator", 50)
     val seller: Column<String> = varchar("seller", 500)
     val shippingLocation: Column<String> = varchar("shipping_location", 500)
 

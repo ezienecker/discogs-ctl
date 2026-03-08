@@ -12,25 +12,20 @@ class MarketplaceListingTransformService {
 
     fun transformListings(releaseId: Long, marketplaceListingsHtml: String): List<MarketplaceListing> {
         val doc = Ksoup.parse(html = marketplaceListingsHtml)
+        val medianPriceIndicator = getMedianPriceIndicator(doc)
         return doc.select("#pjax_container > table > tbody > tr").map {
             logger.trace { "Starting to transform listing for releaseId: [$releaseId]." }
 
-            val title = getTitle(it)
-            val mediaCondition = getMediaCondition(it)
-            val sleeveCondition = getSleeveCondition(it)
-            val seller = getSellerName(it)
-            val shippingLocation = getShippingLocation(it)
-            val price = getPrice(it)
-
             MarketplaceListing(
                 releaseId = releaseId,
-                title = title,
+                title = getTitle(it),
                 resourceUrl = "https://www.discogs.com/sell/release/$releaseId",
-                mediaCondition = mediaCondition,
-                sleeveCondition = sleeveCondition,
-                price = price,
-                seller = MarketplaceSeller(seller),
-                shippingLocation = shippingLocation,
+                mediaCondition = getMediaCondition(it),
+                sleeveCondition = getSleeveCondition(it),
+                price = getPrice(it),
+                medianPriceIndicator = medianPriceIndicator,
+                seller = MarketplaceSeller(getSellerName(it)),
+                shippingLocation = getShippingLocation(it),
             ).also { releaseListing ->
                 logger.debug { "Successfully transformed listing for release: [$releaseListing]." }
             }
@@ -71,5 +66,12 @@ class MarketplaceListingTransformService {
         return listingElement.select(".item_price")
             .select("div > span.price")
             .text()
+    }
+
+    private fun getMedianPriceIndicator(doc: Element): String {
+        return doc.select(".mprelease_info > .right ul.last > li")
+            .firstOrNull { li ->
+                li.select("span").any { span -> span.ownText() == "Median:" }
+            }?.ownText()?.trim() ?: ""
     }
 }

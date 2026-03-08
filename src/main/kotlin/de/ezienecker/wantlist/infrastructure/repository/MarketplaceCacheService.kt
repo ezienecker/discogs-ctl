@@ -86,6 +86,7 @@ class MarketplaceCacheService(
         mediaCondition = row[MarketplaceListings.mediaCondition],
         sleeveCondition = row[MarketplaceListings.sleeveCondition],
         price = row[MarketplaceListings.priceWithCurrency],
+        medianPriceIndicator = row[MarketplaceListings.medianPriceIndicator],
         seller = MarketplaceSeller(row[MarketplaceListings.seller]),
         shippingLocation = row[MarketplaceListings.shippingLocation],
     )
@@ -107,6 +108,7 @@ class MarketplaceCacheService(
                     it[mediaCondition] = marketplaceListing.mediaCondition
                     it[sleeveCondition] = marketplaceListing.sleeveCondition
                     it[priceWithCurrency] = marketplaceListing.price
+                    it[medianPriceIndicator] = marketplaceListing.medianPriceIndicator
                     it[seller] = marketplaceListing.seller.name
                     it[shippingLocation] = marketplaceListing.shippingLocation
                     it[cachedAt] = now
