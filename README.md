@@ -18,6 +18,8 @@
   table, detail view or JSON.
 - **Cross-reference inventories** – Filter your shop by items on another user's wantlist – or the other way around.
   Works with collections too.
+- **Follow users** – Maintain a list of followed users with tags (shop, collection, wantlist) to easily filter and
+  cross-reference their inventories. Track interesting sellers, collectors, or users whose wantlists match your shop.
 - **Group by seller** – See which sellers have the most listings matching a wantlist, including listing details.
 - **Price indicators** – Visual indicators (↑/↓) show whether a listing's price is above or below the median price from
   recently sold items.
