@@ -56,7 +56,7 @@ class WantlistCacheService(
                 basicInformation = basicInfo
             )
         }.also {
-            logger.info { "Retrieved ${it.size} cached wants for user: [$username]" }
+            logger.trace { "Retrieved [${it.size}] cached wants for user: [$username]" }
         }
     }
 
@@ -64,7 +64,7 @@ class WantlistCacheService(
      * Cache wantlist data for a user
      */
     fun cache(username: String, wants: List<Want>) = transaction {
-        logger.debug { "Caching ${wants.size} wants for user: [$username]" }
+        logger.debug { "Caching [${wants.size}] wants for user: [$username]" }
 
         clearCache(username)
 

@@ -76,7 +76,7 @@ class ShopCacheService(
                 release = release
             )
         }.also {
-            logger.info { "Retrieved ${it.size} cached listings for user: [$username]" }
+            logger.trace { "Retrieved [${it.size}] cached listings for user: [$username]" }
         }
     }
 
@@ -84,7 +84,7 @@ class ShopCacheService(
      * Cache inventory data for a user
      */
     fun cache(username: String, listings: List<Listing>) = transaction {
-        logger.debug { "Caching ${listings.size} listings for user: [$username]" }
+        logger.debug { "Caching [${listings.size}] listings for user: [$username]" }
 
         clearCache(username)
 

@@ -76,7 +76,7 @@ class MarketplaceCacheService(
             .selectAll()
             .where { MarketplaceListings.releaseId eq releaseId }
             .map { mapRowToMarketplaceListing(it) }
-            .also { logger.info { "Retrieved ${it.size} cached marketplace listings for release with ID: [$releaseId]" } }
+            .also { logger.trace { "Retrieved [${it.size}] cached marketplace listings for release with ID: [$releaseId]" } }
     }
 
     private fun mapRowToMarketplaceListing(row: ResultRow): MarketplaceListing = MarketplaceListing(
@@ -92,7 +92,7 @@ class MarketplaceCacheService(
     )
 
     fun cache(releaseId: Long, marketplaceListings: List<MarketplaceListing>) = transaction {
-        logger.debug { "Caching ${marketplaceListings.size} marketplace listings for release with ID: [$releaseId]" }
+        logger.debug { "Caching [${marketplaceListings.size}] marketplace listings for release with ID: [$releaseId]" }
 
         clearCache(releaseId)
 

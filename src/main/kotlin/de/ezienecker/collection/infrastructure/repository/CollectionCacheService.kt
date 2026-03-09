@@ -57,7 +57,7 @@ class CollectionCacheService(
                 basicInformation = basicInfo
             )
         }.also {
-            logger.info { "Retrieved ${it.size} cached releases for user: [$username]." }
+            logger.trace { "Retrieved [${it.size}] cached releases for user: [$username]." }
         }
     }
 
@@ -65,7 +65,7 @@ class CollectionCacheService(
      * Cache collection data for a user
      */
     fun cache(username: String, releases: List<Release>) = transaction {
-        logger.debug { "Caching ${releases.size} releases for user: [$username]." }
+        logger.debug { "Caching [${releases.size}] releases for user: [$username]." }
 
         clearCache(username)
 
