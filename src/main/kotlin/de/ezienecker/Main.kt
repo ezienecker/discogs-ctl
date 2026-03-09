@@ -23,6 +23,9 @@ import de.ezienecker.core.infrastructure.discogs.marketplace.MarketplaceApiClien
 import de.ezienecker.core.infrastructure.discogs.shop.ShopApiClient
 import de.ezienecker.core.infrastructure.discogs.wantlist.WantlistApiClient
 import de.ezienecker.core.version.VersionProvider
+import de.ezienecker.follow.command.Follow
+import de.ezienecker.follow.infrastructure.repository.FollowRepository
+import de.ezienecker.follow.service.FollowService
 import de.ezienecker.shop.command.Shop
 import de.ezienecker.shop.infrastructure.repository.ShopCacheService
 import de.ezienecker.shop.service.ShopService
@@ -66,20 +69,29 @@ fun main(args: Array<String>) {
         ),
         cache = CollectionCacheService(clock, json, configurationService),
     )
-    val shopService = ShopService(
-        client = ShopApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
-        cache = ShopCacheService(clock, json, configurationService),
+
+    val followService = FollowService(
+        followRepository = FollowRepository()
     )
-    val wantlistService = WantlistService(
-        client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
-        cache = WantlistCacheService(clock, json, configurationService),
-    )
+
     val marketplaceService = MarketplaceService(
         client = MarketplaceApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
         marketplaceListingsTransformService = MarketplaceListingTransformService(),
         cache = MarketplaceCacheService(clock, json, configurationService),
         batchProcessor = DefaultBatchProcessor(),
     )
+
+    val shopService = ShopService(
+        client = ShopApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        cache = ShopCacheService(clock, json, configurationService),
+    )
+
+    val wantlistService = WantlistService(
+        client = WantlistApiClient(configuration = configurationService.getDiscogsClientConfiguration()),
+        cache = WantlistCacheService(clock, json, configurationService),
+    )
+
+    val followCommand = Follow(followService, terminal)
 
     DiscogsCtl()
         .versionOption(VersionProvider.version)
@@ -90,6 +102,10 @@ fun main(args: Array<String>) {
                     viewConfig
                 ),
             Collection(collectionService, shopService, wantlistService, configurationService, terminal),
+            followCommand.subcommands(
+                followCommand.Add(),
+                followCommand.Remove(),
+            ),
             Shop(shopService, wantlistService, configurationService, terminal),
             Wantlist(shopService, wantlistService, marketplaceService, configurationService, terminal),
         ).main(args)

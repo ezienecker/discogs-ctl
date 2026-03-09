@@ -3,6 +3,7 @@ package de.ezienecker.core.infrastructure.config
 import de.ezienecker.collection.infrastructure.repository.CachedBasicInformation
 import de.ezienecker.collection.infrastructure.repository.CachedCollections
 import de.ezienecker.core.configuration.service.ConfigurationService
+import de.ezienecker.follow.infrastructure.repository.Follows
 import de.ezienecker.shop.infrastructure.repository.Listings
 import de.ezienecker.wantlist.infrastructure.repository.MarketplaceListings
 import de.ezienecker.wantlist.infrastructure.repository.WantBasicInformation
@@ -22,6 +23,7 @@ fun setupSchema() = transaction {
     SchemaUtils.create(
         CachedCollections,
         CachedBasicInformation,
+        Follows,
         Wants,
         WantBasicInformation,
         Listings,

@@ -21,22 +21,6 @@ import org.slf4j.LoggerFactory
 
 private val logger = KotlinLogging.logger {}
 
-sealed interface OutputFormat {
-    data object Compact : OutputFormat
-    data object Wide : OutputFormat
-    data object Json : OutputFormat
-    data object Display : OutputFormat
-
-    companion object {
-        fun from(value: String): OutputFormat = when (value.lowercase()) {
-            "wide" -> Wide
-            "json" -> Json
-            "display" -> Display
-            else -> Compact
-        }
-    }
-}
-
 abstract class InventorySubCommand<T>(
     name: String? = null,
     private val configurationService: ConfigurationService,
@@ -85,7 +69,7 @@ abstract class InventorySubCommand<T>(
         spinner(Spinner.Lines())
     }.animateInCoroutine(terminal, context = "Fetching data")
 
-    fun handleVerboseOption() {
+    fun handleVerboseOption(verbose: Boolean = this.verbose) {
         if (verbose) {
             (LoggerFactory.getILoggerFactory() as LoggerContext).getLogger("de.ezienecker").apply {
                 level = Level.INFO
