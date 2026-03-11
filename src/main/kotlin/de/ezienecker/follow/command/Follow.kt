@@ -50,19 +50,19 @@ class Follow(
     val removeInstance: Remove by lazy { this.Remove() }
 
     override fun help(context: Context) = """
-        This command allows you to manage the list of followed users. 
+        This command allows you to manage the list of followed users.${"\u0085"}
         You can add or remove users from the list of followed users, and you can also list all followed users.
-            
-        # List followed users:
+        
+        # List followed users:${"\u0085"}
         discogs-ctl follow
         
-        # List followed users in display format:
+        # List followed users in display format:${"\u0085"}
         discogs-ctl follow --output display
         
-        # Add user John-Doe to the list of followed users with tags 'shop' and 'wantlist':
+        # Add user John-Doe to the list of followed users with tags 'shop' and 'wantlist':${"\u0085"}
         discogs-ctl follow add John-Doe --tags shop --tags wantlist
         
-        # Remove user John-Doe from the list of followed users:
+        # Remove user John-Doe from the list of followed users:${"\u0085"}
         discogs-ctl follow remove John-Doe
     """.trimIndent()
 
@@ -168,11 +168,11 @@ class Follow(
 
         override fun help(context: Context) = """
             This command allows you to add a user to the list of followed users.
-                
-            # Add user John-Doe to the list of followed users. If no tags are specified, the user is added with all tags:
+        
+            # Add user John-Doe to the list of followed users. If no tags are specified, the user is added with all tags:${"\u0085"}
             discogs-ctl follow add John-Doe
             
-            # Add user John-Doe to the list of followed users with tags 'shop' and 'wantlist':
+            # Add user John-Doe to the list of followed users with tags 'shop' and 'wantlist':${"\u0085"}
             discogs-ctl follow add John-Doe --tags shop --tags wantlist
         """.trimIndent()
 
@@ -200,8 +200,8 @@ class Follow(
 
         override fun help(context: Context) = """
             This command allows you to remove a user from the list of followed users.
-                
-            # Remove user John-Doe from the list of followed users:
+        
+            # Remove user John-Doe from the list of followed users:${"\u0085"}
             discogs-ctl follow remove John-Doe
         """.trimIndent()
 

@@ -43,22 +43,22 @@ class Wantlist(
     }
 
     override fun help(context: Context) = """
-        Displays the wantlist inventory from a user.
+        Displays the wantlist inventory from a user.${"\u0085"}
         If no username has been specified, the tool looks for a username in the configuration file (see discogs-ctl config --help for more information).
         
-        # List wantlist inventory for user John-Doe:
+        # List wantlist inventory for user John-Doe:${"\u0085"}
         discogs-ctl wantlist --username John-Doe
         
-        # List wantlist inventory for user John-Doe with more information:
+        # List wantlist inventory for user John-Doe with more information:${"\u0085"}
         discogs-ctl wantlist --username John-Doe --output wide
         
-        # List wantlist inventory for user John-Doe filtered by shop entries from user Jane-Roe:
+        # List wantlist inventory for user John-Doe filtered by shop entries from user Jane-Roe:${"\u0085"}
         discogs-ctl wantlist --username John-Doe --filtered-by-shop Jane-Roe
         
-        # Show the 10 sellers (default) with the most listings for the wantlist entries, along with the details of their listings.
+        # Show the 10 sellers (default) with the most listings for the wantlist entries, along with the details of their listings.${"\u0085"}
         discogs-ctl wantlist --group-by-seller
         
-        # Only shows the top 5 sellers with the most listings for the wantlist entries, along with the details of their listings.
+        # Only shows the top 5 sellers with the most listings for the wantlist entries, along with the details of their listings.${"\u0085"}
         discogs-ctl wantlist --group-by-seller --limit-group-by-seller 5
         """.trimIndent()
 

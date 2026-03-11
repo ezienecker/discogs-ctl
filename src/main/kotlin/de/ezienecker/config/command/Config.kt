@@ -25,13 +25,13 @@ class Config : NoOpCliktCommand() {
     override fun help(context: Context) = """
         Display or modify discogs-ctl config file.
         
-        Display the config file:
+        # Display the config file:${"\u0085"}
         discogs-ctl config view
         
-        Modify the config file:
+        # Modify the config file:${"\u0085"}
         discogs-ctl config set <property> <value>
         
-        Show available properties:
+        # Show available properties:${"\u0085"}
         discogs-ctl config set --help
         
         The configuration file is located under ${'$'}{HOME}/.discogsctl/

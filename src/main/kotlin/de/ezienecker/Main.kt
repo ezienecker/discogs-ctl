@@ -94,7 +94,7 @@ fun main(args: Array<String>) {
     val followCommand = Follow(followService, terminal)
 
     DiscogsCtl()
-        .versionOption(VersionProvider.version)
+        .versionOption(VersionProvider.version, names = setOf("--version", "-v"))
         .subcommands(
             Config()
                 .subcommands(

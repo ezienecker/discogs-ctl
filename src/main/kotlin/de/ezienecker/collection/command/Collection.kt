@@ -30,19 +30,19 @@ class Collection(
 ) : InventorySubCommand<Release>(configurationService = configurationService, terminal = terminal) {
 
     override fun help(context: Context) = """
-            Displays the collection from a user. 
+            Displays the collection from a user.${"\u0085"}
             If no username has been specified, the tool looks for a username in the configuration file (see discogs-ctl config --help for more information).
             
-            # List collection for user John-Doe:
+            # List collection for user John-Doe:${"\u0085"}
             discogs-ctl collection --username John-Doe
             
-            # List collection for user John-Doe with more information:
+            # List collection for user John-Doe with more information:${"\u0085"}
             discogs-ctl collection --username John-Doe --output wide
             
-            # List collection for user John-Doe filtered by wantlist entries from user Jane-Roe:
+            # List collection for user John-Doe filtered by wantlist entries from user Jane-Roe:${"\u0085"}
             discogs-ctl collection --username John-Doe --filtered-by-wantlist Jane-Roe
             
-            # List collection for user John-Doe filtered by shop entries from user Jane-Roe:
+            # List collection for user John-Doe filtered by shop entries from user Jane-Roe:${"\u0085"}
             discogs-ctl collection --username John-Doe --filtered-by-shop Jane-Roe
         """.trimIndent()
 

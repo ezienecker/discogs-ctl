@@ -29,16 +29,16 @@ class Shop(
 ) : InventorySubCommand<Listing>(configurationService = configurationService, terminal = terminal) {
 
     override fun help(context: Context) = """
-            Displays the shop inventory from a user. 
+            Displays the shop inventory from a user.${"\u0085"}
             If no username has been specified, the tool looks for a username in the configuration file (see discogs-ctl config --help for more information).
             
-            # List shop inventory for user John-Doe:
+            # List shop inventory for user John-Doe:${"\u0085"}
             discogs-ctl shop --username John-Doe
             
-            # List shop inventory for user John-Doe with more information:
+            # List shop inventory for user John-Doe with more information:${"\u0085"}
             discogs-ctl shop --username John-Doe --output wide
             
-            # List shop inventory for user John-Doe filtered by wantlist entries from user Jane-Roe:
+            # List shop inventory for user John-Doe filtered by wantlist entries from user Jane-Roe:${"\u0085"}
             discogs-ctl shop --username John-Doe --filtered-by-wantlist Jane-Roe
         """.trimIndent()
 
