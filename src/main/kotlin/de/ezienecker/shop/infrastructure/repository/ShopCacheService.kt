@@ -18,7 +18,6 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.greater
-import org.jetbrains.exposed.v1.core.less
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
@@ -117,15 +116,6 @@ class ShopCacheService(
         logger.info { "Clearing inventory cache for user: [$username]" }
         Listings.deleteWhere { Listings.username eq username }
         logger.info { "Successfully cleared inventory cache for user: [$username]" }
-    }
-
-    fun clearExpiredCache() = transaction {
-        val cutoffTime = clock.now() - getCacheExpiryDuration()
-        Listings.deleteWhere {
-            Listings.cachedAt less cutoffTime
-        }.also {
-            logger.info { "Cleared [$it] expired inventory cache entries" }
-        }
     }
 
     private fun getCacheExpiryDuration() = configurationService.getShopCacheDuration()

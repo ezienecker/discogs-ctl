@@ -11,7 +11,6 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.greater
-import org.jetbrains.exposed.v1.core.less
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
@@ -93,17 +92,6 @@ class WantlistCacheService(
         logger.info { "Clearing wantlist cache for user: [$username]" }
         Wants.deleteWhere { Wants.username eq username }
         logger.info { "Successfully cleared wantlist cache for user: [$username]" }
-    }
-
-    /**
-     * Clear expired cache entries
-     */
-    fun clearExpiredCache() = transaction {
-        val cutoffTime = clock.now() - getCacheExpiryDuration()
-        val deletedCount = Wants.deleteWhere {
-            Wants.cachedAt less cutoffTime
-        }
-        logger.info { "Cleared $deletedCount expired wantlist cache entries" }
     }
 
     private fun getCacheExpiryDuration() = configurationService.getWantlistCacheDuration()

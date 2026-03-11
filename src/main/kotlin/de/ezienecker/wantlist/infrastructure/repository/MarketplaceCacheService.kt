@@ -12,7 +12,6 @@ import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.greater
 import org.jetbrains.exposed.v1.core.inList
-import org.jetbrains.exposed.v1.core.less
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
@@ -122,15 +121,6 @@ class MarketplaceCacheService(
         logger.info { "Clearing marketplace listings for release with ID: [$releaseId]" }
         MarketplaceListings.deleteWhere { MarketplaceListings.releaseId eq releaseId }
         logger.info { "Successfully cleared marketplace listings for release with ID: [$releaseId]" }
-    }
-
-    fun clearExpiredCache() = transaction {
-        val cutoffTime = clock.now() - getCacheExpiryDuration()
-        MarketplaceListings.deleteWhere {
-            MarketplaceListings.cachedAt less cutoffTime
-        }.also {
-            logger.info { "Cleared [$it] expired marketplace listings cache entries" }
-        }
     }
 
     private fun getCacheExpiryDuration() = configurationService.getMarketplaceListingsCacheDuration()
