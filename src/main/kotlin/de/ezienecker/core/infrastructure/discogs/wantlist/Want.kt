@@ -34,23 +34,24 @@ data class BasicInformation(
 data class Format(
     val text: String? = null,
     val qty: String,
-    val descriptions: List<String>,
+    val descriptions: List<String>? = emptyList(),
     val name: String,
 ) {
     fun formattedOutput(): String {
-        return "$name, ${descriptions.joinToString { it }}"
+        val formattedDescriptions = descriptions.orEmpty().joinToString()
+        return if (formattedDescriptions.isBlank()) name else "$name, $formattedDescriptions"
     }
 }
 
 @Serializable
 data class Label(
     @SerialName("resource_url")
-    val resourceUrl: Url,
+    val resourceUrl: Url?,
     @SerialName("entity_type")
     val entityType: String,
     @SerialName("catno")
     val catalogNumber: String,
-    val id: Int,
+    val id: Int?,
     val name: String,
 )
 
@@ -62,8 +63,8 @@ data class Artist(
     val tracks: String,
     val role: String,
     @SerialName("resource_url")
-    val resourceUrl: Url,
-    val id: Int,
+    val resourceUrl: Url?,
+    val id: Int?,
 )
 
 @Serializable
