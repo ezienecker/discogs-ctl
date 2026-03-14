@@ -261,16 +261,16 @@ class Wantlist(
         val indicator = if (listing.medianPriceIndicator.isNotBlank()) {
             val rawMedianPriceIndicator = extractPriceValue(listing.medianPriceIndicator)
             if (rawMedianPriceIndicator == null || rawPrice == null) {
-                ""
+                "-"
             } else if (rawPrice < rawMedianPriceIndicator) {
                 "↓"
             } else if (rawPrice > rawMedianPriceIndicator) {
                 "↑"
             } else {
-                ""
+                "~"
             }
         } else {
-            ""
+            "-"
         }
 
         return "${listing.price} $indicator"
