@@ -25,10 +25,6 @@
   recently sold items.
 - **Caching & configuration** – Results are cached locally. Username and API token can be stored persistently.
 
-## Demo
-
-![discogs-ctl Demo](docs/demo.gif)
-
 ## Installation
 
 Install `discogs-ctl` using one of the following methods:
@@ -61,7 +57,7 @@ To run the project after building it, you can add an alias to your shell configu
 alias discogs-ctl="java -jar /path/to/discogs-ctl/build/libs/discogs-ctl-1.0.0-SNAPSHOT.jar"
 ```
 
-With that set up, you can use the `discogs-ctl` command from anywhere in your terminal.
+With that setup, you can use the `discogs-ctl` command from anywhere in your terminal.
 
 ```sh
 discogs-ctl wantlist --username Madlip89
@@ -76,7 +72,7 @@ discogs-ctl config set username Madlip89
 ```
 
 By default, all requests are unauthenticated.
-If you want to make authenticated requests, you can set a token via the config command.
+If you want to make authenticated requests (what is recommended), you can set a token via the config command.
 This is then sent in the authorization header.
 
 In order to generate a token, you need to create a personal access token on the Discogs website.
@@ -94,6 +90,35 @@ For a full list of available commands, run the following command:
 
 ```sh
 discogs-ctl --help
+```
+
+**Samples**
+
+Group by seller and display the number of listings per seller (starting with the seller with the most listings). 
+The result is limited to 2 sellers:
+
+```sh
+discogs-ctl wantlist --username <username> --group-by-seller --limit-group-by-seller 2
+```
+
+Filter the shop listings by the items on another user's wantlist:
+
+```sh
+discogs-ctl shop --username <username> --filtered-by-wantlist <another-username>
+```
+
+Filter the wantlist by listings in another user's shop:
+
+```sh
+discogs-ctl wantlist --username <username> --filtered-by-shop <another-username>
+```
+
+> NOTE: You can omit the `username` in the commands above if you have previously configured a default `username`.
+
+Filter the collection by the items on another user's wantlist:
+
+```sh
+discogs-ctl collection --filtered-by-wantlist <another-username>
 ```
 
 ## Support
